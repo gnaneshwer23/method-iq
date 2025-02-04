@@ -40,16 +40,16 @@ const testimonials = [
 
 export function BenefitsSection() {
   return (
-    <section className="py-20">
+    <section className="py-12">
       <div className="container px-4">
-        <div className="max-w-3xl mx-auto mb-12 text-center">
+        <div className="max-w-3xl mx-auto mb-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Featured Benefits</h2>
           <p className="text-lg text-muted-foreground">
             Experience the power of intelligent research methods optimization
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {benefits.map((benefit, index) => (
             <Card 
               key={index} 

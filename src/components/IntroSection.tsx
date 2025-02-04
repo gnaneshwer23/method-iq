@@ -27,9 +27,9 @@ const features = [
 
 export function IntroSection() {
   return (
-    <section className="py-20 bg-secondary/50">
+    <section className="py-12 bg-secondary/50">
       <div className="container px-4">
-        <div className="max-w-3xl mx-auto mb-12 text-center">
+        <div className="max-w-3xl mx-auto mb-8 text-center">
           <h2 className="text-3xl font-bold mb-6">
             Where Advanced Technology Meets Scientific Innovation
           </h2>
