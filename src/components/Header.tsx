@@ -8,10 +8,10 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import { useState } from "react"
 
 export const Header = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="w-full border-b">
+    <header className="w-full border-b sticky top-0 z-50 bg-background">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="text-xl font-bold">
           MethodIQ
@@ -22,9 +22,9 @@ export const Header = () => {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>About</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="bg-background">About</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
+                  <div className="grid w-[400px] gap-3 p-4 bg-background">
                     <div className="grid gap-1">
                       <NavigationMenuLink asChild>
                         <Link
@@ -116,5 +116,5 @@ export const Header = () => {
         </div>
       </div>
     </header>
-  )
+  );
 }

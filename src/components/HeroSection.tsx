@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background pt-12 pb-16">
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background pt-8 pb-12">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background/50" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
+        <div className="max-w-4xl mx-auto text-center space-y-4">
           <span className="inline-flex animate-fade-up opacity-0 [--animation-delay:200ms] bg-primary/5 text-primary text-sm px-4 py-1.5 rounded-full">
             Introducing MethodIQ
           </span>
