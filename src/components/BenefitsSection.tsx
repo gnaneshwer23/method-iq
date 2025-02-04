@@ -40,9 +40,9 @@ const testimonials = [
 
 export function BenefitsSection() {
   return (
-    <section className="py-24">
+    <section className="py-20">
       <div className="container px-4">
-        <div className="max-w-3xl mx-auto mb-16 text-center">
+        <div className="max-w-3xl mx-auto mb-12 text-center">
           <h2 className="text-3xl font-bold mb-6">Featured Benefits</h2>
           <p className="text-lg text-muted-foreground">
             Experience the power of intelligent research methods optimization

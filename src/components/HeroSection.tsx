@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background pt-16 pb-20">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background/50" />
@@ -25,7 +25,7 @@ export function HeroSection() {
             Discover MethodIQ—the platform that harnesses AI and cutting-edge technologies to recommend research methods tailored to your lab's unique needs.
           </p>
           
-          <div className="animate-fade-up opacity-0 [--animation-delay:800ms] flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="animate-fade-up opacity-0 [--animation-delay:800ms] flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button asChild size="lg" className="group">
               <Link to="/contact">
                 Get Started
