@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <footer className="w-full border-t">
       <div className="container py-8">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mb-4 text-sm font-semibold">Product</h3>
             <ul className="space-y-2">
