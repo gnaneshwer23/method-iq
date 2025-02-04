@@ -31,7 +31,7 @@ export const Header = () => {
                           className={cn(
                             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           )}
-                          to="/"
+                          to="/about"
                         >
                           <div className="text-sm font-medium leading-none">About Us</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
@@ -44,17 +44,27 @@ export const Header = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/" className="px-4 py-2">
+                <Link to="/features" className="px-4 py-2">
                   Features
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/" className="px-4 py-2">
+                <Link to="/benefits" className="px-4 py-2">
+                  Benefits
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/how-it-works" className="px-4 py-2">
+                  How It Works
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/pricing" className="px-4 py-2">
                   Pricing
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/" className="px-4 py-2">
+                <Link to="/contact" className="px-4 py-2">
                   Contact
                 </Link>
               </NavigationMenuItem>
@@ -78,16 +88,22 @@ export const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col space-y-4 mt-4">
-                <Link to="/" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                <Link to="/about" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   About
                 </Link>
-                <Link to="/" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                <Link to="/features" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Features
                 </Link>
-                <Link to="/" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                <Link to="/benefits" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Benefits
+                </Link>
+                <Link to="/how-it-works" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  How It Works
+                </Link>
+                <Link to="/pricing" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Pricing
                 </Link>
-                <Link to="/" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                <Link to="/contact" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Contact
                 </Link>
                 <div className="flex flex-col gap-2 mt-4">
