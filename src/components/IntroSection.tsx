@@ -27,10 +27,11 @@ const features = [
 
 export function IntroSection() {
   return (
-    <section className="py-16 bg-secondary/50">
-      <div className="container px-4">
-        <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-foreground">
+    <section className="relative py-16">
+      <div className="absolute inset-0 bg-secondary/50" />
+      <div className="container px-4 relative">
+        <div className="max-w-3xl mx-auto mb-12 text-center relative z-20">
+          <h2 className="text-3xl font-bold mb-4 text-foreground relative">
             Where Advanced Technology Meets Scientific Innovation
           </h2>
           <p className="text-lg text-muted-foreground">
@@ -38,7 +39,7 @@ export function IntroSection() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-20">
           {features.map((feature, index) => (
             <Card key={index} className="relative overflow-hidden p-6 hover:shadow-lg transition-shadow duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
