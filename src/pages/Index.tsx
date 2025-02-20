@@ -4,6 +4,7 @@ import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { IntroSection } from "@/components/IntroSection"
 import { BenefitsSection } from "@/components/BenefitsSection"
+import { HowItWorksSection } from "@/components/HowItWorksSection"
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
         <HeroSection />
         <IntroSection />
         <BenefitsSection />
+        <HowItWorksSection />
       </main>
       <Footer />
     </div>
