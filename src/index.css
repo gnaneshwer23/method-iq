@@ -5,24 +5,24 @@
 
 @layer base {
   :root {
-    --background: 230 15% 5%;
-    --foreground: 210 40% 98%;
-    --card: 230 15% 5%;
-    --card-foreground: 210 40% 98%;
-    --popover: 230 15% 5%;
-    --popover-foreground: 210 40% 98%;
+    --background: 0 0% 100%;
+    --foreground: 230 15% 5%;
+    --card: 0 0% 100%;
+    --card-foreground: 230 15% 5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 15% 5%;
     --primary: 230 100% 65%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 230 15% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 230 15% 15%;
-    --muted-foreground: 217 15% 85%;
-    --accent: 230 15% 15%;
-    --accent-foreground: 210 40% 98%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 230 15% 95%;
+    --secondary-foreground: 230 15% 5%;
+    --muted: 230 15% 95%;
+    --muted-foreground: 230 15% 35%;
+    --accent: 230 15% 95%;
+    --accent-foreground: 230 15% 5%;
     --destructive: 0 80% 40%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 230 15% 15%;
-    --input: 230 15% 15%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 230 15% 90%;
+    --input: 230 15% 90%;
     --ring: 230 80% 70%;
     --radius: 0.75rem;
   }
@@ -49,7 +49,7 @@
   }
   
   .text-gradient {
-    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text text-transparent;
   }
   
   .text-gradient-primary {
@@ -76,4 +76,3 @@
 .animate-glow {
   animation: pulse-glow 4s ease-in-out infinite;
 }
-
