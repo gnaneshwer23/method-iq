@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { Brain, Glasses, Lock, MessageCircle, Users } from "lucide-react";
+import { Brain, Glasses, Lock, MessageCircle, Users, Flask } from "lucide-react";
 
 const benefits = [
   {
@@ -27,6 +27,11 @@ const benefits = [
     icon: Users,
     title: "Community-Driven Insights",
     description: "Benefit from a collaborative platform where researchers share success stories, challenges, and best practices."
+  },
+  {
+    icon: Flask,
+    title: "Lab Protocol Optimization",
+    description: "Automatically optimize your protocols based on real-world success data and machine learning insights."
   }
 ];
 

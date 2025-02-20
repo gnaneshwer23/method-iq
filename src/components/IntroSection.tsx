@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { Brain, Blocks, Share2, Laptop } from "lucide-react";
+import { Brain, Blocks, Share2, Laptop, FlaskConical } from "lucide-react";
 
 const features = [
   {
@@ -22,6 +22,11 @@ const features = [
     icon: Laptop,
     title: "IoT Integration",
     description: "Seamlessly connect with lab equipment for real-time data collection and analysis."
+  },
+  {
+    icon: FlaskConical,
+    title: "Smart Lab Automation",
+    description: "Automate repetitive tasks and streamline your workflow with intelligent lab management tools."
   }
 ];
 
@@ -39,7 +44,7 @@ export function IntroSection() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 relative z-20">
           {features.map((feature, index) => (
             <Card key={index} className="relative overflow-hidden p-6 hover:shadow-lg transition-shadow duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
