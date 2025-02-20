@@ -1,14 +1,35 @@
 
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "./ui/button"
 import { Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import { useState } from "react"
+import { useToast } from "./ui/use-toast"
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogin = () => {
+    // For now, we'll show a toast since login functionality isn't implemented yet
+    toast({
+      title: "Coming Soon",
+      description: "Login functionality will be available soon!",
+      duration: 3000,
+    });
+  };
+
+  const handleSignup = () => {
+    // For now, we'll show a toast since signup functionality isn't implemented yet
+    toast({
+      title: "Coming Soon",
+      description: "Sign up functionality will be available soon!",
+      duration: 3000,
+    });
+  };
 
   return (
     <header className="w-full border-b sticky top-0 z-50 bg-background">
@@ -69,8 +90,8 @@ export const Header = () => {
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" size="sm">Log in</Button>
-          <Button size="sm">Sign up</Button>
+          <Button variant="ghost" size="sm" onClick={handleLogin}>Log in</Button>
+          <Button size="sm" onClick={handleSignup}>Sign up</Button>
         </div>
 
         {/* Mobile Menu */}
@@ -102,8 +123,8 @@ export const Header = () => {
                   Contact
                 </Link>
                 <div className="flex flex-col gap-2 mt-4">
-                  <Button variant="outline" onClick={() => setIsOpen(false)}>Log in</Button>
-                  <Button onClick={() => setIsOpen(false)}>Sign up</Button>
+                  <Button variant="outline" onClick={() => { handleLogin(); setIsOpen(false); }}>Log in</Button>
+                  <Button onClick={() => { handleSignup(); setIsOpen(false); }}>Sign up</Button>
                 </div>
               </div>
             </SheetContent>
