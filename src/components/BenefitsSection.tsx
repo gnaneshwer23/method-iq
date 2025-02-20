@@ -1,6 +1,6 @@
 
 import { Card } from "@/components/ui/card";
-import { Brain, Glasses, Lock, MessageCircle, Users, Flask } from "lucide-react";
+import { Brain, Glasses, Lock, MessageCircle, Users, FlaskConical } from "lucide-react";
 
 const benefits = [
   {
@@ -29,7 +29,7 @@ const benefits = [
     description: "Benefit from a collaborative platform where researchers share success stories, challenges, and best practices."
   },
   {
-    icon: Flask,
+    icon: FlaskConical,
     title: "Lab Protocol Optimization",
     description: "Automatically optimize your protocols based on real-world success data and machine learning insights."
   }
