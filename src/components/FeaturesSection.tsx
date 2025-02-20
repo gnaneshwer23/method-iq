@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Lock, Laptop, FlaskConical, Users, Glasses, BarChart } from "lucide-react";
+import { Brain, Lock, Laptop, FlaskConical, Users, Glasses, BarChart, Database, Rocket } from "lucide-react";
 
 const features = [
   {
@@ -51,6 +51,20 @@ const features = [
     whatItDoes: "Offers real-time dashboards, trend reports, and a curated newsletter of research insights.",
     whyUseful: "Helps you stay on top of emerging trends and benchmark your research against global data.",
     detail: "Data collection → Analysis → Insights distribution"
+  },
+  {
+    icon: Database,
+    title: "Automated Data Backup & Version Control",
+    whatItDoes: "Automatically backs up research data and maintains version history of all protocols and experiments.",
+    whyUseful: "Ensures data safety and enables easy tracking of protocol evolution over time.",
+    detail: "Continuous backup → Version tracking → Easy restoration"
+  },
+  {
+    icon: Rocket,
+    title: "Accelerated Research Pipeline",
+    whatItDoes: "Streamlines workflow by automating routine tasks and integrating with existing lab systems.",
+    whyUseful: "Reduces time spent on administrative tasks and increases focus on actual research.",
+    detail: "Task automation → System integration → Workflow optimization"
   }
 ];
 
