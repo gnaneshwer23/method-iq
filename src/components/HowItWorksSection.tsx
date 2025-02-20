@@ -1,46 +1,60 @@
 
-import { User, Search, Brain, Monitor, Users } from "lucide-react";
+import { User, Search, Brain, Monitor, Users, Settings, Shield } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const steps = [
   {
     icon: User,
-    title: "Create Your Research Profile",
+    title: "Profile Setup",
     points: [
-      "Sign Up & Set Up: Create a free account and complete your research profile by inputting your lab's specialties, challenges, and current protocols.",
-      "Personalization: Our AI system uses this information to understand your research context and generate a unique profile."
-    ]
-  },
-  {
-    icon: Search,
-    title: "Discover & Explore",
-    points: [
-      "Search & Filter: Use our intuitive search powered by Natural Language Processing (NLP) to find methods across various scientific disciplines.",
-      "Community Insights: See ratings, success stories, and detailed notes from other researchers who have used the methods in similar settings."
+      "Register and complete your research profile with lab specialties and current protocols.",
+      "Our AI system processes this information to create your personalized research environment.",
+      "Backend: Secure user authentication with JWT/OAuth2 and encrypted data transmission."
     ]
   },
   {
     icon: Brain,
-    title: "Personalized Recommendations & Virtual Training",
+    title: "Data Collection & Analysis",
     points: [
-      "AI-Driven Suggestions: Get a curated list of protocols that have been highly successful for similar labs. Our system continuously learns from global research data to improve its recommendations.",
-      "Virtual Labs: Dive into immersive VR simulations to practice and perfect complex experiments. Use AR overlays when you're in the lab for real-time, step-by-step guidance."
+      "AI agents analyze your needs, automatically scrape relevant literature, and aggregate data from lab sensors.",
+      "Advanced ML models process multiple data streams simultaneously.",
+      "Infrastructure: Microservices architecture using Docker and Kubernetes for scalable processing."
     ]
   },
   {
     icon: Monitor,
-    title: "Implement, Monitor, and Optimize",
+    title: "Personalized Recommendations",
     points: [
-      "Real-Time IoT Integration: Connect your lab equipment to MethodIQ for live monitoring. Get alerts and suggestions when conditions deviate from optimal parameters.",
-      "Blockchain Documentation: Every method you apply is documented securely, ensuring your research is reproducible and verified."
+      "Receive tailored protocols with blockchain verification and real-time sensor data integration.",
+      "Each protocol is secured with tamper-proof blockchain technology.",
+      "Technology: Integration with blockchain (Web3.py) and real-time IoT data streams (MQTT)."
     ]
   },
   {
     icon: Users,
-    title: "Connect & Evolve",
+    title: "Collaboration & Networking",
     points: [
-      "Expert Consultations: When challenges arise, use our AI chatbots or schedule live sessions with experts who have faced similar hurdles.",
-      "Continuous Improvement: Share your outcomes and feedback with the community, helping MethodIQ refine its recommendations and create even better solutions over time."
+      "Connect with peers, build your research portfolio, and share insights through our community platform.",
+      "Engage in real-time discussions and collaborative research projects.",
+      "Platform: Cloud-hosted on AWS/Azure/Google Cloud for robust performance and scalability."
+    ]
+  },
+  {
+    icon: Settings,
+    title: "Advanced Tools & Training",
+    points: [
+      "Access our suite of AI research tools for literature reviews, hypothesis generation, and proposal drafting.",
+      "Optional: Immerse yourself in virtual lab training with AR/VR modules.",
+      "Framework: CI/CD pipelines ensure rapid, secure updates to tools and features."
+    ]
+  },
+  {
+    icon: Shield,
+    title: "Security & Continuous Improvement",
+    points: [
+      "Your feedback and usage data enhance our AI models and service offerings.",
+      "All data is protected with enterprise-grade security measures.",
+      "Security: TLS/SSL encryption, blockchain verification, and regular security audits."
     ]
   }
 ];
@@ -50,9 +64,9 @@ export function HowItWorksSection() {
     <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
       <div className="container px-4">
         <div className="max-w-3xl mx-auto mb-16 text-center">
-          <h2 className="text-3xl font-bold mb-6">How It Works</h2>
+          <h2 className="text-3xl font-bold mb-6">How MethodIQ Works</h2>
           <p className="text-lg text-muted-foreground">
-            Follow these simple steps to revolutionize your research methods
+            Explore our advanced technology stack and process flow
           </p>
         </div>
 
@@ -76,7 +90,12 @@ export function HowItWorksSection() {
                   <h3 className="text-xl font-semibold mb-4">{step.title}</h3>
                   <ul className="space-y-3">
                     {step.points.map((point, pointIndex) => (
-                      <li key={pointIndex} className="text-muted-foreground">
+                      <li 
+                        key={pointIndex} 
+                        className={`text-muted-foreground ${
+                          pointIndex === 2 ? 'text-sm italic' : ''
+                        }`}
+                      >
                         {point}
                       </li>
                     ))}
