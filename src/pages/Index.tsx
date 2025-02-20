@@ -3,9 +3,8 @@ import { HeroSection } from "@/components/HeroSection"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { IntroSection } from "@/components/IntroSection"
-import { BenefitsSection } from "@/components/BenefitsSection"
 import { HowItWorksSection } from "@/components/HowItWorksSection"
-import { FeaturesSection } from "@/components/FeaturesSection"
+import { ServicesSection } from "@/components/ServicesSection"
 
 const Index = () => {
   return (
@@ -14,8 +13,7 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection />
         <IntroSection />
-        <BenefitsSection />
-        <FeaturesSection />
+        <ServicesSection />
         <HowItWorksSection />
       </main>
       <Footer />
