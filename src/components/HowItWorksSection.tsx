@@ -1,4 +1,3 @@
-
 import { User, Search, Brain, Monitor, Users, Settings, Shield } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
@@ -62,7 +61,7 @@ const steps = [
 export function HowItWorksSection() {
   return (
     <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
-      <div className="container px-4">
+      <div className="container px-4 mx-auto max-w-7xl">
         <div className="max-w-3xl mx-auto mb-16 text-center">
           <h2 className="text-3xl font-bold mb-6">How MethodIQ Works</h2>
           <p className="text-lg text-muted-foreground">
@@ -105,7 +104,6 @@ export function HowItWorksSection() {
             </Card>
           ))}
           
-          {/* Connecting line between steps */}
           <div className="absolute left-6 top-16 bottom-16 w-px bg-border hidden md:block" />
         </div>
       </div>

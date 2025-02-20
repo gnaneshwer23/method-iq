@@ -45,8 +45,8 @@ const testimonials = [
 
 export function BenefitsSection() {
   return (
-    <section className="py-12">
-      <div className="container px-4">
+    <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
+      <div className="container px-4 mx-auto max-w-7xl">
         <div className="max-w-3xl mx-auto mb-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Featured Benefits</h2>
           <p className="text-lg text-muted-foreground">
