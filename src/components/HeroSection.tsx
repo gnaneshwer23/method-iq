@@ -1,42 +1,108 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background">
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/20 to-background">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-background to-background/50" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <span className="inline-flex animate-fade-up opacity-0 [--animation-delay:200ms] bg-primary/5 text-primary text-sm px-4 py-1.5 rounded-full">
-            Introducing MethodIQ
-          </span>
-          
-          <h1 className="animate-fade-up opacity-0 [--animation-delay:400ms] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
-            Accelerate Your Research with <span className="text-primary">Intelligent Methods</span>
-          </h1>
-          
-          <p className="animate-fade-up opacity-0 [--animation-delay:600ms] text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-            Discover MethodIQ—the platform that harnesses AI and cutting-edge technologies to recommend research methods tailored to your lab's unique needs.
-          </p>
-          
-          <div className="animate-fade-up opacity-0 [--animation-delay:800ms] flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Button asChild size="lg" className="group">
-              <Link to="/contact">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/how-it-works">
-                Discover How It Works
-              </Link>
-            </Button>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-left space-y-6">
+            <span className="inline-flex animate-fade-up opacity-0 [--animation-delay:200ms] bg-primary/5 text-primary text-sm px-4 py-1.5 rounded-full">
+              Welcome to MethodIQ
+            </span>
+            
+            <h1 className="animate-fade-up opacity-0 [--animation-delay:400ms] text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance">
+              Empowering Your Research Journey with <span className="text-primary">Intelligent, Integrated Tools</span>
+            </h1>
+            
+            <p className="animate-fade-up opacity-0 [--animation-delay:600ms] text-lg text-muted-foreground max-w-2xl text-balance">
+              Discover personalized research protocols, verified methods, real-time lab insights, and a vibrant research community—all in one platform.
+            </p>
+
+            <p className="animate-fade-up opacity-0 [--animation-delay:700ms] text-base text-muted-foreground max-w-2xl text-balance">
+              MethodIQ is a next-generation research ecosystem that transforms how scientists discover, validate, and share research protocols. Whether you're fine-tuning an experiment or exploring new research ideas, our integrated platform uses the latest AI tools and secure technologies to make your work more efficient, reproducible, and collaborative.
+            </p>
+            
+            <div className="animate-fade-up opacity-0 [--animation-delay:800ms] flex flex-col sm:flex-row gap-4 pt-4">
+              <Button asChild size="lg" className="group">
+                <Link to="/contact">
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="group">
+                <Link to="/demo">
+                  Watch Demo
+                  <Play className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="animate-fade-up opacity-0 [--animation-delay:900ms] hidden lg:block">
+            <div className="relative p-8">
+              {/* Central Hub */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary/10 rounded-full p-8">
+                <div className="bg-primary/5 rounded-full p-6">
+                  <div className="bg-primary/10 rounded-full p-4">
+                    <div className="text-primary font-semibold">MethodIQ</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Feature Circles */}
+              {[
+                { label: "AI-Powered\nProtocols", angle: 0 },
+                { label: "Blockchain\nVerification", angle: 60 },
+                { label: "Real-Time\nIoT Data", angle: 120 },
+                { label: "Professional\nNetworking", angle: 180 },
+                { label: "AR/VR\nTraining", angle: 240 },
+                { label: "Research\nAnalytics", angle: 300 }
+              ].map((feature, index) => {
+                const radius = 160; // Distance from center
+                const angle = (feature.angle * Math.PI) / 180;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+
+                return (
+                  <div
+                    key={index}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2 bg-background rounded-lg p-3 shadow-lg border border-border text-center text-sm font-medium whitespace-pre-line hover:bg-accent transition-colors"
+                    style={{
+                      left: `calc(50% + ${x}px)`,
+                      top: `calc(50% + ${y}px)`,
+                    }}
+                  >
+                    {feature.label}
+                  </div>
+                );
+              })}
+
+              {/* Connection Lines */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ transform: 'rotate(-90deg)' }}
+              >
+                {[0, 60, 120, 180, 240, 300].map((angle, index) => (
+                  <line
+                    key={index}
+                    x1="50%"
+                    y1="50%"
+                    x2={`${50 + Math.cos((angle * Math.PI) / 180) * 40}%`}
+                    y2={`${50 + Math.sin((angle * Math.PI) / 180) * 40}%`}
+                    className="stroke-border"
+                    strokeWidth="1"
+                  />
+                ))}
+              </svg>
+            </div>
           </div>
         </div>
       </div>
