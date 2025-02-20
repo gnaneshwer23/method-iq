@@ -14,7 +14,6 @@ export const Header = () => {
   const { toast } = useToast();
 
   const handleLogin = () => {
-    // For now, we'll show a toast since login functionality isn't implemented yet
     toast({
       title: "Coming Soon",
       description: "Login functionality will be available soon!",
@@ -23,7 +22,6 @@ export const Header = () => {
   };
 
   const handleSignup = () => {
-    // For now, we'll show a toast since signup functionality isn't implemented yet
     toast({
       title: "Coming Soon",
       description: "Sign up functionality will be available soon!",
@@ -65,6 +63,11 @@ export const Header = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
+                <Link to="/technology" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Technology
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 <Link to="/benefits" className="h-9 px-4 py-2 text-sm hover:text-primary">
                   Benefits
                 </Link>
@@ -72,6 +75,11 @@ export const Header = () => {
               <NavigationMenuItem>
                 <Link to="/how-it-works" className="h-9 px-4 py-2 text-sm hover:text-primary">
                   How It Works
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/blog" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Blog
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -110,11 +118,17 @@ export const Header = () => {
                 <Link to="/features" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Features
                 </Link>
+                <Link to="/technology" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Technology
+                </Link>
                 <Link to="/benefits" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Benefits
                 </Link>
                 <Link to="/how-it-works" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   How It Works
+                </Link>
+                <Link to="/blog" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Blog
                 </Link>
                 <Link to="/pricing" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Pricing
