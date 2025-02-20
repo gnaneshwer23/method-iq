@@ -1,113 +1,157 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, Lock, Laptop, FlaskConical, Users, Glasses, BarChart, Database, Rocket } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Brain, Lock, Laptop, FlaskConical, Users, Glasses, BarChart, Database, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const features = [
   {
     icon: Brain,
     title: "AI-Driven Protocol Recommendations",
-    whatItDoes: "Uses advanced NLP and machine learning to analyze your research needs and suggest the best protocols.",
-    whyUseful: "Saves time and increases experimental success by leveraging data from similar labs worldwide.",
-    detail: "Research Profile → AI Processing (NLP, ML) → Tailored Protocol List"
+    description: "Get personalized research protocols based on your lab data and historical research, powered by advanced LLMs and deep learning.",
+    details: [
+      "Personalized protocol suggestions",
+      "Real-time optimization",
+      "Success rate predictions"
+    ]
   },
   {
     icon: Lock,
-    title: "Blockchain Verification",
-    whatItDoes: "Secures every protocol with an immutable, tamper-proof digital record.",
-    whyUseful: "Enhances reproducibility and trust in your research methods.",
-    detail: "Protocol document → blockchain ledger with verification"
+    title: "Blockchain-Verified Reproducibility",
+    description: "Ensure trust and reproducibility with immutable, tamper-proof protocol records secured on the blockchain.",
+    details: [
+      "Immutable protocol records",
+      "Version control tracking",
+      "Secure sharing options"
+    ]
   },
   {
     icon: Laptop,
-    title: "Real-Time IoT Data Integration",
-    whatItDoes: "Connects your lab sensors to provide live environmental data integrated into your protocols.",
-    whyUseful: "Enables dynamic adjustments for optimized experimental outcomes.",
-    detail: "Lab sensors → Data Stream → Real-time Dashboard Overlay"
+    title: "Real-Time IoT Integration",
+    description: "Monitor live lab conditions and simulate experiments with digital twin technology for real-time optimization.",
+    details: [
+      "Live sensor monitoring",
+      "Digital twin simulation",
+      "Automated alerts"
+    ]
   },
   {
     icon: FlaskConical,
-    title: "Advanced Research Tools",
-    whatItDoes: "Summarizes current research and identifies gaps using AI while collaborating with you to generate, debate, and refine research ideas.",
-    whyUseful: "Accelerates research planning and improves proposal quality through AI assistance.",
-    detail: "Literature Analysis → Hypothesis Generation → Research Proposal"
+    title: "Advanced Research Analytics",
+    description: "Harness dynamic knowledge graphs and automated meta-analyses to uncover trends and actionable insights.",
+    details: [
+      "Automated literature review",
+      "Trend analysis",
+      "Hypothesis generation"
+    ]
   },
   {
     icon: Users,
-    title: "Professional Networking & Portfolio",
-    whatItDoes: "Lets you build a detailed research portfolio, network with peers, and share insights.",
-    whyUseful: "Promotes collaboration and professional growth—similar to LinkedIn for researchers.",
-    detail: "Profile creation → Network building → Knowledge sharing"
+    title: "Professional Networking",
+    description: "Build your research portfolio, connect with peers, and collaborate on projects within a secure community.",
+    details: [
+      "Research portfolios",
+      "Peer networking",
+      "Collaboration tools"
+    ]
   },
   {
     icon: Glasses,
-    title: "Optional AR/VR Training Modules",
-    whatItDoes: "Provides immersive, hands-on training for complex techniques in a virtual lab environment.",
-    whyUseful: "Offers risk-free practice and builds confidence before real-world experiments.",
-    detail: "Virtual training → Practice sessions → Skill certification"
-  },
-  {
-    icon: BarChart,
-    title: "Data Analytics and Insight Sharing",
-    whatItDoes: "Offers real-time dashboards, trend reports, and a curated newsletter of research insights.",
-    whyUseful: "Helps you stay on top of emerging trends and benchmark your research against global data.",
-    detail: "Data collection → Analysis → Insights distribution"
-  },
-  {
-    icon: Database,
-    title: "Automated Data Backup & Version Control",
-    whatItDoes: "Automatically backs up research data and maintains version history of all protocols and experiments.",
-    whyUseful: "Ensures data safety and enables easy tracking of protocol evolution over time.",
-    detail: "Continuous backup → Version tracking → Easy restoration"
-  },
-  {
-    icon: Rocket,
-    title: "Accelerated Research Pipeline",
-    whatItDoes: "Streamlines workflow by automating routine tasks and integrating with existing lab systems.",
-    whyUseful: "Reduces time spent on administrative tasks and increases focus on actual research.",
-    detail: "Task automation → System integration → Workflow optimization"
+    title: "Immersive AR/MR Training",
+    description: "Experience hands-on, immersive training modules to safely practice complex lab techniques in a virtual environment.",
+    details: [
+      "Virtual lab practice",
+      "Real-time feedback",
+      "Progress tracking"
+    ]
   }
 ];
 
 export function FeaturesSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
-      <div className="container px-4 mx-auto max-w-7xl">
+    <section className="py-24 relative">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
+      
+      <div className="container px-4 mx-auto max-w-7xl relative">
+        {/* Header */}
         <div className="max-w-3xl mx-auto mb-16 text-center">
-          <h2 className="text-3xl font-bold mb-6">Our Platform Features</h2>
-          <p className="text-lg text-muted-foreground">
-            Discover how our comprehensive suite of tools can transform your research workflow
+          <h1 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
+            Our Features & Services: Empowering Your Research
+          </h1>
+          <p className="text-lg text-muted-foreground mb-8">
+            Explore how MethodIQ's integrated ecosystem transforms scientific research with cutting-edge technology and collaborative tools.
+          </p>
+          <p className="text-base text-muted-foreground">
+            From personalized AI-driven protocol recommendations and real-time lab insights to secure collaboration and immersive training, our features and services ensure that you have everything you need to accelerate scientific discovery.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Interactive Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {features.map((feature, index) => (
             <Card 
               key={index}
-              className="relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+              className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02] backdrop-blur-sm"
             >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.07] to-transparent" />
               <CardHeader>
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
                 <CardTitle className="text-xl mb-2">{feature.title}</CardTitle>
                 <CardDescription className="text-sm">
-                  {feature.detail}
+                  {feature.description}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold mb-1 text-sm">What It Does:</h4>
-                    <p className="text-sm text-muted-foreground">{feature.whatItDoes}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1 text-sm">Why It's Useful:</h4>
-                    <p className="text-sm text-muted-foreground">{feature.whyUseful}</p>
-                  </div>
-                </div>
+                <ul className="space-y-2">
+                  {feature.details.map((detail, detailIndex) => (
+                    <li key={detailIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <ArrowRight className="w-4 h-4 text-primary mt-0.5" />
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* Central Diagram */}
+        <div className="relative max-w-4xl mx-auto mb-24 p-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-lg" />
+          <div className="relative">
+            {/* Center Hub */}
+            <div className="flex items-center justify-center mb-8">
+              <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-primary/30 flex items-center justify-center">
+                  <FlaskConical className="w-8 h-8 text-primary" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center mb-8">
+              <h3 className="text-xl font-semibold mb-2">Integrated Research Ecosystem</h3>
+              <p className="text-muted-foreground">
+                All features work seamlessly together to provide a comprehensive research solution
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <h3 className="text-2xl font-semibold mb-6">Start Your Journey with MethodIQ</h3>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+              <Link to="/contact">Get Started Now</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/demo">Schedule a Demo</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

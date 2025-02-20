@@ -1,43 +1,43 @@
 
-import { Headphones, Award, MessageSquare, Users, Mail } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PresentationIcon, Award, Mail, Network, BarChart } from "lucide-react";
 
 const services = [
   {
-    icon: Headphones,
+    icon: PresentationIcon,
     title: "Expert Consultations & Workshops",
-    description: "Schedule one-on-one sessions or group workshops with leading research experts to optimize your experimental design.",
+    description: "Schedule personalized sessions with leading research experts to optimize your experimental designs and protocols."
   },
   {
     icon: Award,
     title: "Certification Programs",
-    description: "Earn accredited certifications to validate your research skills and enhance your professional profile.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Dedicated Customer Support",
-    description: "Our support team is available 24/7 to help you integrate and get the most out of MethodIQ.",
-  },
-  {
-    icon: Users,
-    title: "Community Engagement and Networking",
-    description: "Join our active research community to share insights, ask questions, and collaborate on projects.",
+    description: "Earn accredited certifications that validate your research skills and enhance your professional profile."
   },
   {
     icon: Mail,
-    title: "Newsletter and Data Insights",
-    description: "Subscribe to our curated newsletter for the latest research trends, data analytics reports, and expert insights.",
+    title: "Curated Newsletters & Insight Reports",
+    description: "Stay informed with our regularly published insights, trend reports, and expert articles tailored to the research community."
   },
+  {
+    icon: Network,
+    title: "Collaborative Networking Tools",
+    description: "Access a dedicated community platform to share insights, build collaborations, and showcase your research portfolio."
+  },
+  {
+    icon: BarChart,
+    title: "Data Analytics & Trend Dashboards",
+    description: "Utilize real-time analytics to track emerging trends, benchmark your research, and drive strategic decisions."
+  }
 ];
 
 export function ServicesSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-muted">
-      <div className="container px-4">
+    <section className="py-24 bg-gradient-to-b from-background to-primary/5 relative">
+      <div className="container px-4 mx-auto max-w-7xl">
         <div className="max-w-3xl mx-auto mb-16 text-center">
           <h2 className="text-3xl font-bold mb-6">Our Services</h2>
           <p className="text-lg text-muted-foreground">
-            Comprehensive support to help you succeed with MethodIQ
+            Comprehensive support services to enhance your research journey
           </p>
         </div>
 
@@ -45,13 +45,14 @@ export function ServicesSection() {
           {services.map((service, index) => (
             <Card 
               key={index}
-              className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+              className="group relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
             >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.07] to-transparent" />
               <CardHeader>
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                   <service.icon className="w-6 h-6 text-primary" />
                 </div>
-                <CardTitle className="text-xl mb-4">{service.title}</CardTitle>
+                <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">{service.description}</p>

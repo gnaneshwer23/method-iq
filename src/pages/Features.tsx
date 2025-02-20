@@ -1,7 +1,8 @@
 
-import { Header } from "@/components/Header"
-import { Footer } from "@/components/Footer"
-import { FeaturesSection } from "@/components/FeaturesSection"
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { FeaturesSection } from "@/components/FeaturesSection";
+import { ServicesSection } from "@/components/ServicesSection";
 
 const Features = () => {
   return (
@@ -9,10 +10,11 @@ const Features = () => {
       <Header />
       <main className="flex-1">
         <FeaturesSection />
+        <ServicesSection />
       </main>
       <Footer />
     </div>
-  )
+  );
 }
 
-export default Features
+export default Features;
