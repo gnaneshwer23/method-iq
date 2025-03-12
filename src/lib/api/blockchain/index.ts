@@ -1,12 +1,4 @@
 
-import { verificationApi } from './verification';
-import { recordsApi } from './records';
-import { realtimeApi } from './realtime';
-
-export const blockchainApi = {
-  ...verificationApi,
-  ...recordsApi,
-  ...realtimeApi
-};
-
-export default blockchainApi;
+export { recordApi } from './records';
+export { verificationApi } from './verification';
+export { realtimeApi } from './realtime';

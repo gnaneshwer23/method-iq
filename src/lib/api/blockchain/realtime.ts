@@ -9,7 +9,8 @@ export const realtimeApi = {
     channel.on('postgres_changes', { 
       event: 'INSERT',
       schema: 'public',
-      table: 'realtime_events'
+      table: 'realtime_events',
+      filter: 'source=eq.blockchain'
     }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
     }).subscribe();

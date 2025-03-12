@@ -23,7 +23,8 @@ export const subscribeToSimulationUpdates = (callback: (payload: RealtimeEvent) 
   channel.on('postgres_changes', { 
     event: 'INSERT',
     schema: 'public',
-    table: 'realtime_events'
+    table: 'realtime_events',
+    filter: 'source=eq.digital_twin'
   }, (payload) => {
     callback(payload as unknown as RealtimeEvent);
   }).subscribe();

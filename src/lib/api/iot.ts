@@ -1,3 +1,4 @@
+
 import { supabase } from '../supabase-client';
 import type { IoTDevice, SensorData, RealtimeEvent } from '@/types/database.types';
 
@@ -141,7 +142,8 @@ export const iotApi = {
     channel.on('postgres_changes', { 
       event: 'INSERT',
       schema: 'public',
-      table: 'realtime_events'
+      table: 'realtime_events',
+      filter: 'target=eq.iot'
     }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
     }).subscribe();
