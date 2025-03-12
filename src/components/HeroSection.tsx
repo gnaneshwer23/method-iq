@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, TestTube } from "lucide-react";
+import { ArrowRight, Play, Brain, CircuitBoard, Lock, Users, TestTube, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
@@ -49,181 +49,123 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="hidden lg:block relative h-[550px]">
-            <div className="sticky top-24 w-full h-[550px] flex items-center justify-center">
+          <div className="hidden lg:block relative h-[650px]">
+            <div className="sticky top-24 w-full h-[650px] flex items-center justify-center">
               <div className="relative w-full h-full flex items-center justify-center">
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-50/80 rounded-full w-80 h-80 backdrop-blur-md border border-blue-100/50 z-0"></div>
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-400/10 blur-xl animate-pulse z-0"></div>
-                
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10">
-                  <Brain className="w-24 h-24 text-blue-500 mb-4" />
-                  <div className="text-blue-600 font-bold text-4xl">MethodIQ</div>
-                </div>
-
-                {/* Feature Card 1 - AI-Powered Protocols */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% - 230px)",
-                        left: "50%",
-                        transform: "translateX(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/ai-protocols"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "800ms" }}
-                  >
-                    <Brain className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">AI-Powered<br/>Protocols</div>
-                  </Link>
-                </div>
-
-                {/* Feature Card 2 - Real-Time IoT Data */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% - 115px)",
-                        left: "calc(50% + 200px)",
-                        transform: "translateY(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/iot-integration"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "950ms" }}
-                  >
-                    <CircuitBoard className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">Real-Time<br/>IoT Data</div>
-                  </Link>
-                </div>
-
-                {/* Feature Card 3 - Blockchain Verification */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% + 115px)",
-                        left: "calc(50% + 200px)",
-                        transform: "translateY(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/blockchain-verification"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "1100ms" }}
-                  >
-                    <Lock className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">Blockchain<br/>Verification</div>
-                  </Link>
-                </div>
-
-                {/* Feature Card 4 - Research Analytics */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% + 230px)",
-                        left: "50%",
-                        transform: "translateX(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/research-analytics"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "1250ms" }}
-                  >
-                    <TestTube className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">Research<br/>Analytics</div>
-                  </Link>
-                </div>
-
-                {/* Feature Card 5 - Professional Networking */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% + 115px)",
-                        left: "calc(50% - 200px)",
-                        transform: "translateY(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/networking"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "1400ms" }}
-                  >
-                    <Users className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">Professional<br/>Networking</div>
-                  </Link>
-                </div>
-
-                {/* Feature Card 6 - AR/VR Training */}
-                <div className="absolute"
-                     style={{ 
-                        top: "calc(50% - 115px)",
-                        left: "calc(50% - 200px)",
-                        transform: "translateY(-50%)"
-                     }}>
-                  <Link 
-                    to="/features/ar-vr"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
-                    style={{ animationDelay: "1550ms" }}
-                  >
-                    <Sparkles className="w-10 h-10 mb-2 text-blue-500" />
-                    <div className="font-medium text-sm text-center">AR/VR<br/>Training</div>
-                  </Link>
+                {/* Center Logo */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                  <div className="flex flex-col items-center justify-center">
+                    <Brain className="w-36 h-36 text-primary mb-4" />
+                    <div className="text-primary font-bold text-5xl">MethodIQ</div>
+                  </div>
                 </div>
 
                 {/* Connecting Lines */}
-                <svg className="absolute inset-0 w-full h-full z-5 pointer-events-none">
-                  {/* Line to Top Card */}
-                  <line 
-                    x1="50%" y1="50%" x2="50%" y2="12%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" />
-                  </line>
-                  
-                  {/* Line to Top Right Card */}
-                  <line 
-                    x1="50%" y1="50%" x2="75%" y2="25%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="0.6s" />
-                  </line>
-                  
-                  {/* Line to Bottom Right Card */}
-                  <line 
-                    x1="50%" y1="50%" x2="75%" y2="75%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.2s" />
-                  </line>
-                  
-                  {/* Line to Bottom Card */}
-                  <line 
-                    x1="50%" y1="50%" x2="50%" y2="88%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.8s" />
-                  </line>
-                  
-                  {/* Line to Bottom Left Card */}
-                  <line 
-                    x1="50%" y1="50%" x2="25%" y2="75%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="2.4s" />
-                  </line>
-                  
-                  {/* Line to Top Left Card */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+                  {/* Dashed lines connecting to each feature card */}
                   <line 
                     x1="50%" y1="50%" x2="25%" y2="25%" 
-                    className="stroke-blue-200" 
-                    strokeWidth="1.5" 
-                    strokeDasharray="3,3"
-                  >
-                    <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="3s" />
-                  </line>
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
+                  <line 
+                    x1="50%" y1="50%" x2="50%" y2="15%" 
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
+                  <line 
+                    x1="50%" y1="50%" x2="75%" y2="25%" 
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
+                  <line 
+                    x1="50%" y1="50%" x2="75%" y2="75%" 
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
+                  <line 
+                    x1="50%" y1="50%" x2="50%" y2="85%" 
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
+                  <line 
+                    x1="50%" y1="50%" x2="25%" y2="75%" 
+                    className="stroke-primary/30" 
+                    strokeWidth="1" 
+                    strokeDasharray="5,5"
+                  />
                 </svg>
+
+                {/* Feature Card - AR/VR Training */}
+                <div className="absolute" style={{ left: "15%", top: "25%" }}>
+                  <Link 
+                    to="/features/ar-vr"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <Sparkles className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">AR/VR<br/>Training</div>
+                  </Link>
+                </div>
+
+                {/* Feature Card - AI-Powered Protocols */}
+                <div className="absolute" style={{ left: "50%", top: "8%", transform: "translateX(-50%)" }}>
+                  <Link 
+                    to="/features/ai-protocols"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <Brain className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">AI-Powered<br/>Protocols</div>
+                  </Link>
+                </div>
+
+                {/* Feature Card - Real-Time IoT Data */}
+                <div className="absolute" style={{ right: "15%", top: "25%" }}>
+                  <Link 
+                    to="/features/iot-integration"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <CircuitBoard className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">Real-Time<br/>IoT Data</div>
+                  </Link>
+                </div>
+
+                {/* Feature Card - Blockchain Verification */}
+                <div className="absolute" style={{ right: "15%", top: "75%" }}>
+                  <Link 
+                    to="/features/blockchain-verification"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <Lock className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">Blockchain<br/>Verification</div>
+                  </Link>
+                </div>
+
+                {/* Feature Card - Research Analytics */}
+                <div className="absolute" style={{ left: "50%", bottom: "8%", transform: "translateX(-50%)" }}>
+                  <Link 
+                    to="/features/research-analytics"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <TestTube className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">Research<br/>Analytics</div>
+                  </Link>
+                </div>
+
+                {/* Feature Card - Professional Networking */}
+                <div className="absolute" style={{ left: "15%", top: "75%" }}>
+                  <Link 
+                    to="/features/networking"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[180px] flex flex-col items-center hover:scale-105"
+                  >
+                    <Users className="w-12 h-12 mb-3 text-primary" />
+                    <div className="font-medium text-center">Professional<br/>Networking</div>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

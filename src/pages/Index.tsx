@@ -6,8 +6,28 @@ import { IntroSection } from "@/components/IntroSection"
 import { FeaturesSection } from "@/components/FeaturesSection"
 import { BenefitsSection } from "@/components/BenefitsSection"
 import { HowItWorksSection } from "@/components/HowItWorksSection"
+import { CallToAction } from "@/components/how-it-works/CallToAction"
+import { useState, useEffect } from "react"
 
 const Index = () => {
+  const [ctaVisible, setCtaVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger CTA visibility after scrolling
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const pageHeight = document.body.scrollHeight;
+      
+      // Show CTA when user has scrolled 70% of the page
+      if (scrollPosition > pageHeight * 0.7) {
+        setCtaVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
@@ -35,6 +55,9 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#60A5FA]/15 via-[#8B5CF6]/10 to-transparent pointer-events-none" />
           <HowItWorksSection />
         </section>
+
+        {/* Call To Action Section */}
+        <CallToAction visible={ctaVisible} />
       </main>
       
       <Footer />
