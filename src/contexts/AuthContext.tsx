@@ -1,7 +1,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { supabase, getCurrentUser, getSession, signIn, signUp, signOut } from '@/lib/supabase';
+import { supabase, authApi } from '@/lib/supabase';
 import { useToast } from '@/components/ui/use-toast';
 
 type AuthContextType = {
@@ -27,11 +27,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       
       // Get initial session
-      const { session: initialSession } = await getSession();
+      const { session: initialSession } = await authApi.getSession();
       setSession(initialSession);
       
       if (initialSession) {
-        const { user: currentUser } = await getCurrentUser();
+        const { user: currentUser } = await authApi.getCurrentUser();
         setUser(currentUser);
       }
       
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      const { data, error } = await signIn(email, password);
+      const { data, error } = await authApi.signIn(email, password);
       
       if (error) throw error;
       
@@ -79,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (email: string, password: string) => {
     try {
-      const { data, error } = await signUp(email, password);
+      const { data, error } = await authApi.signUp(email, password);
       
       if (error) throw error;
       
@@ -102,7 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      const { error } = await signOut();
+      const { error } = await authApi.signOut();
       
       if (error) throw error;
       
