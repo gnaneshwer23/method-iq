@@ -156,19 +156,10 @@ export const digitalTwinApi = {
    * @param callback - Function to call when the twin is updated
    */
   subscribeToTwinUpdates: (id: string, callback: (payload: any) => void) => {
-    const channel = supabase.channel('digital_twin_changes');
+    const channel = supabase.channel(`digital_twin_${id}`);
     
     return channel
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'digital_twins',
-          filter: `id=eq.${id}`
-        },
-        callback
-      )
+      .on('broadcast', { event: 'twin_update' }, callback)
       .subscribe();
   },
 
@@ -179,16 +170,7 @@ export const digitalTwinApi = {
     const channel = supabase.channel('digital_twin_events');
     
     return channel
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'realtime_events',
-          filter: 'target=eq.digital_twin'
-        },
-        callback
-      )
+      .on('broadcast', { event: 'simulation_update' }, callback)
       .subscribe();
   },
 
@@ -208,6 +190,13 @@ export const digitalTwinApi = {
       .from('realtime_events')
       .insert(event)
       .select();
+
+    // Also broadcast the event for real-time subscribers
+    supabase.channel('digital_twin_events').send({
+      type: 'broadcast',
+      event: 'simulation_update',
+      payload: event
+    });
 
     return { data, error };
   }

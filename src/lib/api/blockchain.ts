@@ -99,16 +99,7 @@ export const blockchainApi = {
     const channel = supabase.channel('blockchain_events');
     
     return channel
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'realtime_events',
-          filter: 'target=eq.blockchain'
-        },
-        callback
-      )
+      .on('broadcast', { event: 'blockchain_event' }, callback)
       .subscribe();
   },
 
@@ -128,6 +119,13 @@ export const blockchainApi = {
       .from('realtime_events')
       .insert(event)
       .select();
+
+    // Also broadcast the event for real-time subscribers
+    supabase.channel('blockchain_events').send({
+      type: 'broadcast',
+      event: 'blockchain_event',
+      payload: event
+    });
 
     return { data, error };
   }

@@ -118,19 +118,10 @@ export const iotApi = {
    * @param callback - Function to call when new data is received
    */
   subscribeToSensorData: (deviceId: string, callback: (payload: any) => void) => {
-    const channel = supabase.channel('sensor_data_changes');
+    const channel = supabase.channel(`sensor_data_${deviceId}`);
     
     return channel
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'sensor_data',
-          filter: `device_id=eq.${deviceId}`
-        },
-        callback
-      )
+      .on('broadcast', { event: 'sensor_data' }, callback)
       .subscribe();
   },
 
@@ -141,16 +132,7 @@ export const iotApi = {
     const channel = supabase.channel('iot_events');
     
     return channel
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'realtime_events',
-          filter: 'target=eq.iot'
-        },
-        callback
-      )
+      .on('broadcast', { event: 'iot_event' }, callback)
       .subscribe();
   },
 
@@ -170,6 +152,12 @@ export const iotApi = {
       .from('realtime_events')
       .insert(event)
       .select();
+
+    supabase.channel('iot_events').send({
+      type: 'broadcast',
+      event: 'iot_event',
+      payload: event
+    });
 
     return { data, error };
   }
