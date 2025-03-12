@@ -1,27 +1,55 @@
 
-export const databaseApi = {
-  createSchemaIfNotExists: async () => {
-    console.log('Checking database schema...');
+import { supabase } from '../supabase-client';
+import type { UserProfile } from '@/types/database.types';
+
+const databaseApi = {
+  // Create a new user profile
+  createUserProfile: async (profile: Omit<UserProfile, 'created_at' | 'updated_at'>) => {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .insert({
+        ...profile,
+        updated_at: new Date().toISOString()
+      })
+      .select();
     
-    // This is a client-side function that just logs what schema should be created
-    // In a real implementation, you would use Supabase migrations or Edge Functions
-    const requiredTables = [
-      'projects',
-      'protocols',
-      'protocol_steps',
-      'iot_devices',
-      'sensor_data',
-      'digital_twins',
-      'blockchain_records',
-      'ar_sessions',
-      'federated_learning_projects'
-    ];
+    return { data, error };
+  },
+  
+  // Get user profile by ID
+  getUserProfile: async (userId: string) => {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
     
-    console.log(`The following tables should be created in your Supabase project: ${requiredTables.join(', ')}`);
+    return { data, error };
+  },
+  
+  // Update user profile
+  updateUserProfile: async (userId: string, updates: Partial<Omit<UserProfile, 'user_id' | 'created_at' | 'updated_at'>>) => {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', userId)
+      .select();
     
-    return {
-      message: 'Schema check completed. Please create the required tables in your Supabase dashboard.',
-      requiredTables
-    };
+    return { data, error };
+  },
+  
+  // Get all user profiles (admin only)
+  getAllUserProfiles: async () => {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    return { data, error };
   }
 };
+
+export default databaseApi;

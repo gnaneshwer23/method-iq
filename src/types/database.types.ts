@@ -1,26 +1,26 @@
 
 // Define Supabase database schema types
 
-export type Project = {
-  id: string;
-  name: string;
-  description: string;
+export type UserProfile = {
   user_id: string;
-  status: 'active' | 'archived' | 'completed';
-  research_field: string;
-  tags?: string[];
+  name: string;
+  email: string;
+  role: 'admin' | 'researcher' | 'collaborator';
   created_at: string;
   updated_at: string;
 };
 
 export type Protocol = {
-  id: string;
-  project_id: string;
-  name: string;
+  protocol_id: string;
+  title: string;
   description: string;
-  research_type: string;
-  version: string;
-  is_ai_generated: boolean;
+  created_by: string; // Foreign Key to UserProfiles.user_id
+  status: 'draft' | 'verified' | 'archived';
+  project_id?: string;
+  name?: string;
+  research_type?: string;
+  version?: string;
+  is_ai_generated?: boolean;
   parameters?: Record<string, any>;
   created_at: string;
   updated_at: string;
@@ -37,6 +37,29 @@ export type ProtocolStep = {
   required_materials?: string[];
   safety_notes?: string;
   expected_results?: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Experiment = {
+  experiment_id: string;
+  protocol_id: string; // Foreign Key to Protocols.protocol_id
+  ai_recommendations: string | Record<string, any>;
+  experiment_data: Record<string, any>;
+  start_time: string;
+  end_time?: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Project = {
+  id: string;
+  name: string;
+  description: string;
+  user_id: string;
+  status: 'active' | 'archived' | 'completed';
+  research_field: string;
+  tags?: string[];
   created_at: string;
   updated_at: string;
 };
@@ -114,9 +137,11 @@ export type FederatedLearningProject = {
 };
 
 export type Database = {
-  projects: Project[];
+  user_profiles: UserProfile[];
   protocols: Protocol[];
   protocol_steps: ProtocolStep[];
+  experiments: Experiment[];
+  projects: Project[];
   iot_devices: IoTDevice[];
   sensor_data: SensorData[];
   digital_twins: DigitalTwin[];

@@ -1,67 +1,73 @@
 
 import { supabase } from '../supabase-client';
+import { databaseApi } from './index';
 
-export const authApi = {
-  signUp: async (email: string, password: string) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+const authApi = {
+  // Sign up a new user and create their profile
+  signUp: async (email: string, password: string, profileData?: { name: string, role: 'researcher' | 'collaborator' }) => {
+    // Create the user account
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if (authError) return { data: null, error: authError };
+    
+    // If user was created successfully and profile data provided, create profile
+    if (authData.user && profileData) {
+      await databaseApi.createUserProfile({
+        user_id: authData.user.id,
+        email: authData.user.email || email,
+        name: profileData.name,
+        role: profileData.role
       });
-      
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error('Sign up error:', error);
-      return { data: null, error };
     }
+    
+    return { data: authData, error: null };
   },
-
+  
+  // Sign in existing user
   signIn: async (email: string, password: string) => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error('Sign in error:', error);
-      return { data: null, error };
-    }
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    return { data, error };
   },
-
+  
+  // Sign out current user
   signOut: async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      return { error: null };
-    } catch (error: any) {
-      console.error('Sign out error:', error);
-      return { error };
-    }
+    const { error } = await supabase.auth.signOut();
+    return { error };
   },
-
-  getCurrentUser: async () => {
-    try {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) throw error;
-      return { user: data.user, error: null };
-    } catch (error: any) {
-      console.error('Get current user error:', error);
-      return { user: null, error };
-    }
-  },
-
+  
+  // Get the current session
   getSession: async () => {
-    try {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) throw error;
-      return { session: data.session, error: null };
-    } catch (error: any) {
-      console.error('Get session error:', error);
-      return { session: null, error };
-    }
+    const { data, error } = await supabase.auth.getSession();
+    return { session: data.session, error };
+  },
+  
+  // Get the current user
+  getCurrentUser: async () => {
+    const { data, error } = await supabase.auth.getUser();
+    return { user: data.user, error };
+  },
+  
+  // Reset password
+  resetPassword: async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    return { data, error };
+  },
+  
+  // Update user password
+  updatePassword: async (newPassword: string) => {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    
+    return { data, error };
   }
 };
+
+export default authApi;
