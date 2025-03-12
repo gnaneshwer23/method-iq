@@ -1,3 +1,4 @@
+
 import { supabase } from '../supabase-client';
 import type { IoTDevice, SensorData, RealtimeEvent } from '@/types/database.types';
 
@@ -120,9 +121,11 @@ export const iotApi = {
   subscribeToSensorData: (deviceId: string, callback: (payload: any) => void) => {
     const channel = supabase.channel(`sensor_data_${deviceId}`);
     
-    return channel
-      .on('broadcast', { event: 'sensor_data' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'sensor_data' }, (payload) => {
+      callback(payload);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -131,9 +134,11 @@ export const iotApi = {
   subscribeToEvents: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('iot_events');
     
-    return channel
-      .on('broadcast', { event: 'iot_event' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'iot_event' }, (payload) => {
+      callback(payload as unknown as RealtimeEvent);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -153,7 +158,8 @@ export const iotApi = {
       .insert(event)
       .select();
 
-    supabase.channel('iot_events').send({
+    const channel = supabase.channel('iot_events');
+    channel.send({
       type: 'broadcast',
       event: 'iot_event',
       payload: event

@@ -1,3 +1,4 @@
+
 import { supabase } from '../supabase-client';
 import type { BlockchainRecord, RealtimeEvent } from '@/types/database.types';
 
@@ -98,9 +99,11 @@ export const blockchainApi = {
   subscribeToProtocolLogs: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('blockchain_events');
     
-    return channel
-      .on('broadcast', { event: 'blockchain_event' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'blockchain_event' }, (payload) => {
+      callback(payload as unknown as RealtimeEvent);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -121,7 +124,8 @@ export const blockchainApi = {
       .select();
 
     // Also broadcast the event for real-time subscribers
-    supabase.channel('blockchain_events').send({
+    const channel = supabase.channel('blockchain_events');
+    channel.send({
       type: 'broadcast',
       event: 'blockchain_event',
       payload: event

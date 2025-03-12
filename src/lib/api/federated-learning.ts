@@ -1,3 +1,4 @@
+
 import { supabase } from '../supabase-client';
 import type { FederatedLearningProject, FederatedModelRound, ClientUpdate, RealtimeEvent } from '@/types/database.types';
 
@@ -121,9 +122,11 @@ export const federatedLearningApi = {
   subscribeToRoundUpdates: (roundId: string, callback: (payload: any) => void) => {
     const channel = supabase.channel(`federated_round_${roundId}`);
     
-    return channel
-      .on('broadcast', { event: 'round_update' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'round_update' }, (payload) => {
+      callback(payload);
+    });
+    
+    return channel.subscribe();
   },
 
   // Get all client updates for a round
@@ -156,9 +159,11 @@ export const federatedLearningApi = {
   subscribeToModelUpdates: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('federated_events');
     
-    return channel
-      .on('broadcast', { event: 'model_update' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'model_update' }, (payload) => {
+      callback(payload as unknown as RealtimeEvent);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -179,7 +184,8 @@ export const federatedLearningApi = {
       .select();
 
     // Also broadcast the event for real-time subscribers
-    supabase.channel('federated_events').send({
+    const channel = supabase.channel('federated_events');
+    channel.send({
       type: 'broadcast',
       event: 'model_update',
       payload: event

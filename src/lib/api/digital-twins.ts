@@ -1,3 +1,4 @@
+
 import { supabase } from '../supabase-client';
 import type { DigitalTwin, SensorData, RealtimeEvent } from '@/types/database.types';
 
@@ -158,9 +159,11 @@ export const digitalTwinApi = {
   subscribeToTwinUpdates: (id: string, callback: (payload: any) => void) => {
     const channel = supabase.channel(`digital_twin_${id}`);
     
-    return channel
-      .on('broadcast', { event: 'twin_update' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'twin_update' }, (payload) => {
+      callback(payload);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -169,9 +172,11 @@ export const digitalTwinApi = {
   subscribeToSimulationUpdates: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('digital_twin_events');
     
-    return channel
-      .on('broadcast', { event: 'simulation_update' }, callback)
-      .subscribe();
+    channel.on('broadcast', { event: 'simulation_update' }, (payload) => {
+      callback(payload as unknown as RealtimeEvent);
+    });
+    
+    return channel.subscribe();
   },
 
   /**
@@ -192,7 +197,8 @@ export const digitalTwinApi = {
       .select();
 
     // Also broadcast the event for real-time subscribers
-    supabase.channel('digital_twin_events').send({
+    const channel = supabase.channel('digital_twin_events');
+    channel.send({
       type: 'broadcast',
       event: 'simulation_update',
       payload: event
