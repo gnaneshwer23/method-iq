@@ -6,11 +6,15 @@ import { ServicesSection } from "@/components/ServicesSection";
 
 const Features = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-white">
       <Header />
       <main className="flex-1">
-        <FeaturesSection />
-        <ServicesSection />
+        <div className="py-12">
+          <FeaturesSection />
+        </div>
+        <div className="py-12">
+          <ServicesSection />
+        </div>
       </main>
       <Footer />
     </div>
