@@ -71,7 +71,7 @@ export const federatedLearningApi = {
       event: 'INSERT',
       schema: 'public',
       table: 'realtime_events',
-      filter: `event_type=eq.federated_learning_update AND payload->project_id=eq.${projectId}`
+      filter: `payload->project_id=eq.${projectId}`
     }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
     }).subscribe();
@@ -84,8 +84,8 @@ export const federatedLearningApi = {
    */
   emitUpdate: async (target: RealtimeEvent['target'], payload: Record<string, any>) => {
     const event: Omit<RealtimeEvent, 'id' | 'created_at'> = {
-      event_type: 'federated_learning_update',
-      source: 'federated_learning',
+      event_type: 'model_update', // Changed from 'federated_learning_update' to match allowed types
+      source: 'federated', // Changed from 'federated_learning' to match allowed types
       target,
       payload,
       processed: false
