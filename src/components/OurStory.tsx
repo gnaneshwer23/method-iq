@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, Rocket, Building, HandshakeIcon, Flask } from "lucide-react";
+import { CalendarDays, Rocket, Building, HandshakeIcon, Beaker } from "lucide-react";
 
 const timeline = [
   {
@@ -25,7 +25,7 @@ const timeline = [
     year: "2023",
     title: "Technology Innovation",
     description: "Integrated blockchain verification and AR/MR training modules.",
-    icon: Flask
+    icon: Beaker
   }
 ];
 
