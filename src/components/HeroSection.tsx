@@ -54,81 +54,97 @@ export function HeroSection() {
             <div className="sticky top-24 w-full h-[550px] flex items-center justify-center">
               {/* Feature diagram with perfectly centered MethodIQ logo and evenly distributed elements */}
               <div className="relative w-full h-full flex items-center justify-center">
-                {/* Central Hub with MethodIQ logo - enlarged and properly centered */}
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-100/60 rounded-full w-72 h-72 backdrop-blur-lg border border-blue-200/30 flex flex-col items-center justify-center z-10 shadow-lg shadow-blue-300/10">
-                  <Brain className="w-12 h-12 text-blue-500 mb-3" />
-                  <div className="text-blue-600 font-semibold text-2xl">MethodIQ</div>
+                {/* Central circle with glowing effect */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-50/80 rounded-full w-80 h-80 backdrop-blur-md border border-blue-100/50 z-0"></div>
+                
+                {/* Pulsing glow behind center logo */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-400/10 blur-xl animate-pulse z-0"></div>
+                
+                {/* Central Hub with MethodIQ logo - perfectly centered */}
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10">
+                  <Brain className="w-16 h-16 text-blue-500 mb-3" />
+                  <div className="text-blue-600 font-bold text-3xl">MethodIQ</div>
                 </div>
 
-                {/* Feature Cards in a perfect circular arrangement with equal distances */}
-                <div className="w-full h-full absolute inset-0">
-                  {/* Top feature */}
+                {/* Feature Cards in perfect hexagonal arrangement with equal distances */}
+                {/* Top feature */}
+                <div className="absolute left-1/2 top-0 transform -translate-x-1/2 translate-y-4">
                   <Link 
                     to="/features#ai-protocols"
-                    className="absolute left-1/2 top-[8%] transform -translate-x-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "800ms" }}
                   >
-                    <Brain className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">AI-Powered<br/>Protocols</div>
+                    <Brain className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">AI-Powered<br/>Protocols</div>
                   </Link>
+                </div>
 
-                  {/* Top-right feature */}
+                {/* Top-right feature */}
+                <div className="absolute right-12 top-1/4">
                   <Link 
                     to="/features#iot"
-                    className="absolute right-[18%] top-[26%] transform -translate-y-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "950ms" }}
                   >
-                    <CircuitBoard className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">Real-Time<br/>IoT Data</div>
+                    <CircuitBoard className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">Real-Time<br/>IoT Data</div>
                   </Link>
+                </div>
 
-                  {/* Bottom-right feature */}
+                {/* Bottom-right feature */}
+                <div className="absolute right-12 bottom-1/4">
                   <Link 
                     to="/features#blockchain"
-                    className="absolute right-[18%] bottom-[26%] transform translate-y-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1100ms" }}
                   >
-                    <Lock className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">Blockchain<br/>Verification</div>
+                    <Lock className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">Blockchain<br/>Verification</div>
                   </Link>
+                </div>
 
-                  {/* Bottom feature */}
+                {/* Bottom feature */}
+                <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 -translate-y-4">
                   <Link 
                     to="/features#research-analytics"
-                    className="absolute left-1/2 bottom-[8%] transform -translate-x-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1250ms" }}
                   >
-                    <TestTube className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">Research<br/>Analytics</div>
+                    <TestTube className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">Research<br/>Analytics</div>
                   </Link>
+                </div>
 
-                  {/* Bottom-left feature */}
+                {/* Bottom-left feature */}
+                <div className="absolute left-12 bottom-1/4">
                   <Link 
                     to="/features#networking"
-                    className="absolute left-[18%] bottom-[26%] transform translate-y-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1400ms" }}
                   >
-                    <Users className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">Professional<br/>Networking</div>
+                    <Users className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">Professional<br/>Networking</div>
                   </Link>
+                </div>
 
-                  {/* Top-left feature */}
+                {/* Top-left feature */}
+                <div className="absolute left-12 top-1/4">
                   <Link 
                     to="/features#ar-vr"
-                    className="absolute left-[18%] top-[26%] transform -translate-y-1/2 bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1550ms" }}
                   >
-                    <Sparkles className="w-10 h-10 mb-3 text-blue-500" />
-                    <div className="font-medium text-sm">AR/VR<br/>Training</div>
+                    <Sparkles className="w-10 h-10 mb-2 text-blue-500" />
+                    <div className="font-medium text-sm text-center">AR/VR<br/>Training</div>
                   </Link>
                 </div>
 
                 {/* Connection lines from center to each feature */}
-                <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+                <svg className="absolute inset-0 w-full h-full z-5 pointer-events-none">
                   {/* Line to Top */}
                   <line 
-                    x1="50%" y1="50%" x2="50%" y2="8%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="50%" y2="12%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
@@ -137,8 +153,8 @@ export function HeroSection() {
                   
                   {/* Line to Top-Right */}
                   <line 
-                    x1="50%" y1="50%" x2="82%" y2="26%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="75%" y2="25%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
@@ -147,8 +163,8 @@ export function HeroSection() {
                   
                   {/* Line to Bottom-Right */}
                   <line 
-                    x1="50%" y1="50%" x2="82%" y2="74%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="75%" y2="75%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
@@ -157,8 +173,8 @@ export function HeroSection() {
                   
                   {/* Line to Bottom */}
                   <line 
-                    x1="50%" y1="50%" x2="50%" y2="92%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="50%" y2="88%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
@@ -167,8 +183,8 @@ export function HeroSection() {
                   
                   {/* Line to Bottom-Left */}
                   <line 
-                    x1="50%" y1="50%" x2="18%" y2="74%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="25%" y2="75%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
@@ -177,17 +193,14 @@ export function HeroSection() {
                   
                   {/* Line to Top-Left */}
                   <line 
-                    x1="50%" y1="50%" x2="18%" y2="26%" 
-                    className="stroke-blue-200/70" 
+                    x1="50%" y1="50%" x2="25%" y2="25%" 
+                    className="stroke-blue-200" 
                     strokeWidth="1.5" 
                     strokeDasharray="3,3"
                   >
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="3s" />
                   </line>
                 </svg>
-                
-                {/* Subtle pulsing glow effect behind center logo */}
-                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-blue-400/10 blur-xl animate-pulse z-0"></div>
               </div>
             </div>
           </div>
