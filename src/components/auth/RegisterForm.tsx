@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -15,8 +16,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -33,6 +35,7 @@ export function RegisterForm() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
@@ -46,9 +49,13 @@ export function RegisterForm() {
 
   async function onSubmit(values: FormValues) {
     setIsLoading(true);
+    setFormError(null);
     
     try {
+      console.log('Form submitted with values:', values);
       const result = await register(values.email, values.password);
+      console.log('Registration result:', result);
+      
       if (result.success) {
         toast({
           title: 'Registration successful',
@@ -56,6 +63,7 @@ export function RegisterForm() {
         });
         navigate('/login');
       } else {
+        setFormError(result.error || 'An error occurred during registration. Please try again.');
         toast({
           variant: 'destructive',
           title: 'Registration failed',
@@ -63,6 +71,8 @@ export function RegisterForm() {
         });
       }
     } catch (error: any) {
+      console.error('Registration form error:', error);
+      setFormError(error.message || 'An unexpected error occurred. Please try again.');
       toast({
         variant: 'destructive',
         title: 'Registration failed',
@@ -82,6 +92,13 @@ export function RegisterForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {formError && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{formError}</AlertDescription>
+          </Alert>
+        )}
+        
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
