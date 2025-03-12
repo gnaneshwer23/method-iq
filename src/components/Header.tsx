@@ -7,26 +7,31 @@ import { Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import { useState } from "react"
 import { useToast } from "./ui/use-toast"
+import { useAuth } from "@/contexts/AuthContext"
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated, logout, loading } = useAuth();
 
   const handleLogin = () => {
-    toast({
-      title: "Coming Soon",
-      description: "Login functionality will be available soon!",
-      duration: 3000,
-    });
+    navigate('/login');
   };
 
   const handleSignup = () => {
-    toast({
-      title: "Coming Soon",
-      description: "Sign up functionality will be available soon!",
-      duration: 3000,
-    });
+    navigate('/register');
+  };
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.success) {
+      navigate('/');
+    }
+  };
+
+  const handleDashboard = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -98,8 +103,19 @@ export const Header = () => {
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={handleLogin}>Log in</Button>
-          <Button size="sm" onClick={handleSignup}>Sign up</Button>
+          {!loading && (
+            isAuthenticated ? (
+              <>
+                <Button variant="outline" size="sm" onClick={handleDashboard}>Dashboard</Button>
+                <Button variant="ghost" size="sm" onClick={handleLogout}>Log out</Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" onClick={handleLogin}>Log in</Button>
+                <Button size="sm" onClick={handleSignup}>Sign up</Button>
+              </>
+            )
+          )}
         </div>
 
         {/* Mobile Menu */}
@@ -137,8 +153,19 @@ export const Header = () => {
                   Contact
                 </Link>
                 <div className="flex flex-col gap-2 mt-4">
-                  <Button variant="outline" onClick={() => { handleLogin(); setIsOpen(false); }}>Log in</Button>
-                  <Button onClick={() => { handleSignup(); setIsOpen(false); }}>Sign up</Button>
+                  {!loading && (
+                    isAuthenticated ? (
+                      <>
+                        <Button variant="outline" onClick={() => { handleDashboard(); setIsOpen(false); }}>Dashboard</Button>
+                        <Button variant="ghost" onClick={() => { handleLogout(); setIsOpen(false); }}>Log out</Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button variant="outline" onClick={() => { handleLogin(); setIsOpen(false); }}>Log in</Button>
+                        <Button onClick={() => { handleSignup(); setIsOpen(false); }}>Sign up</Button>
+                      </>
+                    )
+                  )}
                 </div>
               </div>
             </SheetContent>
