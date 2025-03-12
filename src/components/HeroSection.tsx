@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, Flask } from "lucide-react";
+import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, TestTube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
@@ -61,7 +61,7 @@ export function HeroSection() {
               {/* Feature Cards in a circular arrangement */}
               {[
                 { label: "AI-Powered\nProtocols", icon: Brain, angle: 0, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "Research\nAnalytics", icon: Flask, angle: 60, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "Research\nAnalytics", icon: TestTube, angle: 60, color: "text-blue-500", bgColor: "bg-white" },
                 { label: "Professional\nNetworking", icon: Users, angle: 120, color: "text-blue-500", bgColor: "bg-white" },
                 { label: "AR/VR\nTraining", icon: Sparkles, angle: 180, color: "text-blue-500", bgColor: "bg-white" },
                 { label: "Real-Time\nIoT Data", icon: CircuitBoard, angle: 240, color: "text-blue-500", bgColor: "bg-white" },
