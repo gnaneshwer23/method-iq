@@ -1,8 +1,7 @@
-
 import { supabase } from '../supabase-client';
 import type { Protocol, ProtocolStep, Experiment } from '@/types/database.types';
 
-const protocolApi = {
+export const protocolApi = {
   // Create a new protocol
   createProtocol: async (protocol: Omit<Protocol, 'protocol_id' | 'created_at' | 'updated_at'>) => {
     const { data, error } = await supabase
@@ -155,5 +154,3 @@ const protocolApi = {
     return { data: mockRecommendations, error: null };
   }
 };
-
-export default protocolApi;
