@@ -51,69 +51,99 @@ export function HeroSection() {
           </div>
 
           <div className="hidden lg:block relative h-[500px]">
-            <div className="sticky top-24 w-full h-[500px]">
-              {/* Central Hub with MethodIQ logo and text */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-100/60 to-blue-100/40 rounded-full w-64 h-64 backdrop-blur-lg border border-blue-200/30 flex flex-col items-center justify-center animate-pulse duration-[4000ms] shadow-lg shadow-blue-300/10">
-                <Brain className="w-10 h-10 text-blue-500 mb-2" />
-                <div className="text-blue-600 font-semibold text-xl">MethodIQ</div>
-              </div>
+            <div className="sticky top-24 w-full h-[500px] flex items-center justify-center">
+              {/* Feature diagram with centered MethodIQ logo */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                {/* Central Hub with MethodIQ logo and text - now properly centered */}
+                <div className="absolute bg-gradient-to-br from-blue-100/60 to-blue-100/40 rounded-full w-64 h-64 backdrop-blur-lg border border-blue-200/30 flex flex-col items-center justify-center z-10 shadow-lg shadow-blue-300/10">
+                  <Brain className="w-10 h-10 text-blue-500 mb-2" />
+                  <div className="text-blue-600 font-semibold text-xl">MethodIQ</div>
+                </div>
 
-              {/* Feature Cards in a circular arrangement */}
-              {[
-                { label: "AI-Powered\nProtocols", icon: Brain, angle: 0, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "Research\nAnalytics", icon: TestTube, angle: 60, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "Professional\nNetworking", icon: Users, angle: 120, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "AR/VR\nTraining", icon: Sparkles, angle: 180, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "Real-Time\nIoT Data", icon: CircuitBoard, angle: 240, color: "text-blue-500", bgColor: "bg-white" },
-                { label: "Blockchain\nVerification", icon: Lock, angle: 300, color: "text-blue-500", bgColor: "bg-white" }
-              ].map((feature, index) => {
-                const radius = 200; // Increased radius for more space
-                const angle = (feature.angle * Math.PI) / 180;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
+                {/* Feature Cards in a circular arrangement - evenly distributed */}
+                <div className="w-full h-full absolute inset-0">
+                  {/* Feature buttons with proper positioning and links */}
+                  {[
+                    { 
+                      label: "AI-Powered\nProtocols", 
+                      icon: Brain, 
+                      position: "right-0 top-0", 
+                      link: "/features#ai-protocols" 
+                    },
+                    { 
+                      label: "Research\nAnalytics", 
+                      icon: TestTube, 
+                      position: "right-0 bottom-0", 
+                      link: "/features#research-analytics" 
+                    },
+                    { 
+                      label: "Professional\nNetworking", 
+                      icon: Users, 
+                      position: "left-0 bottom-0", 
+                      link: "/features#networking" 
+                    },
+                    { 
+                      label: "AR/VR\nTraining", 
+                      icon: Sparkles, 
+                      position: "left-0 top-0", 
+                      link: "/features#ar-vr" 
+                    },
+                    { 
+                      label: "Real-Time\nIoT Data", 
+                      icon: CircuitBoard, 
+                      position: "left-1/2 top-0 -translate-x-1/2", 
+                      link: "/features#iot" 
+                    },
+                    { 
+                      label: "Blockchain\nVerification", 
+                      icon: Lock, 
+                      position: "left-1/2 bottom-0 -translate-x-1/2", 
+                      link: "/features#blockchain" 
+                    }
+                  ].map((feature, index) => (
+                    <Link 
+                      key={index}
+                      to={feature.link}
+                      className={`absolute ${feature.position} bg-white hover:bg-blue-50 transition-colors duration-300 rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-[140px] flex flex-col items-center animate-fade-up cursor-pointer`}
+                      style={{
+                        animationDelay: `${index * 150 + 700}ms`,
+                        transform: feature.position.includes("translate") ? "" : "translate(-50%, -50%)"
+                      }}
+                    >
+                      <feature.icon className="w-8 h-8 mb-2 text-blue-500" />
+                      <div className="font-medium text-sm whitespace-pre-line">{feature.label}</div>
+                    </Link>
+                  ))}
+                </div>
 
-                return (
-                  <div
-                    key={index}
-                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 ${feature.bgColor} rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-32 flex flex-col items-center animate-fade-up`}
-                    style={{
-                      left: `calc(50% + ${x}px)`,
-                      top: `calc(50% + ${y}px)`,
-                      animationDelay: `${index * 150 + 700}ms`,
-                    }}
-                  >
-                    <feature.icon className={`w-8 h-8 mb-2 ${feature.color}`} />
-                    <div className="font-medium text-sm whitespace-pre-line">{feature.label}</div>
-                  </div>
-                );
-              })}
-
-              {/* Enhanced Connection Lines */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{ transform: 'rotate(-90deg)' }}
-              >
-                {[0, 60, 120, 180, 240, 300].map((angle, index) => (
-                  <line
-                    key={index}
-                    x1="50%"
-                    y1="50%"
-                    x2={`${50 + Math.cos((angle * Math.PI) / 180) * 45}%`}
-                    y2={`${50 + Math.sin((angle * Math.PI) / 180) * 45}%`}
-                    className="stroke-blue-200"
-                    strokeWidth="1"
-                    strokeDasharray="3,3"
-                  >
-                    <animate
-                      attributeName="opacity"
-                      values="0.1;0.5;0.1"
-                      dur="4s"
-                      repeatCount="indefinite"
-                      begin={`${index * 0.7}s`}
-                    />
+                {/* Connection lines to the center */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                  {/* Top line */}
+                  <line x1="50%" y1="0%" x2="50%" y2="30%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" />
                   </line>
-                ))}
-              </svg>
+                  {/* Bottom line */}
+                  <line x1="50%" y1="70%" x2="50%" y2="100%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" begin="0.7s" />
+                  </line>
+                  {/* Top-right line */}
+                  <line x1="70%" y1="20%" x2="50%" y2="40%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" begin="1.4s" />
+                  </line>
+                  {/* Bottom-right line */}
+                  <line x1="70%" y1="80%" x2="50%" y2="60%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" begin="2.1s" />
+                  </line>
+                  {/* Top-left line */}
+                  <line x1="30%" y1="20%" x2="50%" y2="40%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" begin="2.8s" />
+                  </line>
+                  {/* Bottom-left line */}
+                  <line x1="30%" y1="80%" x2="50%" y2="60%" className="stroke-blue-200" strokeWidth="1" strokeDasharray="3,3">
+                    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite" begin="3.5s" />
+                  </line>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
