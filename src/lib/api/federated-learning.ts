@@ -158,11 +158,15 @@ export const federatedLearningApi = {
   subscribeToModelUpdates: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('federated_events');
     
-    channel.on('broadcast', { event: 'model_update' }, (payload) => {
+    channel.on('postgres_changes', { 
+      event: 'INSERT',
+      schema: 'public',
+      table: 'realtime_events'
+    }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
-    });
+    }).subscribe();
     
-    return channel.subscribe();
+    return channel;
   },
 
   /**
@@ -181,14 +185,6 @@ export const federatedLearningApi = {
       .from('realtime_events')
       .insert(event)
       .select();
-
-    // Also broadcast the event for real-time subscribers
-    const channel = supabase.channel('federated_events');
-    channel.send({
-      type: 'system',
-      event: 'model_update',
-      payload: event
-    });
 
     return { data, error };
   }

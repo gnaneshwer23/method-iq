@@ -6,7 +6,11 @@ export const realtimeApi = {
   subscribeToProtocolLogs: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('blockchain_events');
     
-    channel.on('broadcast', { event: 'blockchain_event' }, (payload) => {
+    channel.on('postgres_changes', { 
+      event: 'INSERT',
+      schema: 'public',
+      table: 'realtime_events'
+    }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
     }).subscribe();
     
@@ -26,16 +30,6 @@ export const realtimeApi = {
       .from('realtime_events')
       .insert(event)
       .select();
-
-    const channel = supabase.channel('blockchain_events');
-    channel.subscribe();
-    
-    // Fix: change broadcast to system event type
-    channel.send({
-      type: 'system',
-      event: 'blockchain_event',
-      payload: event
-    });
 
     return { data, error };
   }

@@ -1,4 +1,3 @@
-
 import { supabase } from '../supabase-client';
 import type { IoTDevice, SensorData, RealtimeEvent } from '@/types/database.types';
 
@@ -121,11 +120,16 @@ export const iotApi = {
   subscribeToSensorData: (deviceId: string, callback: (payload: any) => void) => {
     const channel = supabase.channel(`sensor_data_${deviceId}`);
     
-    channel.on('broadcast', { event: 'sensor_data' }, (payload) => {
+    channel.on('postgres_changes', { 
+      event: 'INSERT',
+      schema: 'public',
+      table: 'sensor_data',
+      filter: `device_id=eq.${deviceId}`
+    }, (payload) => {
       callback(payload);
-    });
+    }).subscribe();
     
-    return channel.subscribe();
+    return channel;
   },
 
   /**
@@ -134,11 +138,15 @@ export const iotApi = {
   subscribeToEvents: (callback: (payload: RealtimeEvent) => void) => {
     const channel = supabase.channel('iot_events');
     
-    channel.on('broadcast', { event: 'iot_event' }, (payload) => {
+    channel.on('postgres_changes', { 
+      event: 'INSERT',
+      schema: 'public',
+      table: 'realtime_events'
+    }, (payload) => {
       callback(payload as unknown as RealtimeEvent);
-    });
+    }).subscribe();
     
-    return channel.subscribe();
+    return channel;
   },
 
   /**
@@ -157,14 +165,6 @@ export const iotApi = {
       .from('realtime_events')
       .insert(event)
       .select();
-
-    const channel = supabase.channel('iot_events');
-    // Fix: change broadcast to system event type
-    channel.send({
-      type: 'system',
-      event: 'iot_event',
-      payload: event
-    });
 
     return { data, error };
   }
