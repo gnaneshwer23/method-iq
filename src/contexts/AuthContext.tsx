@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, authApi } from '@/lib/supabase';
@@ -81,21 +80,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await authApi.signUp(email, password);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Registration error:', error);
+        toast({
+          title: 'Registration failed',
+          description: error.message || 'An error occurred during registration',
+          variant: 'destructive',
+        });
+        return { success: false, error: error.message };
+      }
       
-      toast({
-        title: 'Registration successful',
-        description: 'Please check your email to confirm your account',
-      });
-      
-      return { success: true };
+      // Check if the sign up was successful
+      if (data.user) {
+        toast({
+          title: 'Registration successful',
+          description: 'Please check your email to confirm your account',
+        });
+        return { success: true };
+      } else {
+        toast({
+          title: 'Registration failed',
+          description: 'An unexpected error occurred',
+          variant: 'destructive',
+        });
+        return { success: false, error: 'An unexpected error occurred' };
+      }
     } catch (error: any) {
+      console.error('Registration error:', error);
       toast({
         title: 'Registration failed',
         description: error.message || 'An error occurred during registration',
         variant: 'destructive',
       });
-      
       return { success: false, error: error.message };
     }
   };

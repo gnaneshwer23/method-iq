@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -17,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -33,6 +33,7 @@ export function RegisterForm() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -49,9 +50,24 @@ export function RegisterForm() {
     try {
       const result = await register(values.email, values.password);
       if (result.success) {
-        // After registration, navigate to login or verification page
+        toast({
+          title: 'Registration successful',
+          description: 'Please check your email for verification link',
+        });
         navigate('/login');
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Registration failed',
+          description: result.error || 'An error occurred during registration',
+        });
       }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Registration failed',
+        description: error.message || 'An error occurred during registration',
+      });
     } finally {
       setIsLoading(false);
     }
