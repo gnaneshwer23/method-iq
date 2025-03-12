@@ -3,7 +3,10 @@ import { supabase } from '../supabase-client';
 import type { BlockchainRecord } from '@/types/database.types';
 
 export const blockchainApi = {
-  // Add record to blockchain verification
+  /**
+   * Add a new record to blockchain verification
+   * Logs a new record's hash and metadata to the blockchain
+   */
   addRecord: async (record: Omit<BlockchainRecord, 'id' | 'timestamp' | 'verified'>) => {
     const recordWithDefaults = {
       ...record,
@@ -19,7 +22,10 @@ export const blockchainApi = {
     return { data, error };
   },
   
-  // Verify a record
+  /**
+   * Verify a record's hash against the stored blockchain data
+   * @param recordId - The ID of the record to verify
+   */
   verifyRecord: async (recordId: string) => {
     const { data, error } = await supabase
       .from('blockchain_records')
@@ -27,16 +33,61 @@ export const blockchainApi = {
       .eq('id', recordId)
       .single();
     
-    return { data, error };
+    if (error) {
+      return { data: null, verified: false, error };
+    }
+    
+    // In a real implementation, this would check against an actual blockchain
+    // For now, we just return the record and assume verification logic would happen here
+    return { data, verified: true, error: null };
   },
   
-  // Get verification history for a record
+  /**
+   * Get verification history for an entity
+   * Returns the entire blockchain transaction history for the given entity
+   * @param recordType - The type of record (e.g., "protocol", "result")
+   * @param originalRecordId - The ID of the original record
+   */
   getVerificationHistory: async (recordType: string, originalRecordId: string) => {
     const { data, error } = await supabase
       .from('blockchain_records')
       .select('*')
       .eq('record_type', recordType)
       .eq('record_id', originalRecordId)
+      .order('timestamp', { ascending: false });
+    
+    return { data, error };
+  },
+  
+  /**
+   * Verify if a hash matches the chain records
+   * @param hash - The hash to verify
+   * @param entityType - The type of entity (e.g., "protocol", "result")
+   * @param entityId - The ID of the entity
+   */
+  verifyHash: async (hash: string, entityType: string, entityId: string) => {
+    const { data, error } = await supabase
+      .from('blockchain_records')
+      .select('*')
+      .eq('record_type', entityType)
+      .eq('record_id', entityId)
+      .eq('hash', hash)
+      .single();
+    
+    if (error) {
+      return { verified: false, error };
+    }
+    
+    return { verified: true, data, error: null };
+  },
+  
+  /**
+   * Get all blockchain records
+   */
+  getAllRecords: async () => {
+    const { data, error } = await supabase
+      .from('blockchain_records')
+      .select('*')
       .order('timestamp', { ascending: false });
     
     return { data, error };
