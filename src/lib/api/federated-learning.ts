@@ -115,10 +115,13 @@ export const federatedLearningApi = {
     return { data, error: updateError };
   },
 
-  // Subscribe to training round updates
+  /**
+   * Subscribe to training round updates
+   */
   subscribeToRoundUpdates: (roundId: string, callback: (payload: any) => void) => {
-    return supabase
-      .channel('federated_round_updates')
+    const channel = supabase.channel('federated_round_updates');
+    
+    return channel
       .on(
         'postgres_changes',
         {
@@ -160,15 +163,16 @@ export const federatedLearningApi = {
    * Subscribe to model update events
    */
   subscribeToModelUpdates: (callback: (payload: RealtimeEvent) => void) => {
-    return supabase
-      .channel('federated_events')
+    const channel = supabase.channel('federated_events');
+    
+    return channel
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'realtime_events',
-          filter: `target=eq.federated`
+          filter: 'target=eq.federated'
         },
         callback
       )

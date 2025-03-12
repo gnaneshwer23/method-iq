@@ -96,15 +96,16 @@ export const blockchainApi = {
    * Subscribe to protocol log events
    */
   subscribeToProtocolLogs: (callback: (payload: RealtimeEvent) => void) => {
-    return supabase
-      .channel('blockchain_events')
+    const channel = supabase.channel('blockchain_events');
+    
+    return channel
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'realtime_events',
-          filter: `target=eq.blockchain`
+          filter: 'target=eq.blockchain'
         },
         callback
       )
