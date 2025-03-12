@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, TestTube } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -6,7 +5,6 @@ import { Link } from "react-router-dom";
 export function HeroSection() {
   return (
     <section className="py-16 lg:py-24 overflow-visible relative">
-      {/* Enhanced futuristic background elements */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/10 to-background" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.15),transparent_50%)]" />
       <div className="absolute inset-0">
@@ -36,13 +34,13 @@ export function HeroSection() {
             
             <div className="animate-fade-up [--animation-delay:600ms] flex flex-col sm:flex-row gap-4 pt-4">
               <Button asChild size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-primary/25 transition-all duration-300">
-                <Link to="/contact">
+                <Link to="/register">
                   Get Started
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="group backdrop-blur-sm bg-background/50 border-primary/20 hover:bg-primary/5 transition-all duration-300">
-                <Link to="/demo">
+                <Link to="/how-it-works">
                   <Play className="mr-2 h-4 w-4" />
                   Watch Demo
                 </Link>
@@ -52,25 +50,18 @@ export function HeroSection() {
 
           <div className="hidden lg:block relative h-[550px]">
             <div className="sticky top-24 w-full h-[550px] flex items-center justify-center">
-              {/* Feature diagram with perfectly centered MethodIQ logo and evenly distributed elements */}
               <div className="relative w-full h-full flex items-center justify-center">
-                {/* Central circle with glowing effect */}
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-50/80 rounded-full w-80 h-80 backdrop-blur-md border border-blue-100/50 z-0"></div>
-                
-                {/* Pulsing glow behind center logo */}
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-400/10 blur-xl animate-pulse z-0"></div>
                 
-                {/* Central Hub with MethodIQ logo - perfectly centered */}
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10">
-                  <Brain className="w-16 h-16 text-blue-500 mb-3" />
-                  <div className="text-blue-600 font-bold text-3xl">MethodIQ</div>
+                  <Brain className="w-20 h-20 text-blue-500 mb-4" />
+                  <div className="text-blue-600 font-bold text-4xl">MethodIQ</div>
                 </div>
 
-                {/* Feature Cards in perfect hexagonal arrangement with equal distances */}
-                {/* Top feature */}
                 <div className="absolute left-1/2 top-0 transform -translate-x-1/2 translate-y-4">
                   <Link 
-                    to="/features#ai-protocols"
+                    to="/features/ai-protocols"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "800ms" }}
                   >
@@ -79,10 +70,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Top-right feature */}
                 <div className="absolute right-12 top-1/4">
                   <Link 
-                    to="/features#iot"
+                    to="/features/iot-integration"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "950ms" }}
                   >
@@ -91,10 +81,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Bottom-right feature */}
                 <div className="absolute right-12 bottom-1/4">
                   <Link 
-                    to="/features#blockchain"
+                    to="/features/blockchain-verification"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1100ms" }}
                   >
@@ -103,10 +92,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Bottom feature */}
                 <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 -translate-y-4">
                   <Link 
-                    to="/features#research-analytics"
+                    to="/features/research-analytics"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1250ms" }}
                   >
@@ -115,10 +103,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Bottom-left feature */}
                 <div className="absolute left-12 bottom-1/4">
                   <Link 
-                    to="/features#networking"
+                    to="/features/networking"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1400ms" }}
                   >
@@ -127,10 +114,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Top-left feature */}
                 <div className="absolute left-12 top-1/4">
                   <Link 
-                    to="/features#ar-vr"
+                    to="/features/ar-vr"
                     className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
                     style={{ animationDelay: "1550ms" }}
                   >
@@ -139,9 +125,7 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                {/* Connection lines from center to each feature */}
                 <svg className="absolute inset-0 w-full h-full z-5 pointer-events-none">
-                  {/* Line to Top */}
                   <line 
                     x1="50%" y1="50%" x2="50%" y2="12%" 
                     className="stroke-blue-200" 
@@ -151,7 +135,6 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" />
                   </line>
                   
-                  {/* Line to Top-Right */}
                   <line 
                     x1="50%" y1="50%" x2="75%" y2="25%" 
                     className="stroke-blue-200" 
@@ -161,7 +144,6 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="0.6s" />
                   </line>
                   
-                  {/* Line to Bottom-Right */}
                   <line 
                     x1="50%" y1="50%" x2="75%" y2="75%" 
                     className="stroke-blue-200" 
@@ -171,7 +153,6 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.2s" />
                   </line>
                   
-                  {/* Line to Bottom */}
                   <line 
                     x1="50%" y1="50%" x2="50%" y2="88%" 
                     className="stroke-blue-200" 
@@ -181,7 +162,6 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.8s" />
                   </line>
                   
-                  {/* Line to Bottom-Left */}
                   <line 
                     x1="50%" y1="50%" x2="25%" y2="75%" 
                     className="stroke-blue-200" 
@@ -191,7 +171,6 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="2.4s" />
                   </line>
                   
-                  {/* Line to Top-Left */}
                   <line 
                     x1="50%" y1="50%" x2="25%" y2="25%" 
                     className="stroke-blue-200" 
