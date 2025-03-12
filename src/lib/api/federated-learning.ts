@@ -1,5 +1,5 @@
 import { supabase } from '../supabase-client';
-import type { FederatedLearningProject, FederatedModelRound, ClientUpdate } from '@/types/database.types';
+import type { FederatedLearningProject, FederatedModelRound, ClientUpdate, RealtimeEvent } from '@/types/database.types';
 
 export const federatedLearningApi = {
   // Create a federated learning project
@@ -153,6 +153,45 @@ export const federatedLearningApi = {
       .limit(1)
       .single();
     
+    return { data, error };
+  },
+
+  /**
+   * Subscribe to model update events
+   */
+  subscribeToModelUpdates: (callback: (payload: RealtimeEvent) => void) => {
+    return supabase
+      .channel('federated_events')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'realtime_events',
+          filter: `target=eq.federated`
+        },
+        callback
+      )
+      .subscribe();
+  },
+
+  /**
+   * Emit a model update event
+   */
+  emitModelUpdate: async (target: RealtimeEvent['target'], payload: Record<string, any>) => {
+    const event: Omit<RealtimeEvent, 'id' | 'created_at'> = {
+      event_type: 'model_update',
+      source: 'federated',
+      target,
+      payload,
+      processed: false
+    };
+
+    const { data, error } = await supabase
+      .from('realtime_events')
+      .insert(event)
+      .select();
+
     return { data, error };
   }
 };

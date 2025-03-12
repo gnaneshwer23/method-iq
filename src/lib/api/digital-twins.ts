@@ -1,6 +1,5 @@
-
 import { supabase } from '../supabase-client';
-import type { DigitalTwin, SensorData } from '@/types/database.types';
+import type { DigitalTwin, SensorData, RealtimeEvent } from '@/types/database.types';
 
 export const digitalTwinApi = {
   /**
@@ -170,5 +169,44 @@ export const digitalTwinApi = {
         callback
       )
       .subscribe();
+  },
+
+  /**
+   * Subscribe to simulation update events
+   */
+  subscribeToSimulationUpdates: (callback: (payload: RealtimeEvent) => void) => {
+    return supabase
+      .channel('digital_twin_events')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'realtime_events',
+          filter: `target=eq.digital_twin`
+        },
+        callback
+      )
+      .subscribe();
+  },
+
+  /**
+   * Emit a simulation update event
+   */
+  emitSimulationUpdate: async (target: RealtimeEvent['target'], payload: Record<string, any>) => {
+    const event: Omit<RealtimeEvent, 'id' | 'created_at'> = {
+      event_type: 'simulation_update',
+      source: 'digital_twin',
+      target,
+      payload,
+      processed: false
+    };
+
+    const { data, error } = await supabase
+      .from('realtime_events')
+      .insert(event)
+      .select();
+
+    return { data, error };
   }
 };

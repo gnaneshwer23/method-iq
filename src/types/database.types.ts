@@ -163,6 +163,16 @@ export type ClientUpdate = {
   timestamp: string;
 };
 
+export type RealtimeEvent = {
+  id: string;
+  event_type: 'sensor_data' | 'simulation_update' | 'model_update' | 'protocol_log';
+  source: 'iot' | 'ai' | 'digital_twin' | 'federated' | 'blockchain';
+  target: 'iot' | 'ai' | 'digital_twin' | 'federated' | 'blockchain';
+  payload: Record<string, any>;
+  processed: boolean;
+  created_at: string;
+};
+
 export type Database = {
   user_profiles: UserProfile[];
   protocols: Protocol[];
@@ -177,4 +187,5 @@ export type Database = {
   federated_learning_projects: FederatedLearningProject[];
   federated_model_rounds: FederatedModelRound[];
   client_updates: ClientUpdate[];
+  realtime_events: RealtimeEvent[];
 };

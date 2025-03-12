@@ -1,6 +1,5 @@
-
 import { supabase } from '../supabase-client';
-import type { BlockchainRecord } from '@/types/database.types';
+import type { BlockchainRecord, RealtimeEvent } from '@/types/database.types';
 
 export const blockchainApi = {
   /**
@@ -90,6 +89,45 @@ export const blockchainApi = {
       .select('*')
       .order('timestamp', { ascending: false });
     
+    return { data, error };
+  },
+
+  /**
+   * Subscribe to protocol log events
+   */
+  subscribeToProtocolLogs: (callback: (payload: RealtimeEvent) => void) => {
+    return supabase
+      .channel('blockchain_events')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'realtime_events',
+          filter: `target=eq.blockchain`
+        },
+        callback
+      )
+      .subscribe();
+  },
+
+  /**
+   * Emit a protocol log event
+   */
+  emitProtocolLog: async (payload: Record<string, any>) => {
+    const event: Omit<RealtimeEvent, 'id' | 'created_at'> = {
+      event_type: 'protocol_log',
+      source: 'blockchain',
+      target: 'blockchain',
+      payload,
+      processed: false
+    };
+
+    const { data, error } = await supabase
+      .from('realtime_events')
+      .insert(event)
+      .select();
+
     return { data, error };
   }
 };

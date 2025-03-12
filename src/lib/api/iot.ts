@@ -1,6 +1,5 @@
-
 import { supabase } from '../supabase-client';
-import type { IoTDevice, SensorData } from '@/types/database.types';
+import type { IoTDevice, SensorData, RealtimeEvent } from '@/types/database.types';
 
 export const iotApi = {
   /**
@@ -132,5 +131,44 @@ export const iotApi = {
         callback
       )
       .subscribe();
+  },
+
+  /**
+   * Subscribe to real-time events targeting IoT devices
+   */
+  subscribeToEvents: (callback: (payload: RealtimeEvent) => void) => {
+    return supabase
+      .channel('iot_events')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'realtime_events',
+          filter: `target=eq.iot`
+        },
+        callback
+      )
+      .subscribe();
+  },
+
+  /**
+   * Emit a real-time event from IoT to another service
+   */
+  emitEvent: async (target: RealtimeEvent['target'], payload: Record<string, any>) => {
+    const event: Omit<RealtimeEvent, 'id' | 'created_at'> = {
+      event_type: 'sensor_data',
+      source: 'iot',
+      target,
+      payload,
+      processed: false
+    };
+
+    const { data, error } = await supabase
+      .from('realtime_events')
+      .insert(event)
+      .select();
+
+    return { data, error };
   }
 };
