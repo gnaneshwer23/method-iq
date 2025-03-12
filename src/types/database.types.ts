@@ -145,6 +145,24 @@ export type FederatedLearningProject = {
   updated_at: string;
 };
 
+export type FederatedModelRound = {
+  round_id: string;
+  model_name: string;
+  round_number: number;
+  global_model_params: string;
+  status: 'pending' | 'active' | 'completed';
+  created_at: string;
+  updated_at: string;
+};
+
+export type ClientUpdate = {
+  update_id: string;
+  round_id: string;
+  client_id: string;
+  model_params: string;
+  timestamp: string;
+};
+
 export type Database = {
   user_profiles: UserProfile[];
   protocols: Protocol[];
@@ -157,4 +175,6 @@ export type Database = {
   blockchain_records: BlockchainRecord[];
   ar_sessions: ARSession[];
   federated_learning_projects: FederatedLearningProject[];
+  federated_model_rounds: FederatedModelRound[];
+  client_updates: ClientUpdate[];
 };
