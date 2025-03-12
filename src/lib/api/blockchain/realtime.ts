@@ -30,8 +30,9 @@ export const realtimeApi = {
     const channel = supabase.channel('blockchain_events');
     channel.subscribe();
     
+    // Fix: change broadcast to system event type
     channel.send({
-      type: 'broadcast',
+      type: 'system',
       event: 'blockchain_event',
       payload: event
     });

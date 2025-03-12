@@ -159,8 +159,9 @@ export const iotApi = {
       .select();
 
     const channel = supabase.channel('iot_events');
+    // Fix: change broadcast to system event type
     channel.send({
-      type: 'broadcast',
+      type: 'system',
       event: 'iot_event',
       payload: event
     });

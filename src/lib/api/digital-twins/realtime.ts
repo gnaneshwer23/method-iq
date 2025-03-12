@@ -49,8 +49,9 @@ export const emitSimulationUpdate = async (target: RealtimeEvent['target'], payl
 
   // Also broadcast the event for real-time subscribers
   const channel = supabase.channel('digital_twin_events');
+  // Fix: change broadcast to system event type
   channel.send({
-    type: 'broadcast',
+    type: 'system',
     event: 'simulation_update',
     payload: event
   });

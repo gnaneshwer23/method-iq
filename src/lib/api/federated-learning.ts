@@ -1,4 +1,3 @@
-
 import { supabase } from '../supabase-client';
 import type { FederatedLearningProject, FederatedModelRound, ClientUpdate, RealtimeEvent } from '@/types/database.types';
 
@@ -186,7 +185,7 @@ export const federatedLearningApi = {
     // Also broadcast the event for real-time subscribers
     const channel = supabase.channel('federated_events');
     channel.send({
-      type: 'broadcast',
+      type: 'system',
       event: 'model_update',
       payload: event
     });
