@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -13,7 +12,7 @@ import {
   BrainCircuit, 
   CalendarClock, 
   CircuitBoard, 
-  Flask, 
+  FlaskConical, 
   Laptop, 
   LineChart, 
   ListChecks, 
@@ -58,7 +57,7 @@ const Dashboard = () => {
 
   const researchStats = [
     { title: 'Active Projects', value: '5', icon: <Beaker className="h-8 w-8 text-blue-500" /> },
-    { title: 'Running Experiments', value: '3', icon: <Flask className="h-8 w-8 text-green-500" /> },
+    { title: 'Running Experiments', value: '3', icon: <FlaskConical className="h-8 w-8 text-green-500" /> },
     { title: 'Connected Devices', value: '7', icon: <CircuitBoard className="h-8 w-8 text-amber-500" /> },
     { title: 'Team Members', value: '12', icon: <Users className="h-8 w-8 text-purple-500" /> },
   ];
@@ -196,7 +195,7 @@ const Dashboard = () => {
                       <CardTitle className="flex items-center">
                         <Sparkles className="h-5 w-5 mr-2 text-amber-500" />
                         AI Protocol Suggestions
-                      </CardTitle>
+                      CardTitle>
                       <CardDescription>Get protocols tailored to your research</CardDescription>
                     </CardHeader>
                     <CardContent>
