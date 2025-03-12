@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock } from "lucide-react";
+import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
