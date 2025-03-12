@@ -12,7 +12,7 @@ export function AboutHero() {
       <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-primary/60">
-            Empowering Innovation Through Integrated Research
+            About Us
           </h1>
           <p className="text-xl mb-12 text-muted-foreground leading-relaxed">
             Discover the story behind MethodIQ and how our advanced technologies are transforming scientific discovery.

@@ -46,21 +46,9 @@ export const Header = () => {
           <NavigationMenu>
             <NavigationMenuList className="gap-2">
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-background h-9 px-4">About</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[200px] bg-background p-2">
-                    <NavigationMenuLink asChild>
-                      <Link
-                        className={cn(
-                          "block select-none rounded-md p-2 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        )}
-                        to="/about"
-                      >
-                        About Us
-                      </Link>
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
+                <Link to="/about" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  About Us
+                </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link to="/features" className="h-9 px-4 py-2 text-sm hover:text-primary">
@@ -129,7 +117,7 @@ export const Header = () => {
             <SheetContent side="right" className="w-[300px]">
               <div className="flex flex-col space-y-3 mt-4">
                 <Link to="/about" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-                  About
+                  About Us
                 </Link>
                 <Link to="/features" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Features
