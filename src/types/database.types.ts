@@ -1,4 +1,3 @@
-
 // Define Supabase database schema types
 
 export type UserProfile = {
@@ -113,13 +112,23 @@ export type BlockchainRecord = {
   metadata?: Record<string, any>;
 };
 
+export type ARAsset = {
+  id: string;
+  name: string;
+  type: 'model_3d' | 'overlay' | 'tutorial';
+  file_url: string;
+  metadata?: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+};
+
 export type ARSession = {
   id: string;
   user_id: string;
-  project_id: string;
-  session_type: 'ar' | 'mr' | 'vr';
+  experiment_id?: string;
   start_time: string;
   end_time?: string;
+  session_type: 'ar' | 'mr';
   device_info?: Record<string, any>;
   session_data?: Record<string, any>;
 };
