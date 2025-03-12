@@ -10,6 +10,7 @@ import { StatsOverview } from '@/components/dashboard/StatsOverview';
 import { DashboardTabs } from '@/components/dashboard/DashboardTabs';
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
 import { LoadingState } from '@/components/dashboard/LoadingState';
+import { NotificationsButton } from '@/components/dashboard/NotificationsButton';
 
 const Dashboard = () => {
   const { user, isAuthenticated, loading } = useAuth();
@@ -40,6 +41,7 @@ const Dashboard = () => {
               <p className="text-muted-foreground">Welcome back, {user?.email}</p>
             </div>
             <div className="flex items-center gap-2">
+              <NotificationsButton />
               <Button onClick={() => navigate('/new-project')} className="flex items-center gap-2">
                 <Plus className="h-4 w-4" />
                 New Project
