@@ -15,10 +15,10 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     debug: true // Enable debug mode for auth issues
   },
   global: {
-    fetch: (...args) => {
+    fetch: (url, options) => {
       // Console log for debugging
-      console.log('Supabase API request:', args[0]);
-      return fetch(...args);
+      console.log('Supabase API request:', url);
+      return fetch(url, options);
     }
   }
 });
