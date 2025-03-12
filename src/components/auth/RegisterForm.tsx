@@ -89,14 +89,14 @@ export function RegisterForm() {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-lg">
-      <CardHeader className="bg-secondary/50 rounded-t-md">
-        <CardTitle className="text-2xl font-bold text-foreground">Create an Account</CardTitle>
-        <CardDescription className="text-foreground/80">
+    <Card className="w-full max-w-md mx-auto shadow-lg border border-gray-300">
+      <CardHeader className="bg-gray-100 rounded-t-md">
+        <CardTitle className="text-2xl font-bold text-gray-900">Create an Account</CardTitle>
+        <CardDescription className="text-gray-700">
           Register to access MethodIQ's research platform
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6">
+      <CardContent className="pt-6 bg-white">
         {formError && (
           <Alert variant="destructive" className="mb-4 border-red-400 bg-red-50">
             <AlertCircle className="h-4 w-4" />
@@ -111,9 +111,9 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground">Email</FormLabel>
+                  <FormLabel className="text-gray-900 font-medium">Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} className="border-gray-300 bg-white text-foreground" />
+                    <Input placeholder="you@example.com" {...field} className="border-gray-300 bg-white text-gray-900" />
                   </FormControl>
                   <FormMessage className="text-red-600" />
                 </FormItem>
@@ -125,14 +125,14 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground">Password</FormLabel>
+                  <FormLabel className="text-gray-900 font-medium">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input 
                         type={showPassword ? "text" : "password"} 
                         placeholder="••••••••" 
                         {...field} 
-                        className="border-gray-300 bg-white text-foreground pr-10" 
+                        className="border-gray-300 bg-white text-gray-900 pr-10" 
                       />
                       <Button 
                         type="button" 
@@ -154,14 +154,14 @@ export function RegisterForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground">Confirm Password</FormLabel>
+                  <FormLabel className="text-gray-900 font-medium">Confirm Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input 
                         type={showConfirmPassword ? "text" : "password"} 
                         placeholder="••••••••" 
                         {...field} 
-                        className="border-gray-300 bg-white text-foreground pr-10" 
+                        className="border-gray-300 bg-white text-gray-900 pr-10" 
                       />
                       <Button 
                         type="button" 
@@ -178,7 +178,7 @@ export function RegisterForm() {
               )}
             />
             
-            <Button type="submit" className="w-full bg-primary text-white hover:bg-primary/90" disabled={isLoading}>
+            <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -191,8 +191,8 @@ export function RegisterForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-gray-200 pt-4">
-        <Button variant="link" onClick={() => navigate('/login')} className="text-primary">
+      <CardFooter className="flex justify-center border-t border-gray-200 pt-4 bg-white">
+        <Button variant="link" onClick={() => navigate('/login')} className="text-blue-600">
           Already have an account? Sign in
         </Button>
       </CardFooter>

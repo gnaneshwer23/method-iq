@@ -1,4 +1,3 @@
-
 import { supabase } from '../supabase-client';
 
 export const authApi = {
@@ -13,9 +12,18 @@ export const authApi = {
         password,
       });
       console.log('Sign in response:', response);
+      
+      if (response.error) {
+        console.error('Sign in error details:', response.error);
+        // Add more detailed error information
+        if (response.error.message.includes('rate limited')) {
+          return { ...response, error: { ...response.error, message: 'Too many login attempts. Please try again later.' } };
+        }
+      }
+      
       return response;
     } catch (error) {
-      console.error('Sign in error:', error);
+      console.error('Sign in exception:', error);
       throw error;
     }
   },
@@ -26,18 +34,46 @@ export const authApi = {
   signUp: async (email: string, password: string) => {
     console.log('Attempting to sign up with email:', email);
     try {
+      // First, check if user already exists
+      const { data: existingUsers } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+        
+      if (existingUsers) {
+        return { 
+          data: { user: null }, 
+          error: { message: 'A user with this email already exists.' } 
+        };
+      }
+      
       const response = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/login`,
+          data: {
+            email: email,
+          }
         }
       });
+      
       console.log('Sign up response:', response);
+      
+      if (response.error) {
+        console.error('Sign up error details:', response.error);
+      } else {
+        console.log('Sign up successful! User created:', response.data.user?.id);
+      }
+      
       return response;
     } catch (error) {
-      console.error('Sign up error:', error);
-      throw error;
+      console.error('Sign up exception:', error);
+      return { 
+        data: { user: null }, 
+        error: { message: 'Registration failed. Please try again later.' } 
+      };
     }
   },
 
