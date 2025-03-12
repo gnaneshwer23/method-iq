@@ -33,7 +33,7 @@ export const NotificationsButton = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0">
-        <div className="flex items-center justify-between border-b px-4 py-3">
+        <div className="flex items-center justify-between border-b px-4 py-2">
           <h4 className="font-semibold">Notifications</h4>
           <Button variant="ghost" size="sm" onClick={markAllAsRead}>
             Mark all as read
@@ -41,12 +41,12 @@ export const NotificationsButton = () => {
         </div>
         <div className="max-h-80 overflow-auto">
           {notifications.length > 0 ? (
-            <div className="space-y-1">
+            <div className="space-y-0">
               {notifications.map((notification) => (
                 <div
                   key={notification.id}
                   className={cn(
-                    "flex gap-2 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer",
+                    "flex gap-2 px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer border-b last:border-b-0",
                     !notification.read && "bg-muted/30"
                   )}
                 >

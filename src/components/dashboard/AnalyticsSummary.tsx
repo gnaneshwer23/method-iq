@@ -6,15 +6,15 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 export const AnalyticsSummary = () => {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <LineChart className="h-5 w-5 text-blue-500" />
           Research Analytics
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="h-48 flex items-center justify-center bg-slate-50 rounded-md mb-4">
-          <p className="text-sm text-muted-foreground">Analytics visualization will appear here</p>
+      <CardContent className="pb-2">
+        <div className="h-36 flex items-center justify-center bg-slate-50 rounded-md mb-4">
+          <p className="text-sm text-muted-foreground">Analytics visualization</p>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <div className="bg-slate-50 p-3 rounded-md">
@@ -28,7 +28,9 @@ export const AnalyticsSummary = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full text-sm">Full Analytics</Button>
+        <Button variant="outline" size="sm" className="w-full text-sm">
+          Full Analytics
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -30,19 +30,21 @@ export const TasksList = () => {
   const pendingTasks = tasks.filter((task) => !task.completed).length;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CheckCircle2 className="h-5 w-5 text-green-500" />
-          Tasks
+    <Card className="mb-4">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-semibold flex items-center gap-2">
+            <CheckCircle2 className="h-5 w-5 text-green-500" />
+            Tasks
+          </CardTitle>
           {pendingTasks > 0 && (
-            <span className="ml-auto text-sm bg-muted rounded-full px-2 py-0.5">
+            <span className="text-sm bg-muted rounded-full px-2 py-0.5">
               {pendingTasks} pending
             </span>
           )}
-        </CardTitle>
+        </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-2">
         <div className="space-y-2">
           {tasks.map((task) => (
             <div
@@ -55,7 +57,7 @@ export const TasksList = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-5 w-5"
+                className="h-5 w-5 p-0"
                 onClick={() => toggleTask(task.id)}
               >
                 {task.completed ? (
