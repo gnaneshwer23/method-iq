@@ -30,7 +30,7 @@ export function AboutCTA() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="group backdrop-blur-sm bg-background/50 border-primary/20 hover:bg-primary/5 transition-all duration-300">
-              <Link to="/careers" className="flex items-center px-6">
+              <Link to="/contact" className="flex items-center px-6">
                 <BriefcaseIcon className="mr-2 h-5 w-5" />
                 Join Our Team
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -39,15 +39,15 @@ export function AboutCTA() {
           </div>
           
           <div className="mt-10 pt-10 border-t border-primary/10 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary flex items-center transition-colors">
+            <Link to="/contact" className="hover:text-primary flex items-center transition-colors">
               <ExternalLink className="w-3 h-3 mr-1" /> Privacy Policy
-            </a>
-            <a href="#" className="hover:text-primary flex items-center transition-colors">
+            </Link>
+            <Link to="/contact" className="hover:text-primary flex items-center transition-colors">
               <ExternalLink className="w-3 h-3 mr-1" /> Terms of Service
-            </a>
-            <a href="#" className="hover:text-primary flex items-center transition-colors">
+            </Link>
+            <Link to="/contact" className="hover:text-primary flex items-center transition-colors">
               <ExternalLink className="w-3 h-3 mr-1" /> Career Opportunities
-            </a>
+            </Link>
           </div>
         </div>
       </div>

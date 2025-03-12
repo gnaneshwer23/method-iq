@@ -56,7 +56,7 @@ export function TechnologyHero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 group">
-            <Link to="/demo" className="flex items-center gap-2">
+            <Link to="/technology" className="flex items-center gap-2">
               Explore Our Technology
               <Sparkles className="w-4 h-4 transition-all duration-300 group-hover:rotate-12" />
             </Link>

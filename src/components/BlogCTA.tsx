@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail, MessageSquare, BellRing } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 export function BlogCTA() {
   return (
@@ -23,14 +24,18 @@ export function BlogCTA() {
             Join our community of innovators and stay ahead of the latest research trends
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 shadow-md group">
-              <Mail className="mr-2 h-4 w-4" />
-              Subscribe Now
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 shadow-md group">
+              <Link to="/register">
+                <Mail className="mr-2 h-4 w-4" />
+                Subscribe Now
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
-            <Button size="lg" variant="outline" className="hover:bg-primary/10 hover:text-primary border-primary/20 hover:border-primary/40">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Join the Conversation
+            <Button asChild size="lg" variant="outline" className="hover:bg-primary/10 hover:text-primary border-primary/20 hover:border-primary/40">
+              <Link to="/blog">
+                <MessageSquare className="mr-2 h-4 w-4" />
+                Join the Conversation
+              </Link>
             </Button>
           </div>
           <div className="mt-8 flex items-center justify-center gap-2 text-sm text-muted-foreground">

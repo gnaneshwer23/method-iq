@@ -9,19 +9,22 @@ const services = [
     icon: FlaskConical,
     title: "Research Protocol Management",
     description: "Streamline your research protocols with AI-powered optimization and version control.",
-    benefits: ["Automated documentation", "Real-time collaboration", "Smart version tracking"]
+    benefits: ["Automated documentation", "Real-time collaboration", "Smart version tracking"],
+    link: "/features"
   },
   {
     icon: Database,
     title: "Data Integration",
     description: "Seamlessly integrate with your existing lab equipment and data sources.",
-    benefits: ["One-click connections", "Auto data normalization", "Secure data handling"]
+    benefits: ["One-click connections", "Auto data normalization", "Secure data handling"],
+    link: "/technology"
   },
   {
     icon: BarChart,
     title: "Analytics & Insights",
     description: "Get actionable insights from your research data with advanced analytics.",
-    benefits: ["Predictive modeling", "Pattern recognition", "Custom dashboards"]
+    benefits: ["Predictive modeling", "Pattern recognition", "Custom dashboards"],
+    link: "/how-it-works"
   }
 ];
 
@@ -76,11 +79,11 @@ export function ServicesSection() {
                     </li>
                   ))}
                 </ul>
-                <Button variant="ghost" className="group/btn px-0 py-0 h-auto text-primary hover:text-primary hover:bg-transparent">
-                  <span className="flex items-center font-medium">
+                <Button asChild variant="ghost" className="group/btn px-0 py-0 h-auto text-primary hover:text-primary hover:bg-transparent">
+                  <Link to={service.link} className="flex items-center font-medium">
                     Learn more 
                     <ArrowRight className="ml-1 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </span>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>

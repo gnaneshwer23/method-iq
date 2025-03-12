@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, TestTube } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -55,14 +56,20 @@ export function HeroSection() {
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-400/10 blur-xl animate-pulse z-0"></div>
                 
                 <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center z-10">
-                  <Brain className="w-20 h-20 text-blue-500 mb-4" />
+                  <Brain className="w-24 h-24 text-blue-500 mb-4" />
                   <div className="text-blue-600 font-bold text-4xl">MethodIQ</div>
                 </div>
 
-                <div className="absolute left-1/2 top-0 transform -translate-x-1/2 translate-y-4">
+                {/* Feature Card 1 - AI-Powered Protocols */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% - 230px)",
+                        left: "50%",
+                        transform: "translateX(-50%)"
+                     }}>
                   <Link 
                     to="/features/ai-protocols"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "800ms" }}
                   >
                     <Brain className="w-10 h-10 mb-2 text-blue-500" />
@@ -70,10 +77,16 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                <div className="absolute right-12 top-1/4">
+                {/* Feature Card 2 - Real-Time IoT Data */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% - 115px)",
+                        left: "calc(50% + 200px)",
+                        transform: "translateY(-50%)"
+                     }}>
                   <Link 
                     to="/features/iot-integration"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "950ms" }}
                   >
                     <CircuitBoard className="w-10 h-10 mb-2 text-blue-500" />
@@ -81,10 +94,16 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                <div className="absolute right-12 bottom-1/4">
+                {/* Feature Card 3 - Blockchain Verification */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% + 115px)",
+                        left: "calc(50% + 200px)",
+                        transform: "translateY(-50%)"
+                     }}>
                   <Link 
                     to="/features/blockchain-verification"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "1100ms" }}
                   >
                     <Lock className="w-10 h-10 mb-2 text-blue-500" />
@@ -92,10 +111,16 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 -translate-y-4">
+                {/* Feature Card 4 - Research Analytics */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% + 230px)",
+                        left: "50%",
+                        transform: "translateX(-50%)"
+                     }}>
                   <Link 
                     to="/features/research-analytics"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "1250ms" }}
                   >
                     <TestTube className="w-10 h-10 mb-2 text-blue-500" />
@@ -103,10 +128,16 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                <div className="absolute left-12 bottom-1/4">
+                {/* Feature Card 5 - Professional Networking */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% + 115px)",
+                        left: "calc(50% - 200px)",
+                        transform: "translateY(-50%)"
+                     }}>
                   <Link 
                     to="/features/networking"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "1400ms" }}
                   >
                     <Users className="w-10 h-10 mb-2 text-blue-500" />
@@ -114,10 +145,16 @@ export function HeroSection() {
                   </Link>
                 </div>
 
-                <div className="absolute left-12 top-1/4">
+                {/* Feature Card 6 - AR/VR Training */}
+                <div className="absolute"
+                     style={{ 
+                        top: "calc(50% - 115px)",
+                        left: "calc(50% - 200px)",
+                        transform: "translateY(-50%)"
+                     }}>
                   <Link 
                     to="/features/ar-vr"
-                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up"
+                    className="bg-white hover:bg-blue-50 transition-all duration-300 rounded-2xl p-4 shadow-md border border-blue-100 w-[160px] flex flex-col items-center animate-fade-up hover:scale-105"
                     style={{ animationDelay: "1550ms" }}
                   >
                     <Sparkles className="w-10 h-10 mb-2 text-blue-500" />
@@ -125,7 +162,9 @@ export function HeroSection() {
                   </Link>
                 </div>
 
+                {/* Connecting Lines */}
                 <svg className="absolute inset-0 w-full h-full z-5 pointer-events-none">
+                  {/* Line to Top Card */}
                   <line 
                     x1="50%" y1="50%" x2="50%" y2="12%" 
                     className="stroke-blue-200" 
@@ -135,6 +174,7 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" />
                   </line>
                   
+                  {/* Line to Top Right Card */}
                   <line 
                     x1="50%" y1="50%" x2="75%" y2="25%" 
                     className="stroke-blue-200" 
@@ -144,6 +184,7 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="0.6s" />
                   </line>
                   
+                  {/* Line to Bottom Right Card */}
                   <line 
                     x1="50%" y1="50%" x2="75%" y2="75%" 
                     className="stroke-blue-200" 
@@ -153,6 +194,7 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.2s" />
                   </line>
                   
+                  {/* Line to Bottom Card */}
                   <line 
                     x1="50%" y1="50%" x2="50%" y2="88%" 
                     className="stroke-blue-200" 
@@ -162,6 +204,7 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="1.8s" />
                   </line>
                   
+                  {/* Line to Bottom Left Card */}
                   <line 
                     x1="50%" y1="50%" x2="25%" y2="75%" 
                     className="stroke-blue-200" 
@@ -171,6 +214,7 @@ export function HeroSection() {
                     <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite" begin="2.4s" />
                   </line>
                   
+                  {/* Line to Top Left Card */}
                   <line 
                     x1="50%" y1="50%" x2="25%" y2="25%" 
                     className="stroke-blue-200" 

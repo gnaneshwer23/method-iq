@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Building2, Check, CreditCard, Users, Zap, Shield, Star, Database, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const tiers = [
   {
@@ -111,18 +112,19 @@ export function PricingSection() {
               </ul>
 
               <Button 
+                asChild
                 className={`w-full gap-2 ${tier.highlighted ? 'bg-primary hover:bg-primary/90' : 'bg-secondary hover:bg-secondary/80 hover:text-primary'}`}
               >
                 {tier.name === "Free Tier" ? (
-                  <>
+                  <Link to="/register">
                     <Gift className="h-4 w-4" />
                     Get Started
-                  </>
+                  </Link>
                 ) : (
-                  <>
+                  <Link to="/register">
                     <CreditCard className="h-4 w-4" />
                     Subscribe Now
-                  </>
+                  </Link>
                 )}
               </Button>
             </Card>
@@ -142,9 +144,11 @@ export function PricingSection() {
                   Custom-tailored plans for universities, research institutions, and corporate R&D departments. 
                   Contact us for volume discounts and specialized integration options.
                 </p>
-                <Button variant="outline" className="gap-2 border-primary/20 hover:border-primary hover:bg-primary/5">
-                  <Users className="h-4 w-4" />
-                  Contact Sales Team
+                <Button asChild variant="outline" className="gap-2 border-primary/20 hover:border-primary hover:bg-primary/5">
+                  <Link to="/contact">
+                    <Users className="h-4 w-4" />
+                    Contact Sales Team
+                  </Link>
                 </Button>
               </div>
             </div>

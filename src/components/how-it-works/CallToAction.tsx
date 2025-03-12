@@ -27,13 +27,13 @@ export function CallToAction({ visible }: CallToActionProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 shadow-md hover:shadow-primary/25 transition-all duration-300 group">
-              <Link to="/contact">
+              <Link to="/register">
                 Get Started Now
                 <ArrowRight className="ml-1 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="border-primary/20 hover:bg-primary/5 transition-all duration-300">
-              <Link to="/demo">Schedule a Demo</Link>
+              <Link to="/contact">Schedule a Demo</Link>
             </Button>
           </div>
         </div>
