@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users } from "lucide-react";
+import { ArrowRight, Play, Atom, Brain, CircuitBoard, Beaker, Sparkles, Lock, Users, Flask } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroSection() {
@@ -52,28 +52,22 @@ export function HeroSection() {
 
           <div className="hidden lg:block relative h-[500px]">
             <div className="sticky top-24 w-full h-[500px]">
-              {/* Central Hub - Enhanced with more vibrant gradients */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-primary/30 to-primary/10 rounded-full p-8 backdrop-blur-lg border border-primary/20 animate-pulse duration-[4000ms] shadow-lg shadow-primary/10">
-                <div className="bg-gradient-to-br from-primary/20 to-primary/10 rounded-full p-6 border border-primary/10">
-                  <div className="bg-gradient-to-br from-primary/15 to-primary/5 rounded-full p-4">
-                    <div className="text-primary font-semibold flex items-center gap-2">
-                      <Brain className="w-5 h-5" />
-                      MethodIQ
-                    </div>
-                  </div>
-                </div>
+              {/* Central Hub with MethodIQ logo and text */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-blue-100/60 to-blue-100/40 rounded-full w-64 h-64 backdrop-blur-lg border border-blue-200/30 flex flex-col items-center justify-center animate-pulse duration-[4000ms] shadow-lg shadow-blue-300/10">
+                <Brain className="w-10 h-10 text-blue-500 mb-2" />
+                <div className="text-blue-600 font-semibold text-xl">MethodIQ</div>
               </div>
 
-              {/* Feature Circles - Enhanced with better icons and styling */}
+              {/* Feature Cards in a circular arrangement */}
               {[
-                { label: "AI-Powered\nProtocols", angle: 0, Icon: Brain },
-                { label: "Blockchain\nVerification", angle: 60, Icon: Lock },
-                { label: "Real-Time\nIoT Data", angle: 120, Icon: CircuitBoard },
-                { label: "Professional\nNetworking", angle: 180, Icon: Users },
-                { label: "AR/VR\nTraining", angle: 240, Icon: Sparkles },
-                { label: "Research\nAnalytics", angle: 300, Icon: Beaker }
+                { label: "AI-Powered\nProtocols", icon: Brain, angle: 0, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "Research\nAnalytics", icon: Flask, angle: 60, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "Professional\nNetworking", icon: Users, angle: 120, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "AR/VR\nTraining", icon: Sparkles, angle: 180, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "Real-Time\nIoT Data", icon: CircuitBoard, angle: 240, color: "text-blue-500", bgColor: "bg-white" },
+                { label: "Blockchain\nVerification", icon: Lock, angle: 300, color: "text-blue-500", bgColor: "bg-white" }
               ].map((feature, index) => {
-                const radius = 160;
+                const radius = 200; // Increased radius for more space
                 const angle = (feature.angle * Math.PI) / 180;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
@@ -81,15 +75,15 @@ export function HeroSection() {
                 return (
                   <div
                     key={index}
-                    className="absolute transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-background via-background/95 to-background/90 rounded-lg p-3 shadow-lg shadow-primary/5 border border-primary/20 text-center text-sm font-medium whitespace-pre-line hover:bg-accent transition-colors backdrop-blur-sm animate-fade-up hover:scale-110 transition-transform duration-300"
+                    className={`absolute transform -translate-x-1/2 -translate-y-1/2 ${feature.bgColor} rounded-2xl p-4 shadow-lg border border-blue-100 text-center w-32 flex flex-col items-center animate-fade-up`}
                     style={{
                       left: `calc(50% + ${x}px)`,
                       top: `calc(50% + ${y}px)`,
                       animationDelay: `${index * 150 + 700}ms`,
                     }}
                   >
-                    <feature.Icon className="w-4 h-4 mb-1 mx-auto text-primary" />
-                    {feature.label}
+                    <feature.icon className={`w-8 h-8 mb-2 ${feature.color}`} />
+                    <div className="font-medium text-sm whitespace-pre-line">{feature.label}</div>
                   </div>
                 );
               })}
@@ -104,10 +98,10 @@ export function HeroSection() {
                     key={index}
                     x1="50%"
                     y1="50%"
-                    x2={`${50 + Math.cos((angle * Math.PI) / 180) * 40}%`}
-                    y2={`${50 + Math.sin((angle * Math.PI) / 180) * 40}%`}
-                    className="stroke-primary/20"
-                    strokeWidth="1.5"
+                    x2={`${50 + Math.cos((angle * Math.PI) / 180) * 45}%`}
+                    y2={`${50 + Math.sin((angle * Math.PI) / 180) * 45}%`}
+                    className="stroke-blue-200"
+                    strokeWidth="1"
                     strokeDasharray="3,3"
                   >
                     <animate
