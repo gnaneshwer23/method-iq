@@ -7,10 +7,16 @@ import { FeaturedArticles } from "@/components/FeaturedArticles";
 import { BlogGrid } from "@/components/BlogGrid";
 import { BlogSidebar } from "@/components/BlogSidebar";
 import { BlogCTA } from "@/components/BlogCTA";
+import { useEffect } from "react";
 
 const Blog = () => {
+  // Add scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-background to-background/95">
       <Header />
       <main className="flex-1">
         <BlogHero />

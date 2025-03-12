@@ -1,32 +1,38 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, BookOpen, Lightbulb, TrendingUp, ClipboardCheck, Brain, Calendar } from "lucide-react";
 
 const categories = [
-  "Research Innovations",
-  "AI & Technology",
-  "Industry Trends",
-  "Case Studies",
-  "Thought Leadership",
-  "Events & Webinars"
+  { name: "Research Innovations", icon: BookOpen },
+  { name: "AI & Technology", icon: Lightbulb },
+  { name: "Industry Trends", icon: TrendingUp },
+  { name: "Case Studies", icon: ClipboardCheck },
+  { name: "Thought Leadership", icon: Brain },
+  { name: "Events & Webinars", icon: Calendar }
 ];
 
 export function BlogNavigation() {
   return (
-    <section className="py-8 border-b">
+    <section className="py-10 border-b">
       <div className="container mx-auto px-4">
         {/* Categories */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant="outline"
-              className="rounded-full"
-            >
-              {category}
-            </Button>
-          ))}
+        <div className="flex overflow-x-auto pb-4 scrollbar-none mb-8">
+          <div className="flex gap-3 px-2">
+            {categories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <Button
+                  key={category.name}
+                  variant="outline"
+                  className="rounded-full whitespace-nowrap hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+                >
+                  <Icon className="mr-2 h-4 w-4" />
+                  {category.name}
+                </Button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -35,7 +41,7 @@ export function BlogNavigation() {
           <Input
             type="search"
             placeholder="Search articles..."
-            className="pl-10"
+            className="pl-10 bg-secondary/50 border-secondary focus-visible:ring-primary"
           />
         </div>
       </div>
