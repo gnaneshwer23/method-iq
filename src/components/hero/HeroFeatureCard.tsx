@@ -11,6 +11,7 @@ interface HeroFeatureCardProps {
     right?: string;
     top?: string;
     bottom?: string;
+    transform?: string;
   };
 }
 
