@@ -2,7 +2,7 @@
 import { supabase } from '../supabase-client';
 import type { UserProfile } from '@/types/database.types';
 
-const databaseApi = {
+export const databaseApi = {
   // Create a new user profile
   createUserProfile: async (profile: Omit<UserProfile, 'created_at' | 'updated_at'>) => {
     const { data, error } = await supabase

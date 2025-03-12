@@ -1,8 +1,8 @@
 
 import { supabase } from '../supabase-client';
-import { databaseApi } from './index';
+import type { UserProfile } from '@/types/database.types';
 
-const authApi = {
+export const authApi = {
   // Sign up a new user and create their profile
   signUp: async (email: string, password: string, profileData?: { name: string, role: 'researcher' | 'collaborator' }) => {
     // Create the user account
@@ -15,7 +15,7 @@ const authApi = {
     
     // If user was created successfully and profile data provided, create profile
     if (authData.user && profileData) {
-      await databaseApi.createUserProfile({
+      await createUserProfile({
         user_id: authData.user.id,
         email: authData.user.email || email,
         name: profileData.name,
@@ -68,6 +68,19 @@ const authApi = {
     
     return { data, error };
   }
+};
+
+// Extracted helper function
+const createUserProfile = async (profile: Omit<UserProfile, 'created_at' | 'updated_at'>) => {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .insert({
+      ...profile,
+      updated_at: new Date().toISOString()
+    })
+    .select();
+  
+  return { data, error };
 };
 
 export default authApi;

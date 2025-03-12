@@ -1,68 +1,53 @@
 
 import { supabase } from '../supabase-client';
+import type { FederatedLearningProject } from '@/types/database.types';
 
 export const federatedLearningApi = {
-  // Create a new federated learning project
-  createProject: async (projectData: any) => {
-    try {
-      const { data, error } = await supabase
-        .from('federated_learning_projects')
-        .insert(projectData)
-        .select();
-      
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error('Create federated learning project error:', error);
-      return { data: null, error };
-    }
+  // Create a federated learning project
+  createProject: async (project: Omit<FederatedLearningProject, 'id' | 'created_at' | 'updated_at' | 'status'>) => {
+    const projectWithDefaults = {
+      ...project,
+      status: 'recruiting' as const
+    };
+    
+    const { data, error } = await supabase
+      .from('federated_learning_projects')
+      .insert(projectWithDefaults)
+      .select();
+    
+    return { data, error };
   },
   
-  // Get all federated learning projects
-  getAllProjects: async () => {
-    try {
-      const { data, error } = await supabase
-        .from('federated_learning_projects')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error('Get all federated learning projects error:', error);
-      return { data: null, error };
-    }
+  // Get federated learning project
+  getProject: async (id: string) => {
+    const { data, error } = await supabase
+      .from('federated_learning_projects')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    return { data, error };
   },
   
-  // Join a federated learning project
-  joinProject: async (projectId: string, participantData: any) => {
-    try {
-      // In a real implementation, this would involve more complex logic
-      // For now, we'll just return a success message
-      return { 
-        data: { message: 'Successfully joined federated learning project' }, 
-        error: null 
-      };
-    } catch (error: any) {
-      console.error('Join federated learning project error:', error);
-      return { data: null, error };
-    }
+  // Update project status
+  updateProjectStatus: async (id: string, status: FederatedLearningProject['status']) => {
+    const { data, error } = await supabase
+      .from('federated_learning_projects')
+      .update({ status })
+      .eq('id', id)
+      .select();
+    
+    return { data, error };
   },
   
-  // Update federated learning project status
-  updateProjectStatus: async (projectId: string, status: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('federated_learning_projects')
-        .update({ status })
-        .eq('id', projectId)
-        .select();
-      
-      if (error) throw error;
-      return { data, error: null };
-    } catch (error: any) {
-      console.error('Update federated learning project status error:', error);
-      return { data: null, error };
-    }
+  // Get all available federated learning projects
+  getAvailableProjects: async () => {
+    const { data, error } = await supabase
+      .from('federated_learning_projects')
+      .select('*')
+      .in('status', ['recruiting', 'training'])
+      .order('created_at', { ascending: false });
+    
+    return { data, error };
   }
 };
