@@ -4,9 +4,13 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase-client';
 import { authApi } from '@/lib/api/auth';
 import { useToast } from '@/components/ui/use-toast';
+import type { UserRole } from '@/types/auth.types';
+
+// Extended user type with role
+export type AuthUser = User & { role?: UserRole | null };
 
 type AuthContextType = {
-  user: User | null;
+  user: AuthUser | null;
   session: Session | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
@@ -18,10 +22,42 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  // Fetch user role from user_roles table
+  const fetchUserRole = async (userId: string): Promise<UserRole | null> => {
+    try {
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user role:', error);
+        return null;
+      }
+
+      return data?.role || null;
+    } catch (error) {
+      console.error('Exception fetching user role:', error);
+      return null;
+    }
+  };
+
+  // Set user with role
+  const setUserWithRole = async (authUser: User | null) => {
+    if (!authUser) {
+      setUser(null);
+      return;
+    }
+
+    const role = await fetchUserRole(authUser.id);
+    setUser({ ...authUser, role });
+  };
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -33,10 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log('Initial session:', initialSession);
         setSession(initialSession);
         
-        if (initialSession) {
-          const { user: currentUser } = await authApi.getCurrentUser();
-          console.log('Current user:', currentUser);
-          setUser(currentUser);
+        if (initialSession?.user) {
+          await setUserWithRole(initialSession.user);
         }
       } catch (error) {
         console.error('Error initializing auth:', error);
@@ -46,10 +80,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Listen for auth changes
       const { data: authListener } = supabase.auth.onAuthStateChange(
-        async (event, newSession) => {
+        (event, newSession) => {
           console.log('Auth state changed:', event, newSession);
           setSession(newSession);
-          setUser(newSession?.user ?? null);
+          
+          // Defer role fetching to avoid blocking
+          if (newSession?.user) {
+            setTimeout(() => {
+              setUserWithRole(newSession.user);
+            }, 0);
+          } else {
+            setUser(null);
+          }
+          
           setLoading(false);
         }
       );

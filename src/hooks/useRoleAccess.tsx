@@ -1,11 +1,8 @@
 
 import { useAuth } from "@/contexts/AuthContext";
+import type { Permission, UserRole } from "@/types/auth.types";
 
-type Permission = 'create:protocol' | 'edit:protocol' | 'manage:devices' | 
-                 'view:all' | 'create:experiment' | 'run:experiment' | 
-                 'read:blockchain' | 'receive:ai' | 'write:partial';
-
-const rolePermissions: Record<string, Permission[]> = {
+const rolePermissions: Record<UserRole, Permission[]> = {
   admin: [
     'create:protocol',
     'edit:protocol',
