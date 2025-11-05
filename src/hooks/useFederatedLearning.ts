@@ -179,6 +179,28 @@ export const useFederatedLearning = () => {
     }
   });
 
+  const updateProjectStatus = useMutation({
+    mutationFn: async ({ projectId, status }: { projectId: string; status: string }) => {
+      const { data, error } = await supabase
+        .from('federated_learning_projects')
+        .update({ status })
+        .eq('id', projectId)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['federated-projects'] });
+      queryClient.invalidateQueries({ queryKey: ['federated-project'] });
+      toast.success("Project status updated");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to update status: ${error.message}`);
+    }
+  });
+
   return {
     projects,
     projectsLoading,
@@ -186,7 +208,8 @@ export const useFederatedLearning = () => {
     participationsLoading,
     createProject,
     joinProject,
-    submitModelUpdate
+    submitModelUpdate,
+    updateProjectStatus
   };
 };
 

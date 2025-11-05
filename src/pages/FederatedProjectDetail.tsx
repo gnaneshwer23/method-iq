@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings, Award } from "lucide-react";
+import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings, Award, Play, CheckCircle, AlertCircle } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
 import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
@@ -16,15 +16,19 @@ import { QualityAlertsConfig } from "@/components/federated/QualityAlertsConfig"
 import { ReputationLeaderboard } from "@/components/federated/ReputationLeaderboard";
 import { ReputationBadge } from "@/components/federated/ReputationBadge";
 import { MyReputationCard } from "@/components/federated/MyReputationCard";
+import { SubmitModelUpdateDialog } from "@/components/federated/SubmitModelUpdateDialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isAdmin } = useRoleAccess();
-  const { joinProject } = useFederatedLearning();
+  const { joinProject, updateProjectStatus } = useFederatedLearning();
   const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading, aggregatedModels } = useFederatedProject(id!);
+  const { toast } = useToast();
   
   const [monitoringEnabled, setMonitoringEnabled] = useState(true);
   const [minAccuracyThreshold, setMinAccuracyThreshold] = useState(0.5);
@@ -34,6 +38,7 @@ const FederatedProjectDetail = () => {
   const isProjectOwner = project?.created_by === user?.id;
   const myParticipation = participants?.find(p => p.user_id === user?.id);
   const progress = project ? (project.current_round / project.total_rounds) * 100 : 0;
+  const canManageProject = isProjectOwner || isAdmin;
   
   // Count updates for current round
   const currentRoundUpdates = modelUpdates?.filter(u => u.round_number === project?.current_round) || [];
@@ -73,6 +78,94 @@ const FederatedProjectDetail = () => {
 
   const handleJoinProject = async () => {
     await joinProject.mutateAsync({ projectId: project.id });
+  };
+
+  const handleStartTraining = async () => {
+    if (!canManageProject || !project) return;
+    
+    const participantCount = participants?.length || 0;
+    if (participantCount < (project.min_participants || 3)) {
+      toast({
+        title: "Cannot Start Training",
+        description: `Need at least ${project.min_participants || 3} participants. Currently have ${participantCount}.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      await updateProjectStatus.mutateAsync({ projectId: project.id, status: 'training' });
+      toast({
+        title: "Training Started",
+        description: "Participants can now submit model updates for round 1"
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Start Training",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleCompleteProject = async () => {
+    if (!canManageProject || !project) return;
+
+    try {
+      await updateProjectStatus.mutateAsync({ projectId: project.id, status: 'completed' });
+      toast({
+        title: "Project Completed",
+        description: "Federated learning project has been marked as complete"
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Complete Project",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDownloadModel = async (modelUrl: string, fileName: string) => {
+    try {
+      // Extract the file path from the URL
+      const urlParts = modelUrl.split('/fl-model-weights/');
+      if (urlParts.length < 2) {
+        throw new Error("Invalid model URL");
+      }
+      const filePath = urlParts[1];
+
+      // Get signed URL for download
+      const { data, error } = await supabase.storage
+        .from('fl-model-weights')
+        .createSignedUrl(filePath, 3600); // 1 hour expiry
+
+      if (error) throw error;
+
+      // Download the file
+      const response = await fetch(data.signedUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast({
+        title: "Download Started",
+        description: `Downloading ${fileName}`
+      });
+    } catch (error) {
+      console.error("Download error:", error);
+      toast({
+        title: "Download Failed",
+        description: error instanceof Error ? error.message : "Failed to download model",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -121,6 +214,20 @@ const FederatedProjectDetail = () => {
               <Button onClick={handleJoinProject} disabled={joinProject.isPending}>
                 <Users className="h-4 w-4 mr-2" />
                 {joinProject.isPending ? "Joining..." : "Join Project"}
+              </Button>
+            )}
+            
+            {canManageProject && project.status === 'recruiting' && (
+              <Button onClick={handleStartTraining} variant="default">
+                <Play className="h-4 w-4 mr-2" />
+                Start Training
+              </Button>
+            )}
+            
+            {canManageProject && project.status === 'training' && (
+              <Button onClick={handleCompleteProject} variant="secondary">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Complete Project
               </Button>
             )}
           </div>
@@ -459,10 +566,24 @@ const FederatedProjectDetail = () => {
                         )}
 
                         <div className="flex justify-end mt-3">
-                          <Button variant="outline" size="sm">
-                            <Download className="h-4 w-4 mr-2" />
-                            Download Model
-                          </Button>
+                          {model.model_weights_url ? (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleDownloadModel(
+                                model.model_weights_url!,
+                                `aggregated_round_${model.round_number}.pkl`
+                              )}
+                            >
+                              <Download className="h-4 w-4 mr-2" />
+                              Download Model
+                            </Button>
+                          ) : (
+                            <Button variant="outline" size="sm" disabled>
+                              <Download className="h-4 w-4 mr-2" />
+                              No File Available
+                            </Button>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -480,18 +601,38 @@ const FederatedProjectDetail = () => {
                 <CardHeader>
                   <CardTitle>Submit Model Update</CardTitle>
                   <CardDescription>
-                    Upload your locally trained model weights for this round
+                    Upload your locally trained model weights for round {project.current_round || 1}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="py-12 text-center">
-                  <Upload className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground mb-4">
-                    Train your model locally and upload the encrypted weights
-                  </p>
-                  <Button>
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload Model Weights
-                  </Button>
+                <CardContent className="space-y-4">
+                  {project.status !== 'training' ? (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>Training has not started yet. Wait for the project owner to start training.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+                        <h4 className="font-semibold text-sm">Training Guidelines</h4>
+                        <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                          <li>Train your model locally using your private data</li>
+                          <li>Export model weights in .pkl, .h5, .pt, or .onnx format</li>
+                          <li>File size limit: 100MB</li>
+                          <li>Report accurate training metrics (accuracy, loss, samples)</li>
+                        </ul>
+                      </div>
+                      
+                      <SubmitModelUpdateDialog
+                        projectId={project.id}
+                        participantId={myParticipation?.id || ''}
+                        currentRound={project.current_round || 1}
+                        onSuccess={() => {
+                          // Refresh data after submission
+                          window.location.reload();
+                        }}
+                      />
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
