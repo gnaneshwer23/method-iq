@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -13,12 +12,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Loader2, AlertCircle, Eye, EyeOff, CheckCircle2, Info } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
+const passwordRequirements = [
+  { label: 'At least 6 characters', test: (pwd: string) => pwd.length >= 6 },
+];
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -31,13 +35,39 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+// Helper to get user-friendly error messages
+const getErrorMessage = (error: string | undefined): string => {
+  if (!error) return 'An unexpected error occurred. Please try again.';
+  
+  const errorLower = error.toLowerCase();
+  
+  if (errorLower.includes('user already registered') || errorLower.includes('already exists')) {
+    return 'An account with this email already exists. Please sign in instead.';
+  }
+  if (errorLower.includes('invalid email')) {
+    return 'Please enter a valid email address.';
+  }
+  if (errorLower.includes('password') && errorLower.includes('weak')) {
+    return 'Password is too weak. Please use a stronger password with at least 6 characters.';
+  }
+  if (errorLower.includes('network')) {
+    return 'Network error. Please check your internet connection and try again.';
+  }
+  if (errorLower.includes('rate limit')) {
+    return 'Too many registration attempts. Please wait a few minutes before trying again.';
+  }
+  
+  return error;
+};
+
 export function RegisterForm() {
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
@@ -49,58 +79,93 @@ export function RegisterForm() {
     },
   });
 
+  const password = form.watch('password');
+
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    navigate('/dashboard', { replace: true });
+    return null;
+  }
+
   async function onSubmit(values: FormValues) {
     setIsLoading(true);
     setFormError(null);
     
     try {
-      console.log('Form submitted with values:', values);
       const result = await register(values.email, values.password);
-      console.log('Registration result:', result);
       
       if (result.success) {
+        setRegistrationSuccess(true);
         toast({
-          title: 'Registration successful',
-          description: 'Please check your email for verification link',
+          title: 'Registration successful!',
+          description: 'Please check your email to verify your account.',
         });
-        navigate('/login');
       } else {
-        setFormError(result.error || 'An error occurred during registration. Please try again.');
+        setFormError(getErrorMessage(result.error));
         toast({
           variant: 'destructive',
           title: 'Registration failed',
-          description: result.error || 'An error occurred during registration',
+          description: getErrorMessage(result.error),
         });
       }
     } catch (error: any) {
-      console.error('Registration form error:', error);
-      setFormError(error.message || 'An unexpected error occurred. Please try again.');
+      const errorMsg = getErrorMessage(error.message);
+      setFormError(errorMsg);
       toast({
         variant: 'destructive',
         title: 'Registration failed',
-        description: error.message || 'An error occurred during registration',
+        description: errorMsg,
       });
     } finally {
       setIsLoading(false);
     }
   }
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
-  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+  if (registrationSuccess) {
+    return (
+      <Card className="w-full max-w-md mx-auto shadow-lg">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <CheckCircle2 className="h-6 w-6 text-green-600" />
+          </div>
+          <CardTitle className="text-2xl font-bold">Check Your Email</CardTitle>
+          <CardDescription>
+            We've sent a verification link to your email address
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertTitle>Next Steps</AlertTitle>
+            <AlertDescription>
+              <ol className="list-decimal list-inside space-y-1 mt-2">
+                <li>Check your email inbox</li>
+                <li>Click the verification link</li>
+                <li>Return here to sign in</li>
+              </ol>
+            </AlertDescription>
+          </Alert>
+          <Button onClick={() => navigate('/login')} className="w-full">
+            Go to Sign In
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-lg border border-gray-300">
-      <CardHeader className="bg-gray-100 rounded-t-md">
-        <CardTitle className="text-2xl font-bold text-gray-900">Create an Account</CardTitle>
-        <CardDescription className="text-gray-700">
+    <Card className="w-full max-w-md mx-auto shadow-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+        <CardDescription>
           Register to access MethodIQ's research platform
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-6 bg-white">
+      <CardContent>
         {formError && (
-          <Alert variant="destructive" className="mb-4 border-red-400 bg-red-50">
+          <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription className="text-red-800">{formError}</AlertDescription>
+            <AlertDescription>{formError}</AlertDescription>
           </Alert>
         )}
         
@@ -111,11 +176,16 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-900 font-medium">Email</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} className="border-gray-300 bg-white text-gray-900" />
+                    <Input 
+                      placeholder="you@example.com" 
+                      {...field}
+                      disabled={isLoading}
+                      autoComplete="email"
+                    />
                   </FormControl>
-                  <FormMessage className="text-red-600" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -125,26 +195,44 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-900 font-medium">Password</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input 
                         type={showPassword ? "text" : "password"} 
                         placeholder="••••••••" 
-                        {...field} 
-                        className="border-gray-300 bg-white text-gray-900 pr-10" 
+                        {...field}
+                        disabled={isLoading}
+                        autoComplete="new-password"
+                        className="pr-10"
                       />
                       <Button 
                         type="button" 
-                        variant="ghost" 
-                        onClick={togglePasswordVisibility}
-                        className="absolute right-0 top-0 h-full px-3 py-2"
+                        variant="ghost"
+                        size="sm"
+                        disabled={isLoading}
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4 text-gray-500" /> : <Eye className="h-4 w-4 text-gray-500" />}
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
                   </FormControl>
-                  <FormMessage className="text-red-600" />
+                  {password && (
+                    <div className="space-y-1 mt-2">
+                      {passwordRequirements.map((req, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-xs">
+                          <CheckCircle2 
+                            className={`h-3 w-3 ${req.test(password) ? 'text-green-500' : 'text-muted-foreground'}`} 
+                          />
+                          <span className={req.test(password) ? 'text-green-600' : 'text-muted-foreground'}>
+                            {req.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -154,31 +242,35 @@ export function RegisterForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-900 font-medium">Confirm Password</FormLabel>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input 
                         type={showConfirmPassword ? "text" : "password"} 
                         placeholder="••••••••" 
-                        {...field} 
-                        className="border-gray-300 bg-white text-gray-900 pr-10" 
+                        {...field}
+                        disabled={isLoading}
+                        autoComplete="new-password"
+                        className="pr-10"
                       />
                       <Button 
                         type="button" 
-                        variant="ghost" 
-                        onClick={toggleConfirmPasswordVisibility}
-                        className="absolute right-0 top-0 h-full px-3 py-2"
+                        variant="ghost"
+                        size="sm"
+                        disabled={isLoading}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                       >
-                        {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-500" /> : <Eye className="h-4 w-4 text-gray-500" />}
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
                   </FormControl>
-                  <FormMessage className="text-red-600" />
+                  <FormMessage />
                 </FormItem>
               )}
             />
             
-            <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -191,8 +283,8 @@ export function RegisterForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-center border-t border-gray-200 pt-4 bg-white">
-        <Button variant="link" onClick={() => navigate('/login')} className="text-blue-600">
+      <CardFooter className="flex justify-center">
+        <Button variant="link" onClick={() => navigate('/login')} disabled={isLoading}>
           Already have an account? Sign in
         </Button>
       </CardFooter>

@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,7 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Loader2, AlertCircle, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const formSchema = z.object({
@@ -26,9 +25,35 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+// Helper to get user-friendly error messages
+const getErrorMessage = (error: string | undefined): string => {
+  if (!error) return 'An unexpected error occurred. Please try again.';
+  
+  const errorLower = error.toLowerCase();
+  
+  if (errorLower.includes('email not confirmed')) {
+    return 'Please verify your email address. Check your inbox for the confirmation link.';
+  }
+  if (errorLower.includes('invalid login credentials') || errorLower.includes('invalid email or password')) {
+    return 'Invalid email or password. Please check your credentials and try again.';
+  }
+  if (errorLower.includes('too many requests')) {
+    return 'Too many login attempts. Please wait a few minutes before trying again.';
+  }
+  if (errorLower.includes('network')) {
+    return 'Network error. Please check your internet connection and try again.';
+  }
+  if (errorLower.includes('user not found')) {
+    return 'No account found with this email. Please sign up first.';
+  }
+  
+  return error;
+};
+
 export function LoginForm() {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -41,27 +66,34 @@ export function LoginForm() {
     },
   });
 
+  // Redirect if already authenticated
+  if (isAuthenticated) {
+    const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/dashboard';
+    sessionStorage.removeItem('redirectAfterLogin');
+    navigate(redirectTo, { replace: true });
+    return null;
+  }
+
   async function onSubmit(values: FormValues) {
     setIsLoading(true);
     setFormError(null);
     
     try {
-      console.log('Attempting login with:', values.email);
       const result = await login(values.email, values.password);
-      console.log('Login result:', result);
       
       if (result.success) {
-        navigate('/dashboard');
+        // Get intended destination or default to dashboard
+        const from = (location.state as any)?.from?.pathname || 
+                     sessionStorage.getItem('redirectAfterLogin') || 
+                     '/dashboard';
+        
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(from, { replace: true });
       } else {
-        if (result.error?.includes('Email not confirmed')) {
-          setFormError('Please check your email and verify your account before logging in.');
-        } else {
-          setFormError(result.error || 'Invalid email or password. Please try again.');
-        }
+        setFormError(getErrorMessage(result.error));
       }
     } catch (error: any) {
-      console.error('Login error:', error);
-      setFormError(error.message || 'An error occurred during login. Please try again.');
+      setFormError(getErrorMessage(error.message));
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +124,12 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="you@example.com" {...field} />
+                    <Input 
+                      placeholder="you@example.com" 
+                      {...field}
+                      disabled={isLoading}
+                      autoComplete="email"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,14 +147,18 @@ export function LoginForm() {
                       <Input 
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••" 
-                        {...field} 
+                        {...field}
+                        disabled={isLoading}
+                        autoComplete="current-password"
                         className="pr-10"
                       />
                       <Button
                         type="button"
                         variant="ghost"
+                        size="sm"
+                        disabled={isLoading}
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-0 top-0 h-full px-3 py-2"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
@@ -141,13 +182,15 @@ export function LoginForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="link" onClick={() => navigate('/register')}>
-          Don't have an account? Sign up
-        </Button>
-        <Button variant="link" onClick={() => navigate('/password-reset')}>
-          Forgot password?
-        </Button>
+      <CardFooter className="flex flex-col gap-2">
+        <div className="flex justify-between w-full">
+          <Button variant="link" onClick={() => navigate('/register')} disabled={isLoading}>
+            Don't have an account? Sign up
+          </Button>
+          <Button variant="link" onClick={() => navigate('/password-reset')} disabled={isLoading}>
+            Forgot password?
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
