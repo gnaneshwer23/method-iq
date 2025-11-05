@@ -9,6 +9,7 @@ import { RatingsList } from '@/components/protocols/RatingsList';
 import { RatingForm } from '@/components/protocols/RatingForm';
 import { BlockchainVerificationBadge } from '@/components/protocols/BlockchainVerificationBadge';
 import { VerifyButton } from '@/components/protocols/VerifyButton';
+import { CreateExperimentDialog } from '@/components/experiments/CreateExperimentDialog';
 import { useProtocol, useProtocolRatings } from '@/hooks/useProtocols';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -118,7 +119,13 @@ const ProtocolDetail = () => {
                   ({protocol.rating_count || 0})
                 </span>
               </div>
-              <VerifyButton protocol={protocol} />
+              <div className="flex gap-2">
+                <VerifyButton protocol={protocol} />
+                <CreateExperimentDialog 
+                  protocolId={protocol.id} 
+                  protocolTitle={protocol.title}
+                />
+              </div>
             </div>
           </div>
 

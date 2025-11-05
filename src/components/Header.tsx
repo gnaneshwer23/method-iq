@@ -76,6 +76,16 @@ export const Header = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
+                <Link to="/protocols" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Protocols
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/experiments" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Experiments
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 <Link to="/pricing" className="h-9 px-4 py-2 text-sm hover:text-primary">
                   Pricing
                 </Link>
@@ -133,6 +143,12 @@ export const Header = () => {
                 </Link>
                 <Link to="/blog" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Blog
+                </Link>
+                <Link to="/protocols" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Protocols
+                </Link>
+                <Link to="/experiments" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Experiments
                 </Link>
                 <Link to="/pricing" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Pricing
