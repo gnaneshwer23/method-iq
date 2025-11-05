@@ -96,6 +96,11 @@ export const Header = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
+                <Link to="/federated-learning" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Federated Learning
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 <Link to="/pricing" className="h-9 px-4 py-2 text-sm hover:text-primary">
                   Pricing
                 </Link>
@@ -165,6 +170,9 @@ export const Header = () => {
                 </Link>
                 <Link to="/iot-devices" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   IoT Devices
+                </Link>
+                <Link to="/federated-learning" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Federated Learning
                 </Link>
                 <Link to="/pricing" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Pricing

@@ -26,6 +26,8 @@ import DigitalTwins from "./pages/DigitalTwins";
 import DigitalTwinDetail from "./pages/DigitalTwinDetail";
 import IoTDevices from "./pages/IoTDevices";
 import IoTDeviceDetail from "./pages/IoTDeviceDetail";
+import FederatedLearning from "./pages/FederatedLearning";
+import FederatedProjectDetail from "./pages/FederatedProjectDetail";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -53,10 +55,12 @@ const App = () => (
             <Route path="/protocols/:id" element={<ProtocolDetail />} />
             <Route path="/experiments" element={<Experiments />} />
             <Route path="/experiments/:id" element={<ExperimentDetail />} />
-            <Route path="/digital-twins" element={<DigitalTwins />} />
-            <Route path="/digital-twins/:id" element={<DigitalTwinDetail />} />
-            <Route path="/iot-devices" element={<IoTDevices />} />
-            <Route path="/iot-devices/:id" element={<IoTDeviceDetail />} />
+            <Route path="/digital-twins" element={<ProtectedRoute><DigitalTwins /></ProtectedRoute>} />
+            <Route path="/digital-twins/:id" element={<ProtectedRoute><DigitalTwinDetail /></ProtectedRoute>} />
+            <Route path="/iot-devices" element={<ProtectedRoute><IoTDevices /></ProtectedRoute>} />
+            <Route path="/iot-devices/:id" element={<ProtectedRoute><IoTDeviceDetail /></ProtectedRoute>} />
+            <Route path="/federated-learning" element={<ProtectedRoute><FederatedLearning /></ProtectedRoute>} />
+            <Route path="/federated-learning/:id" element={<ProtectedRoute><FederatedProjectDetail /></ProtectedRoute>} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />

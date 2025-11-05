@@ -233,6 +233,208 @@ export type Database = {
           },
         ]
       }
+      federated_aggregated_models: {
+        Row: {
+          aggregation_metadata: Json | null
+          created_at: string
+          global_accuracy: number | null
+          global_loss: number | null
+          id: string
+          model_weights_hash: string
+          model_weights_url: string | null
+          participating_clients: number
+          project_id: string
+          round_number: number
+        }
+        Insert: {
+          aggregation_metadata?: Json | null
+          created_at?: string
+          global_accuracy?: number | null
+          global_loss?: number | null
+          id?: string
+          model_weights_hash: string
+          model_weights_url?: string | null
+          participating_clients: number
+          project_id: string
+          round_number: number
+        }
+        Update: {
+          aggregation_metadata?: Json | null
+          created_at?: string
+          global_accuracy?: number | null
+          global_loss?: number | null
+          id?: string
+          model_weights_hash?: string
+          model_weights_url?: string | null
+          participating_clients?: number
+          project_id?: string
+          round_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_aggregated_models_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_learning_participants: {
+        Row: {
+          contribution_count: number | null
+          id: string
+          joined_at: string
+          last_contribution_at: string | null
+          local_data_size: number | null
+          performance_metrics: Json | null
+          project_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          contribution_count?: number | null
+          id?: string
+          joined_at?: string
+          last_contribution_at?: string | null
+          local_data_size?: number | null
+          performance_metrics?: Json | null
+          project_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          contribution_count?: number | null
+          id?: string
+          joined_at?: string
+          last_contribution_at?: string | null
+          local_data_size?: number | null
+          performance_metrics?: Json | null
+          project_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_learning_participants_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      federated_learning_projects: {
+        Row: {
+          aggregation_method: string | null
+          created_at: string
+          created_by: string
+          current_round: number | null
+          description: string | null
+          id: string
+          learning_objective: string
+          min_participants: number | null
+          model_type: string
+          name: string
+          parameters: Json | null
+          privacy_budget: number | null
+          status: string
+          total_rounds: number
+          updated_at: string
+        }
+        Insert: {
+          aggregation_method?: string | null
+          created_at?: string
+          created_by: string
+          current_round?: number | null
+          description?: string | null
+          id?: string
+          learning_objective: string
+          min_participants?: number | null
+          model_type: string
+          name: string
+          parameters?: Json | null
+          privacy_budget?: number | null
+          status?: string
+          total_rounds?: number
+          updated_at?: string
+        }
+        Update: {
+          aggregation_method?: string | null
+          created_at?: string
+          created_by?: string
+          current_round?: number | null
+          description?: string | null
+          id?: string
+          learning_objective?: string
+          min_participants?: number | null
+          model_type?: string
+          name?: string
+          parameters?: Json | null
+          privacy_budget?: number | null
+          status?: string
+          total_rounds?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      federated_model_updates: {
+        Row: {
+          accuracy: number | null
+          id: string
+          loss: number | null
+          model_weights_hash: string
+          model_weights_url: string | null
+          participant_id: string
+          privacy_metrics: Json | null
+          project_id: string
+          round_number: number
+          submitted_at: string
+          training_samples: number | null
+        }
+        Insert: {
+          accuracy?: number | null
+          id?: string
+          loss?: number | null
+          model_weights_hash: string
+          model_weights_url?: string | null
+          participant_id: string
+          privacy_metrics?: Json | null
+          project_id: string
+          round_number: number
+          submitted_at?: string
+          training_samples?: number | null
+        }
+        Update: {
+          accuracy?: number | null
+          id?: string
+          loss?: number | null
+          model_weights_hash?: string
+          model_weights_url?: string | null
+          participant_id?: string
+          privacy_metrics?: Json | null
+          project_id?: string
+          round_number?: number
+          submitted_at?: string
+          training_samples?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "federated_model_updates_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "federated_model_updates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       iot_devices: {
         Row: {
           configuration: Json | null
