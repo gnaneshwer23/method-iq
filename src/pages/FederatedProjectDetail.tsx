@@ -5,11 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download } from "lucide-react";
+import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3 } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
 import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
 import { useRoleAccess } from "@/hooks/useRoleAccess";
+import { TrainingDashboard } from "@/components/federated/TrainingDashboard";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -196,8 +197,12 @@ const FederatedProjectDetail = () => {
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="participants" className="w-full">
+        <Tabs defaultValue="dashboard" className="w-full">
           <TabsList>
+            <TabsTrigger value="dashboard">
+              <BarChart3 className="h-4 w-4 mr-2" />
+              Dashboard
+            </TabsTrigger>
             <TabsTrigger value="participants">
               Participants ({participants?.length || 0})
             </TabsTrigger>
@@ -209,6 +214,15 @@ const FederatedProjectDetail = () => {
             </TabsTrigger>
             {isParticipant && <TabsTrigger value="contribute">Contribute</TabsTrigger>}
           </TabsList>
+
+          <TabsContent value="dashboard" className="mt-6">
+            <TrainingDashboard 
+              projectId={project.id}
+              aggregatedModels={aggregatedModels || []}
+              modelUpdates={modelUpdates || []}
+              participants={participants || []}
+            />
+          </TabsContent>
 
           <TabsContent value="participants" className="mt-6">
             <Card>
