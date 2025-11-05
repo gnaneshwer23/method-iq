@@ -5,12 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3 } from "lucide-react";
+import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
 import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
 import { useRoleAccess } from "@/hooks/useRoleAccess";
 import { TrainingDashboard } from "@/components/federated/TrainingDashboard";
+import { useModelQualityMonitor } from "@/hooks/useModelQualityMonitor";
+import { QualityAlertsConfig } from "@/components/federated/QualityAlertsConfig";
+import { useState } from "react";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +22,10 @@ const FederatedProjectDetail = () => {
   const { isAdmin } = useRoleAccess();
   const { joinProject } = useFederatedLearning();
   const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading, aggregatedModels } = useFederatedProject(id!);
+  
+  const [monitoringEnabled, setMonitoringEnabled] = useState(true);
+  const [minAccuracyThreshold, setMinAccuracyThreshold] = useState(0.5);
+  const [convergenceThreshold, setConvergenceThreshold] = useState(0.001);
 
   const isParticipant = participants?.some(p => p.user_id === user?.id);
   const isProjectOwner = project?.created_by === user?.id;
@@ -26,6 +33,16 @@ const FederatedProjectDetail = () => {
   
   // Count updates for current round
   const currentRoundUpdates = modelUpdates?.filter(u => u.round_number === project?.current_round) || [];
+
+  // Enable quality monitoring for project owners
+  const { isMonitoring } = useModelQualityMonitor({
+    projectId: id!,
+    projectName: project?.name || 'Project',
+    isOwner: (isProjectOwner || isAdmin) && monitoringEnabled,
+    minAccuracyThreshold,
+    convergenceWindowSize: 3,
+    convergenceThreshold
+  });
 
   const statusColors = {
     recruiting: "bg-blue-500/10 text-blue-500 border-blue-500/20",
@@ -72,6 +89,26 @@ const FederatedProjectDetail = () => {
                 <Badge className={statusColors[project.status]}>
                   {project.status}
                 </Badge>
+                {(isProjectOwner || isAdmin) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setMonitoringEnabled(!monitoringEnabled)}
+                    className="ml-2"
+                  >
+                    {monitoringEnabled ? (
+                      <>
+                        <Bell className="h-4 w-4 mr-2" />
+                        Alerts On
+                      </>
+                    ) : (
+                      <>
+                        <BellOff className="h-4 w-4 mr-2" />
+                        Alerts Off
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
               <p className="text-muted-foreground">{project.description}</p>
             </div>
@@ -203,6 +240,12 @@ const FederatedProjectDetail = () => {
               <BarChart3 className="h-4 w-4 mr-2" />
               Dashboard
             </TabsTrigger>
+            {(isProjectOwner || isAdmin) && (
+              <TabsTrigger value="alerts">
+                <Settings className="h-4 w-4 mr-2" />
+                Alert Settings
+              </TabsTrigger>
+            )}
             <TabsTrigger value="participants">
               Participants ({participants?.length || 0})
             </TabsTrigger>
@@ -223,6 +266,19 @@ const FederatedProjectDetail = () => {
               participants={participants || []}
             />
           </TabsContent>
+
+          {(isProjectOwner || isAdmin) && (
+            <TabsContent value="alerts" className="mt-6">
+              <QualityAlertsConfig
+                minAccuracyThreshold={minAccuracyThreshold}
+                setMinAccuracyThreshold={setMinAccuracyThreshold}
+                convergenceThreshold={convergenceThreshold}
+                setConvergenceThreshold={setConvergenceThreshold}
+                monitoringEnabled={monitoringEnabled}
+                setMonitoringEnabled={setMonitoringEnabled}
+              />
+            </TabsContent>
+          )}
 
           <TabsContent value="participants" className="mt-6">
             <Card>
