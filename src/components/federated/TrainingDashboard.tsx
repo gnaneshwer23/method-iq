@@ -3,8 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
-import { TrendingUp, TrendingDown, Users, Activity, Brain, CheckCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Activity, Brain, CheckCircle, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface TrainingDashboardProps {
   projectId: string;
@@ -21,6 +22,7 @@ export const TrainingDashboard = ({
 }: TrainingDashboardProps) => {
   const [realtimeModels, setRealtimeModels] = useState(aggregatedModels);
   const [realtimeUpdates, setRealtimeUpdates] = useState(modelUpdates);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     setRealtimeModels(aggregatedModels);
@@ -45,6 +47,9 @@ export const TrainingDashboard = ({
         (payload) => {
           console.log('New aggregated model:', payload);
           setRealtimeModels(prev => [...prev, payload.new]);
+          toast.success('New aggregated model available!', {
+            description: `Round ${payload.new.round_number} completed`
+          });
         }
       )
       .on(
@@ -58,12 +63,23 @@ export const TrainingDashboard = ({
         (payload) => {
           console.log('New model update:', payload);
           setRealtimeUpdates(prev => [...prev, payload.new]);
+          toast.info('New model update submitted', {
+            description: `Round ${payload.new.round_number}`
+          });
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setIsConnected(true);
+          console.log('Realtime connected for training dashboard');
+        } else if (status === 'CLOSED') {
+          setIsConnected(false);
+        }
+      });
 
     return () => {
       supabase.removeChannel(channel);
+      setIsConnected(false);
     };
   }, [projectId]);
 
@@ -106,6 +122,14 @@ export const TrainingDashboard = ({
 
   return (
     <div className="space-y-6">
+      {/* Real-time Status Badge */}
+      <div className="flex justify-end">
+        <Badge variant={isConnected ? "default" : "secondary"} className="gap-2">
+          <Radio className={`h-3 w-3 ${isConnected ? 'animate-pulse' : ''}`} />
+          {isConnected ? 'Live Updates Active' : 'Connecting...'}
+        </Badge>
+      </div>
+
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
