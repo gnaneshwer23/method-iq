@@ -282,36 +282,63 @@ export type Database = {
       }
       federated_learning_participants: {
         Row: {
+          average_accuracy: number | null
+          best_round_contribution: number | null
+          consistency_score: number | null
           contribution_count: number | null
           id: string
+          impact_score: number | null
           joined_at: string
           last_contribution_at: string | null
           local_data_size: number | null
           performance_metrics: Json | null
           project_id: string
+          quality_score: number | null
+          reputation_history: Json | null
+          reputation_score: number | null
           status: string
+          streak_count: number | null
+          total_training_samples: number | null
           user_id: string
         }
         Insert: {
+          average_accuracy?: number | null
+          best_round_contribution?: number | null
+          consistency_score?: number | null
           contribution_count?: number | null
           id?: string
+          impact_score?: number | null
           joined_at?: string
           last_contribution_at?: string | null
           local_data_size?: number | null
           performance_metrics?: Json | null
           project_id: string
+          quality_score?: number | null
+          reputation_history?: Json | null
+          reputation_score?: number | null
           status?: string
+          streak_count?: number | null
+          total_training_samples?: number | null
           user_id: string
         }
         Update: {
+          average_accuracy?: number | null
+          best_round_contribution?: number | null
+          consistency_score?: number | null
           contribution_count?: number | null
           id?: string
+          impact_score?: number | null
           joined_at?: string
           last_contribution_at?: string | null
           local_data_size?: number | null
           performance_metrics?: Json | null
           project_id?: string
+          quality_score?: number | null
+          reputation_history?: Json | null
+          reputation_score?: number | null
           status?: string
+          streak_count?: number | null
+          total_training_samples?: number | null
           user_id?: string
         }
         Relationships: [
@@ -620,6 +647,54 @@ export type Database = {
           },
         ]
       }
+      reputation_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metrics: Json | null
+          participant_id: string
+          project_id: string
+          round_number: number
+          score_change: number
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metrics?: Json | null
+          participant_id: string
+          project_id: string
+          round_number: number
+          score_change: number
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metrics?: Json | null
+          participant_id?: string
+          project_id?: string
+          round_number?: number
+          score_change?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reputation_events_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_participants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reputation_events_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "federated_learning_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sensor_data: {
         Row: {
           device_id: string
@@ -809,6 +884,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_participant_reputation: {
+        Args: { _participant_id: string }
+        Returns: number
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

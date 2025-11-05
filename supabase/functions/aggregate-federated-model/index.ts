@@ -83,7 +83,7 @@ serve(async (req) => {
       );
     }
 
-    // Fetch participant information for quality assessment
+    // Fetch participant information for quality assessment including reputation
     const participantIds = modelUpdates.map((u: ModelUpdate) => u.participant_id);
     const { data: participants, error: participantsError } = await supabase
       .from('federated_learning_participants')
@@ -108,6 +108,10 @@ ${modelUpdates.map((update: ModelUpdate, idx: number) => {
   return `
 Update ${idx + 1}:
 - Participant contributions: ${participant?.contribution_count || 0}
+- Reputation score: ${participant?.reputation_score?.toFixed(1) || '50.0'}/100
+- Quality score: ${participant?.quality_score?.toFixed(1) || '0.0'}
+- Consistency score: ${participant?.consistency_score?.toFixed(1) || '0.0'}
+- Impact score: ${participant?.impact_score?.toFixed(1) || '0.0'}
 - Accuracy: ${update.accuracy?.toFixed(4) || 'N/A'}
 - Loss: ${update.loss?.toFixed(4) || 'N/A'}
 - Training samples: ${update.training_samples || 'N/A'}
@@ -116,10 +120,14 @@ Update ${idx + 1}:
 }).join('\n')}
 
 Based on these metrics, assign a quality weight (0.0 to 1.0) to each update. Consider:
-1. Model performance (accuracy and loss)
-2. Number of training samples (more samples = more reliable)
-3. Participant history (consistent contributors get higher weight)
-4. Privacy preservation (respecting privacy budget)
+1. Reputation scores (higher reputation = higher weight baseline)
+2. Model performance (accuracy and loss)
+3. Number of training samples (more samples = more reliable)
+4. Participant history and consistency
+5. Privacy preservation (respecting privacy budget)
+
+IMPORTANT: Participants with higher reputation scores should receive proportionally higher weights.
+A participant with reputation 80 should get roughly 2x the weight of one with reputation 40, all else equal.
 
 Return ONLY a JSON array of weights in order, normalized to sum to 1.0. Example: [0.3, 0.4, 0.3]`;
 

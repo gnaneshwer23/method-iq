@@ -209,13 +209,31 @@ export const useFederatedProject = (projectId: string) => {
   const { data: participants, isLoading: participantsLoading } = useQuery({
     queryKey: ['project-participants', projectId],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First get participants
+      const { data: participantsData, error: participantsError } = await supabase
         .from('federated_learning_participants')
-        .select('*, profile:user_id(full_name, avatar_url)')
+        .select('*')
         .eq('project_id', projectId);
       
-      if (error) throw error;
-      return data;
+      if (participantsError) throw participantsError;
+      if (!participantsData || participantsData.length === 0) return [];
+
+      // Then get profiles for these user_ids
+      const userIds = participantsData.map(p => p.user_id);
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url')
+        .in('id', userIds);
+      
+      if (profilesError) console.error('Error fetching profiles:', profilesError);
+
+      // Combine the data
+      const combined = participantsData.map(participant => ({
+        ...participant,
+        profile: profilesData?.find(p => p.id === participant.user_id) || null
+      }));
+
+      return combined;
     },
     enabled: !!projectId
   });

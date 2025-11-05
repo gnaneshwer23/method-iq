@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings } from "lucide-react";
+import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings, Award } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
 import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
@@ -13,6 +13,9 @@ import { useRoleAccess } from "@/hooks/useRoleAccess";
 import { TrainingDashboard } from "@/components/federated/TrainingDashboard";
 import { useModelQualityMonitor } from "@/hooks/useModelQualityMonitor";
 import { QualityAlertsConfig } from "@/components/federated/QualityAlertsConfig";
+import { ReputationLeaderboard } from "@/components/federated/ReputationLeaderboard";
+import { ReputationBadge } from "@/components/federated/ReputationBadge";
+import { MyReputationCard } from "@/components/federated/MyReputationCard";
 import { useState } from "react";
 
 const FederatedProjectDetail = () => {
@@ -29,6 +32,7 @@ const FederatedProjectDetail = () => {
 
   const isParticipant = participants?.some(p => p.user_id === user?.id);
   const isProjectOwner = project?.created_by === user?.id;
+  const myParticipation = participants?.find(p => p.user_id === user?.id);
   const progress = project ? (project.current_round / project.total_rounds) * 100 : 0;
   
   // Count updates for current round
@@ -240,6 +244,10 @@ const FederatedProjectDetail = () => {
               <BarChart3 className="h-4 w-4 mr-2" />
               Dashboard
             </TabsTrigger>
+            <TabsTrigger value="leaderboard">
+              <Award className="h-4 w-4 mr-2" />
+              Leaderboard
+            </TabsTrigger>
             {(isProjectOwner || isAdmin) && (
               <TabsTrigger value="alerts">
                 <Settings className="h-4 w-4 mr-2" />
@@ -265,6 +273,17 @@ const FederatedProjectDetail = () => {
               modelUpdates={modelUpdates || []}
               participants={participants || []}
             />
+          </TabsContent>
+
+          <TabsContent value="leaderboard" className="mt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <ReputationLeaderboard participants={participants || []} />
+              </div>
+              <div>
+                <MyReputationCard participant={myParticipation || null} />
+              </div>
+            </div>
           </TabsContent>
 
           {(isProjectOwner || isAdmin) && (
@@ -302,8 +321,19 @@ const FederatedProjectDetail = () => {
                               {participant.profile?.full_name?.[0] || 'U'}
                             </AvatarFallback>
                           </Avatar>
-                          <div>
-                            <p className="font-medium">{participant.profile?.full_name || 'Anonymous'}</p>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium">{participant.profile?.full_name || 'Anonymous'}</p>
+                              {participant.reputation_score !== null && (
+                                <ReputationBadge
+                                  reputation={participant.reputation_score}
+                                  quality={participant.quality_score || 0}
+                                  consistency={participant.consistency_score || 0}
+                                  impact={participant.impact_score || 0}
+                                  size="sm"
+                                />
+                              )}
+                            </div>
                             <p className="text-sm text-muted-foreground">
                               {participant.contribution_count} contributions
                             </p>
