@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import { useState } from "react"
 import { useToast } from "./ui/use-toast"
 import { useAuth } from "@/contexts/AuthContext"
+import { NotificationsDropdown } from "./federated/NotificationsDropdown"
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,6 +120,7 @@ export const Header = () => {
           {!loading && (
             isAuthenticated ? (
               <>
+                <NotificationsDropdown />
                 <Button variant="outline" size="sm" onClick={handleDashboard}>Dashboard</Button>
                 <Button variant="ghost" size="sm" onClick={handleLogout}>Log out</Button>
               </>

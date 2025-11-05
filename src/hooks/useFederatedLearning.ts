@@ -201,6 +201,28 @@ export const useFederatedLearning = () => {
     }
   });
 
+  const advanceRound = useMutation({
+    mutationFn: async ({ projectId, currentRound }: { projectId: string; currentRound: number }) => {
+      const { data, error } = await supabase
+        .from('federated_learning_projects')
+        .update({ current_round: currentRound + 1 })
+        .eq('id', projectId)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['federated-projects'] });
+      queryClient.invalidateQueries({ queryKey: ['federated-project'] });
+      toast.success("Advanced to next round");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to advance round: ${error.message}`);
+    }
+  });
+
   return {
     projects,
     projectsLoading,
@@ -209,7 +231,8 @@ export const useFederatedLearning = () => {
     createProject,
     joinProject,
     submitModelUpdate,
-    updateProjectStatus
+    updateProjectStatus,
+    advanceRound
   };
 };
 

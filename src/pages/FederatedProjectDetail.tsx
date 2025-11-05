@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings, Award, Play, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download, BarChart3, Bell, BellOff, Settings, Award, Play, CheckCircle, AlertCircle, ArrowRight, BookOpen } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
 import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
@@ -17,18 +17,22 @@ import { ReputationLeaderboard } from "@/components/federated/ReputationLeaderbo
 import { ReputationBadge } from "@/components/federated/ReputationBadge";
 import { MyReputationCard } from "@/components/federated/MyReputationCard";
 import { SubmitModelUpdateDialog } from "@/components/federated/SubmitModelUpdateDialog";
+import { TrainingInstructions } from "@/components/federated/TrainingInstructions";
+import { NotificationsDropdown } from "@/components/federated/NotificationsDropdown";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isAdmin } = useRoleAccess();
-  const { joinProject, updateProjectStatus } = useFederatedLearning();
+  const { joinProject, updateProjectStatus, advanceRound } = useFederatedLearning();
   const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading, aggregatedModels } = useFederatedProject(id!);
   const { toast } = useToast();
+  const { createNotification } = useNotifications();
   
   const [monitoringEnabled, setMonitoringEnabled] = useState(true);
   const [minAccuracyThreshold, setMinAccuracyThreshold] = useState(0.5);
@@ -95,6 +99,19 @@ const FederatedProjectDetail = () => {
 
     try {
       await updateProjectStatus.mutateAsync({ projectId: project.id, status: 'training' });
+      
+      // Notify all participants
+      for (const participant of participants || []) {
+        await createNotification.mutateAsync({
+          user_id: participant.user_id,
+          title: "Training Started",
+          message: `Federated learning project "${project.name}" has started training. Submit your model update for round 1!`,
+          type: 'success',
+          related_entity_type: 'federated_project',
+          related_entity_id: project.id
+        });
+      }
+      
       toast({
         title: "Training Started",
         description: "Participants can now submit model updates for round 1"
@@ -102,6 +119,49 @@ const FederatedProjectDetail = () => {
     } catch (error) {
       toast({
         title: "Failed to Start Training",
+        description: error instanceof Error ? error.message : "Unknown error",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleAdvanceRound = async () => {
+    if (!canManageProject || !project) return;
+    
+    if (project.current_round >= project.total_rounds) {
+      toast({
+        title: "Cannot Advance",
+        description: "Project has completed all rounds",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      await advanceRound.mutateAsync({ 
+        projectId: project.id, 
+        currentRound: project.current_round 
+      });
+      
+      // Notify all participants
+      for (const participant of participants || []) {
+        await createNotification.mutateAsync({
+          user_id: participant.user_id,
+          title: "New Round Started",
+          message: `Round ${project.current_round + 1} of "${project.name}" has begun. Submit your updated model!`,
+          type: 'info',
+          related_entity_type: 'federated_project',
+          related_entity_id: project.id
+        });
+      }
+      
+      toast({
+        title: "Round Advanced",
+        description: `Now on round ${project.current_round + 1}`
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Advance Round",
         description: error instanceof Error ? error.message : "Unknown error",
         variant: "destructive"
       });
@@ -179,7 +239,7 @@ const FederatedProjectDetail = () => {
           </Button>
           
           <div className="flex items-start justify-between">
-            <div>
+            <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
                 <Brain className="h-8 w-8 text-primary" />
                 <h1 className="text-3xl font-bold">{project.name}</h1>
@@ -210,26 +270,30 @@ const FederatedProjectDetail = () => {
               <p className="text-muted-foreground">{project.description}</p>
             </div>
             
-            {!isParticipant && project.status === 'recruiting' && (
-              <Button onClick={handleJoinProject} disabled={joinProject.isPending}>
-                <Users className="h-4 w-4 mr-2" />
-                {joinProject.isPending ? "Joining..." : "Join Project"}
-              </Button>
-            )}
-            
-            {canManageProject && project.status === 'recruiting' && (
-              <Button onClick={handleStartTraining} variant="default">
-                <Play className="h-4 w-4 mr-2" />
-                Start Training
-              </Button>
-            )}
-            
-            {canManageProject && project.status === 'training' && (
-              <Button onClick={handleCompleteProject} variant="secondary">
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Complete Project
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              <NotificationsDropdown />
+              
+              {!isParticipant && project.status === 'recruiting' && (
+                <Button onClick={handleJoinProject} disabled={joinProject.isPending}>
+                  <Users className="h-4 w-4 mr-2" />
+                  {joinProject.isPending ? "Joining..." : "Join Project"}
+                </Button>
+              )}
+              
+              {canManageProject && project.status === 'recruiting' && (
+                <Button onClick={handleStartTraining} variant="default">
+                  <Play className="h-4 w-4 mr-2" />
+                  Start Training
+                </Button>
+              )}
+              
+              {canManageProject && project.status === 'training' && (
+                <Button onClick={handleCompleteProject} variant="secondary">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Complete Project
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -243,12 +307,25 @@ const FederatedProjectDetail = () => {
                   Round {project.current_round} of {project.total_rounds}
                 </CardDescription>
               </div>
-              {(isProjectOwner || isAdmin) && project.status === 'training' && currentRoundUpdates.length > 0 && (
-                <AggregateModelButton 
-                  projectId={project.id} 
-                  roundNumber={project.current_round + 1}
-                  disabled={currentRoundUpdates.length < project.min_participants}
-                />
+              {(isProjectOwner || isAdmin) && project.status === 'training' && (
+                <div className="flex gap-2">
+                  {currentRoundUpdates.length > 0 && (
+                    <AggregateModelButton 
+                      projectId={project.id} 
+                      roundNumber={project.current_round}
+                      disabled={currentRoundUpdates.length < project.min_participants}
+                    />
+                  )}
+                  {aggregatedModels && aggregatedModels.length > 0 && project.current_round < project.total_rounds && (
+                    <Button 
+                      onClick={handleAdvanceRound}
+                      variant="outline"
+                    >
+                      <ArrowRight className="h-4 w-4 mr-2" />
+                      Advance to Round {project.current_round + 1}
+                    </Button>
+                  )}
+                </div>
               )}
             </div>
           </CardHeader>
@@ -371,6 +448,10 @@ const FederatedProjectDetail = () => {
               Aggregated Models ({aggregatedModels?.length || 0})
             </TabsTrigger>
             {isParticipant && <TabsTrigger value="contribute">Contribute</TabsTrigger>}
+            <TabsTrigger value="instructions">
+              <BookOpen className="h-4 w-4 mr-2" />
+              Instructions
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard" className="mt-6">
@@ -637,6 +718,13 @@ const FederatedProjectDetail = () => {
               </Card>
             </TabsContent>
           )}
+          
+          <TabsContent value="instructions" className="mt-6">
+            <TrainingInstructions 
+              modelType={project.model_type}
+              privacyBudget={project.privacy_budget || 1.0}
+            />
+          </TabsContent>
         </Tabs>
       </div>
     </div>

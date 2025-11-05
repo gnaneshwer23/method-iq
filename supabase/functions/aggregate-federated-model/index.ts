@@ -269,6 +269,26 @@ Return ONLY a JSON array of weights in order, normalized to sum to 1.0. Example:
 
     console.log('Aggregation complete:', aggregatedModel);
 
+    // Notify all participants about the completed aggregation
+    const { data: projectData } = await supabase
+      .from('federated_learning_projects')
+      .select('name')
+      .eq('id', projectId)
+      .single();
+
+    if (participants && projectData) {
+      for (const participant of participants) {
+        await supabase.from('notifications').insert({
+          user_id: participant.user_id,
+          title: 'Model Aggregation Complete',
+          message: `Round ${roundNumber} of "${projectData.name}" has been aggregated. Global accuracy: ${(aggregatedMetrics.accuracy * 100).toFixed(2)}%`,
+          type: 'success',
+          related_entity_type: 'federated_project',
+          related_entity_id: projectId
+        });
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
