@@ -6,6 +6,7 @@ import { IntroSection } from "@/components/IntroSection"
 import { FeaturesSection } from "@/components/FeaturesSection"
 import { BenefitsSection } from "@/components/BenefitsSection"
 import { HowItWorksSection } from "@/components/HowItWorksSection"
+import { FeaturedProtocols } from "@/components/protocols/FeaturedProtocols"
 import { CallToAction } from "@/components/how-it-works/CallToAction"
 import { useState, useEffect } from "react"
 
@@ -55,6 +56,9 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#60A5FA]/15 via-[#8B5CF6]/10 to-transparent pointer-events-none" />
           <HowItWorksSection />
         </section>
+
+        {/* Featured Protocols Section */}
+        <FeaturedProtocols />
 
         {/* Call To Action Section */}
         <CallToAction visible={ctaVisible} />

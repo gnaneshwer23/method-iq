@@ -18,6 +18,8 @@ import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import Technology from "./pages/Technology";
 import Blog from "./pages/Blog";
+import Protocols from "./pages/Protocols";
+import ProtocolDetail from "./pages/ProtocolDetail";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -42,6 +44,8 @@ const App = () => (
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/technology" element={<Technology />} />
               <Route path="/blog" element={<Blog />} />
+              <Route path="/protocols" element={<Protocols />} />
+              <Route path="/protocols/:id" element={<ProtocolDetail />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />

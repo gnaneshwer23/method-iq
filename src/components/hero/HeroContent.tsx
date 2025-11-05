@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Brain } from "lucide-react";
+import { ArrowRight, Brain } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function HeroContent() {
@@ -25,15 +25,15 @@ export function HeroContent() {
       
       <div className="animate-fade-up [--animation-delay:600ms] flex flex-col sm:flex-row gap-4 pt-4">
         <Button asChild size="lg" className="group bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-primary/25 transition-all duration-300">
-          <Link to="/register">
-            Get Started
+          <Link to="/protocols">
+            Search Protocols
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </Button>
         <Button asChild size="lg" variant="outline" className="group backdrop-blur-sm bg-background/50 border-primary/20 hover:bg-primary/5 transition-all duration-300">
-          <Link to="/how-it-works">
-            <Play className="mr-2 h-4 w-4" />
-            Watch Demo
+          <Link to="/register">
+            Get Started
+            <Brain className="mr-2 h-4 w-4" />
           </Link>
         </Button>
       </div>
