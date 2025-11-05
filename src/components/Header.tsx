@@ -86,6 +86,11 @@ export const Header = () => {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
+                <Link to="/digital-twins" className="h-9 px-4 py-2 text-sm hover:text-primary">
+                  Digital Twins
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 <Link to="/pricing" className="h-9 px-4 py-2 text-sm hover:text-primary">
                   Pricing
                 </Link>
@@ -149,6 +154,9 @@ export const Header = () => {
                 </Link>
                 <Link to="/experiments" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Experiments
+                </Link>
+                <Link to="/digital-twins" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                  Digital Twins
                 </Link>
                 <Link to="/pricing" className="px-4 py-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                   Pricing

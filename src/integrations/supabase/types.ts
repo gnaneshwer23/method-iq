@@ -110,6 +110,48 @@ export type Database = {
           },
         ]
       }
+      digital_twins: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          name: string
+          physical_id: string | null
+          state: Json | null
+          twin_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          name: string
+          physical_id?: string | null
+          state?: Json | null
+          twin_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          name?: string
+          physical_id?: string | null
+          state?: Json | null
+          twin_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       equipment: {
         Row: {
           created_at: string
@@ -327,6 +369,113 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twin_metrics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_unit: string | null
+          metric_value: number
+          timestamp: string
+          twin_id: string
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_unit?: string | null
+          metric_value: number
+          timestamp?: string
+          twin_id: string
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_unit?: string | null
+          metric_value?: number
+          timestamp?: string
+          twin_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twin_metrics_twin_id_fkey"
+            columns: ["twin_id"]
+            isOneToOne: false
+            referencedRelation: "digital_twins"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      twin_simulations: {
+        Row: {
+          completed_at: string | null
+          confidence_score: number | null
+          created_at: string
+          created_by: string
+          description: string | null
+          error_message: string | null
+          id: string
+          input_parameters: Json
+          name: string
+          predicted_outcome: Json | null
+          protocol_id: string | null
+          result_data: Json | null
+          simulation_duration_seconds: number | null
+          status: string
+          twin_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          error_message?: string | null
+          id?: string
+          input_parameters?: Json
+          name: string
+          predicted_outcome?: Json | null
+          protocol_id?: string | null
+          result_data?: Json | null
+          simulation_duration_seconds?: number | null
+          status?: string
+          twin_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          confidence_score?: number | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          error_message?: string | null
+          id?: string
+          input_parameters?: Json
+          name?: string
+          predicted_outcome?: Json | null
+          protocol_id?: string | null
+          result_data?: Json | null
+          simulation_duration_seconds?: number | null
+          status?: string
+          twin_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "twin_simulations_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "twin_simulations_twin_id_fkey"
+            columns: ["twin_id"]
+            isOneToOne: false
+            referencedRelation: "digital_twins"
             referencedColumns: ["id"]
           },
         ]

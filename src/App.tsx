@@ -22,6 +22,8 @@ import Protocols from "./pages/Protocols";
 import ProtocolDetail from "./pages/ProtocolDetail";
 import Experiments from "./pages/Experiments";
 import ExperimentDetail from "./pages/ExperimentDetail";
+import DigitalTwins from "./pages/DigitalTwins";
+import DigitalTwinDetail from "./pages/DigitalTwinDetail";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -49,6 +51,8 @@ const App = () => (
             <Route path="/protocols/:id" element={<ProtocolDetail />} />
             <Route path="/experiments" element={<Experiments />} />
             <Route path="/experiments/:id" element={<ExperimentDetail />} />
+            <Route path="/digital-twins" element={<DigitalTwins />} />
+            <Route path="/digital-twins/:id" element={<DigitalTwinDetail />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
