@@ -4,6 +4,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase-client';
 import { authApi } from '@/lib/api/auth';
 import { useToast } from '@/components/ui/use-toast';
+import { logger } from '@/lib/logger';
 import type { UserRole } from '@/types/auth.types';
 
 // Extended user type with role
@@ -37,13 +38,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error) {
-        console.error('Error fetching user role:', error);
+        logger.error('Error fetching user role:', error);
         return null;
       }
 
       return data?.role || null;
     } catch (error) {
-      console.error('Exception fetching user role:', error);
+      logger.error('Exception fetching user role:', error);
       return null;
     }
   };
@@ -66,14 +67,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Get initial session
       try {
         const { session: initialSession } = await authApi.getSession();
-        console.log('Initial session:', initialSession);
+        logger.log('Initial session:', initialSession);
         setSession(initialSession);
         
         if (initialSession?.user) {
           await setUserWithRole(initialSession.user);
         }
       } catch (error) {
-        console.error('Error initializing auth:', error);
+        logger.error('Error initializing auth:', error);
       } finally {
         setLoading(false);
       }
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Listen for auth changes
       const { data: authListener } = supabase.auth.onAuthStateChange(
         (event, newSession) => {
-          console.log('Auth state changed:', event, newSession);
+          logger.log('Auth state changed:', event, newSession);
           setSession(newSession);
           
           // Defer role fetching to avoid blocking
@@ -107,11 +108,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('Login attempt with email:', email);
+      logger.log('Login attempt with email:', email);
       const { data, error } = await authApi.signIn(email, password);
       
       if (error) {
-        console.error('Login error:', error);
+        logger.error('Login error:', error);
         toast({
           title: 'Login failed',
           description: error.message || 'An error occurred during login',
@@ -120,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: error.message };
       }
       
-      console.log('Login successful:', data);
+      logger.log('Login successful:', data);
       toast({
         title: 'Login successful',
         description: 'Welcome back to MethodIQ!',
@@ -128,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       return { success: true };
     } catch (error: any) {
-      console.error('Login exception:', error);
+      logger.error('Login exception:', error);
       toast({
         title: 'Login failed',
         description: error.message || 'An error occurred during login',
@@ -141,11 +142,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (email: string, password: string) => {
     try {
-      console.log('Registration attempt with email:', email);
+      logger.log('Registration attempt with email:', email);
       const { data, error } = await authApi.signUp(email, password);
       
       if (error) {
-        console.error('Registration error:', error);
+        logger.error('Registration error:', error);
         toast({
           title: 'Registration failed',
           description: error.message || 'An error occurred during registration',
@@ -154,7 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: error.message };
       }
       
-      console.log('Registration data:', data);
+      logger.log('Registration data:', data);
       
       // Check if the sign up was successful
       if (data.user) {
@@ -164,7 +165,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
         return { success: true };
       } else {
-        console.error('Registration failed: No user data', data);
+        logger.error('Registration failed: No user data', data);
         toast({
           title: 'Registration failed',
           description: 'An unexpected error occurred',
@@ -173,7 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: 'An unexpected error occurred' };
       }
     } catch (error: any) {
-      console.error('Registration exception:', error);
+      logger.error('Registration exception:', error);
       toast({
         title: 'Registration failed',
         description: error.message || 'An error occurred during registration',
@@ -185,11 +186,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      console.log('Logout attempt');
+      logger.log('Logout attempt');
       const { error } = await authApi.signOut();
       
       if (error) {
-        console.error('Logout error:', error);
+        logger.error('Logout error:', error);
         toast({
           title: 'Logout failed',
           description: error.message || 'An error occurred during logout',
@@ -198,7 +199,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { success: false, error: error.message };
       }
       
-      console.log('Logout successful');
+      logger.log('Logout successful');
       toast({
         title: 'Logout successful',
         description: 'You have been logged out',
@@ -206,7 +207,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       return { success: true };
     } catch (error: any) {
-      console.error('Logout exception:', error);
+      logger.error('Logout exception:', error);
       toast({
         title: 'Logout failed',
         description: error.message || 'An error occurred during logout',

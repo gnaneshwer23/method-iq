@@ -1,5 +1,5 @@
-
 import { createClient } from '@supabase/supabase-js';
+import { logger } from './logger';
 
 // Initialize the Supabase client with hardcoded fallback values
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uefzfpwbqpcvccwruavm.supabase.co';
@@ -16,20 +16,19 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   },
   global: {
     fetch: (url, options) => {
-      // Console log for debugging
-      console.log('Supabase API request:', url);
+      logger.log('Supabase API request:', url);
       return fetch(url, options);
     }
   }
 });
 
 // Log the connection status to help with debugging
-console.log('Supabase client initialized with URL:', supabaseUrl);
-console.log('Supabase client initialized with key:', supabaseAnonKey ? 'Valid key provided' : 'Missing key');
+logger.log('Supabase client initialized with URL:', supabaseUrl);
+logger.log('Supabase client initialized with key:', supabaseAnonKey ? 'Valid key provided' : 'Missing key');
 
 // Test the connection to ensure it's working
 supabase.auth.onAuthStateChange((event, session) => {
-  console.log('Auth state changed:', event, session ? 'User authenticated' : 'No user');
+  logger.log('Auth state changed:', event, session ? 'User authenticated' : 'No user');
 });
 
 // Export a helper function to check if the client is properly configured
