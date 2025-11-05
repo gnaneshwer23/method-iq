@@ -7,7 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Users, Shield, BarChart3, TrendingUp, Beaker } from 'lucide-react';
+import { Plus, Users, Shield, BarChart3, TrendingUp, Beaker, Cpu } from 'lucide-react';
 import { StatsOverview } from '@/components/dashboard/StatsOverview';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { ExperimentTrendsChart } from '@/components/dashboard/ExperimentTrendsChart';
@@ -137,6 +137,10 @@ const Dashboard = () => {
           <Button onClick={() => navigate('/experiments')} variant="outline" className="gap-2">
             <Beaker className="h-4 w-4" />
             View Experiments
+          </Button>
+          <Button onClick={() => navigate('/digital-twins')} variant="outline" className="gap-2">
+            <Cpu className="h-4 w-4" />
+            Digital Twins
           </Button>
         </div>
 
