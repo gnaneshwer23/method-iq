@@ -56,3 +56,6 @@ enable_confirmations = false
 
 [functions.ai-protocol-finder]
 verify_jwt = false
+
+[functions.blockchain-verify]
+verify_jwt = true

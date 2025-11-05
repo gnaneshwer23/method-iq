@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, Clock, DollarSign, TrendingUp, CheckCircle, Sparkles } from 'lucide-react';
+import { Star, Clock, DollarSign, TrendingUp, CheckCircle, Sparkles, Shield } from 'lucide-react';
 import type { Protocol } from '@/types/database.types';
 
 interface ProtocolCardProps {
@@ -29,7 +29,14 @@ export const ProtocolCard = ({ protocol, onViewDetails, isAIGenerated }: Protoco
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg line-clamp-2">{protocol.title}</CardTitle>
+            <div className="flex items-center gap-2 mb-1">
+              <CardTitle className="text-lg line-clamp-2">{protocol.title}</CardTitle>
+              {protocol.hash && (
+                <div title="Blockchain Verified">
+                  <Shield className="h-4 w-4 text-primary flex-shrink-0" />
+                </div>
+              )}
+            </div>
             <CardDescription className="line-clamp-2 mt-2">
               {protocol.summary}
             </CardDescription>

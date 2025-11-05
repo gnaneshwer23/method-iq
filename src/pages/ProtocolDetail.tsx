@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { RatingsList } from '@/components/protocols/RatingsList';
 import { RatingForm } from '@/components/protocols/RatingForm';
+import { BlockchainVerificationBadge } from '@/components/protocols/BlockchainVerificationBadge';
+import { VerifyButton } from '@/components/protocols/VerifyButton';
 import { useProtocol, useProtocolRatings } from '@/hooks/useProtocols';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -109,11 +111,14 @@ const ProtocolDetail = () => {
               </div>
               <p className="text-muted-foreground text-lg">{protocol.summary}</p>
             </div>
-            <div className="flex items-center gap-2">
-              {renderStars(protocol.average_rating || 0)}
-              <span className="text-sm text-muted-foreground">
-                ({protocol.rating_count || 0})
-              </span>
+            <div className="flex flex-col items-end gap-3">
+              <div className="flex items-center gap-2">
+                {renderStars(protocol.average_rating || 0)}
+                <span className="text-sm text-muted-foreground">
+                  ({protocol.rating_count || 0})
+                </span>
+              </div>
+              <VerifyButton protocol={protocol} />
             </div>
           </div>
 
@@ -182,23 +187,15 @@ const ProtocolDetail = () => {
         )}
 
         {/* Blockchain Verification */}
-        {protocol.hash && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-primary" />
-                Blockchain Verification
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="font-mono text-xs bg-muted p-3 rounded break-all">
-                {protocol.hash}
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                This protocol has been verified and stored on the blockchain for immutability.
-              </p>
-            </CardContent>
-          </Card>
+        {(protocol.hash || protocol.verified) && (
+          <div className="mb-6">
+            <BlockchainVerificationBadge
+              hash={protocol.hash}
+              verified={protocol.verified}
+              transactionId={null}
+              blockchainNetwork="polygon-mumbai"
+            />
+          </div>
         )}
 
         <Separator className="my-8" />
