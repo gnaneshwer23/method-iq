@@ -233,6 +233,51 @@ export type Database = {
           },
         ]
       }
+      iot_devices: {
+        Row: {
+          configuration: Json | null
+          connection_status: string
+          created_at: string
+          device_name: string
+          device_type: string
+          id: string
+          last_connected_at: string | null
+          manufacturer: string | null
+          metadata: Json | null
+          model: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          configuration?: Json | null
+          connection_status?: string
+          created_at?: string
+          device_name: string
+          device_type: string
+          id?: string
+          last_connected_at?: string | null
+          manufacturer?: string | null
+          metadata?: Json | null
+          model?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          configuration?: Json | null
+          connection_status?: string
+          created_at?: string
+          device_name?: string
+          device_type?: string
+          id?: string
+          last_connected_at?: string | null
+          manufacturer?: string | null
+          metadata?: Json | null
+          model?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -369,6 +414,54 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sensor_data: {
+        Row: {
+          device_id: string
+          experiment_id: string | null
+          id: string
+          metadata: Json | null
+          sensor_type: string
+          timestamp: string
+          unit: string
+          value: number
+        }
+        Insert: {
+          device_id: string
+          experiment_id?: string | null
+          id?: string
+          metadata?: Json | null
+          sensor_type: string
+          timestamp?: string
+          unit: string
+          value: number
+        }
+        Update: {
+          device_id?: string
+          experiment_id?: string | null
+          id?: string
+          metadata?: Json | null
+          sensor_type?: string
+          timestamp?: string
+          unit?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sensor_data_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "iot_devices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sensor_data_experiment_id_fkey"
+            columns: ["experiment_id"]
+            isOneToOne: false
+            referencedRelation: "experiments"
             referencedColumns: ["id"]
           },
         ]

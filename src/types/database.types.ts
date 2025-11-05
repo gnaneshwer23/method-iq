@@ -69,15 +69,14 @@ export type Project = {
 export type IoTDevice = {
   id: string;
   user_id: string;
-  project_id?: string;
-  name: string;
+  device_name: string;
   device_type: string;
-  model: string;
-  serial_number?: string;
+  manufacturer?: string | null;
+  model?: string | null;
   connection_status: 'online' | 'offline' | 'error';
-  last_connected_at?: string;
-  firmware_version?: string;
+  last_connected_at?: string | null;
   configuration?: Record<string, any>;
+  metadata?: Record<string, any>;
   created_at: string;
   updated_at: string;
 };
@@ -85,10 +84,11 @@ export type IoTDevice = {
 export type SensorData = {
   id: string;
   device_id: string;
+  experiment_id?: string | null;
+  sensor_type: string;
+  value: number;
+  unit: string;
   timestamp: string;
-  data_type: string;
-  value: number | string | boolean | Record<string, any>;
-  unit?: string;
   metadata?: Record<string, any>;
 };
 
