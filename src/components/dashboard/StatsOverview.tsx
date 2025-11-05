@@ -28,7 +28,7 @@ const StatCard = ({ title, value, icon, trend }: StatCardProps) => (
 );
 
 export const StatsOverview = () => {
-  const { isAdmin, isResearcher, isCollaborator } = useRoleAccess();
+  const { isAdmin, isResearcher, isReviewer } = useRoleAccess();
 
   // Admin sees system-wide stats
   const adminStats = [
@@ -54,21 +54,11 @@ export const StatsOverview = () => {
     { title: 'Verified Protocols', value: '89', icon: <CheckCircle className="h-6 w-6 text-emerald-500" /> },
   ];
 
-  // Collaborator sees limited stats
-  const collaboratorStats = [
-    { title: 'Shared Projects', value: '3', icon: <Beaker className="h-6 w-6 text-blue-500" /> },
-    { title: 'Available Protocols', value: '89', icon: <FileText className="h-6 w-6 text-purple-500" /> },
-    { title: 'Recent Activity', value: '15', icon: <TrendingUp className="h-6 w-6 text-green-500" /> },
-    { title: 'Team Members', value: '12', icon: <Users className="h-6 w-6 text-amber-500" /> },
-  ];
-
   const stats = isAdmin 
     ? adminStats 
     : isResearcher 
       ? researcherStats 
-      : isCollaborator
-        ? collaboratorStats
-        : reviewerStats;
+      : reviewerStats;
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">

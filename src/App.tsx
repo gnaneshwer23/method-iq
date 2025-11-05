@@ -24,6 +24,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PasswordReset from "./pages/PasswordReset";
 import Unauthorized from "./pages/Unauthorized";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,15 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <Admin />
                   </ProtectedRoute>
                 } 
               />

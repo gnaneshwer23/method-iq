@@ -18,11 +18,12 @@ const rolePermissions: Record<UserRole, Permission[]> = {
     'create:experiment',
     'run:experiment',
     'read:blockchain',
-    'receive:ai'
+    'receive:ai',
+    'create:protocol'
   ],
-  collaborator: [
+  reviewer: [
     'read:blockchain',
-    'write:partial'
+    'view:all'
   ]
 };
 
@@ -44,6 +45,6 @@ export const useRoleAccess = () => {
     hasPermission,
     isAdmin: user?.role === 'admin',
     isResearcher: user?.role === 'researcher',
-    isCollaborator: user?.role === 'collaborator'
+    isReviewer: user?.role === 'reviewer'
   };
 };

@@ -7,7 +7,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Users, Shield, Settings, BarChart3 } from 'lucide-react';
+import { Plus, Users, Shield, BarChart3 } from 'lucide-react';
 import { StatsOverview } from '@/components/dashboard/StatsOverview';
 import { DashboardTabs } from '@/components/dashboard/DashboardTabs';
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
