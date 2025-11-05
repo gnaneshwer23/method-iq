@@ -14,16 +14,371 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blockchain_logs: {
+        Row: {
+          blockchain_network: string | null
+          created_at: string
+          experiment_id: string | null
+          hash: string
+          id: string
+          protocol_id: string | null
+          transaction_id: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          blockchain_network?: string | null
+          created_at?: string
+          experiment_id?: string | null
+          hash: string
+          id?: string
+          protocol_id?: string | null
+          transaction_id?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          blockchain_network?: string | null
+          created_at?: string
+          experiment_id?: string | null
+          hash?: string
+          id?: string
+          protocol_id?: string | null
+          transaction_id?: string | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blockchain_logs_experiment_id_fkey"
+            columns: ["experiment_id"]
+            isOneToOne: false
+            referencedRelation: "experiments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blockchain_logs_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_uploads: {
+        Row: {
+          created_at: string
+          experiment_id: string
+          file_name: string
+          file_size_bytes: number | null
+          file_type: string | null
+          file_url: string
+          id: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          experiment_id: string
+          file_name: string
+          file_size_bytes?: number | null
+          file_type?: string | null
+          file_url: string
+          id?: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          experiment_id?: string
+          file_name?: string
+          file_size_bytes?: number | null
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_uploads_experiment_id_fkey"
+            columns: ["experiment_id"]
+            isOneToOne: false
+            referencedRelation: "experiments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_uploads_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      equipment: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      experiments: {
+        Row: {
+          blockchain_hash: string | null
+          created_at: string
+          data_file_url: string | null
+          environment_conditions: Json | null
+          id: string
+          notes: string | null
+          protocol_id: string
+          researcher_id: string
+          success_percentage: number | null
+          time_taken_minutes: number | null
+          updated_at: string
+          verified: boolean | null
+        }
+        Insert: {
+          blockchain_hash?: string | null
+          created_at?: string
+          data_file_url?: string | null
+          environment_conditions?: Json | null
+          id?: string
+          notes?: string | null
+          protocol_id: string
+          researcher_id: string
+          success_percentage?: number | null
+          time_taken_minutes?: number | null
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Update: {
+          blockchain_hash?: string | null
+          created_at?: string
+          data_file_url?: string | null
+          environment_conditions?: Json | null
+          id?: string
+          notes?: string | null
+          protocol_id?: string
+          researcher_id?: string
+          success_percentage?: number | null
+          time_taken_minutes?: number | null
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experiments_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "experiments_researcher_id_fkey"
+            columns: ["researcher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          institution: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          institution?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          institution?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      protocols: {
+        Row: {
+          average_rating: number | null
+          created_at: string
+          created_by: string | null
+          detailed_steps: Json | null
+          equipment_ids: string[] | null
+          estimated_cost: number | null
+          estimated_duration_minutes: number | null
+          hash: string | null
+          id: string
+          rating_count: number | null
+          success_rate: number | null
+          summary: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          verified: boolean | null
+        }
+        Insert: {
+          average_rating?: number | null
+          created_at?: string
+          created_by?: string | null
+          detailed_steps?: Json | null
+          equipment_ids?: string[] | null
+          estimated_cost?: number | null
+          estimated_duration_minutes?: number | null
+          hash?: string | null
+          id?: string
+          rating_count?: number | null
+          success_rate?: number | null
+          summary: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Update: {
+          average_rating?: number | null
+          created_at?: string
+          created_by?: string | null
+          detailed_steps?: Json | null
+          equipment_ids?: string[] | null
+          estimated_cost?: number | null
+          estimated_duration_minutes?: number | null
+          hash?: string | null
+          id?: string
+          rating_count?: number | null
+          success_rate?: number | null
+          summary?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "protocols_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          protocol_id: string
+          stars: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          protocol_id: string
+          stars: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          protocol_id?: string
+          stars?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_protocol_id_fkey"
+            columns: ["protocol_id"]
+            isOneToOne: false
+            referencedRelation: "protocols"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ratings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "researcher" | "reviewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +505,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "researcher", "reviewer"],
+    },
   },
 } as const
