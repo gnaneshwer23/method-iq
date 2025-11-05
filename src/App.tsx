@@ -31,57 +31,55 @@ import Admin from "./pages/Admin";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
       <AuthProvider>
-        <TooltipProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/benefits" element={<Benefits />} />
-              <Route path="/how-it-works" element={<HowItWorks />} />
-              <Route path="/technology" element={<Technology />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/protocols" element={<Protocols />} />
-              <Route path="/protocols/:id" element={<ProtocolDetail />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/password-reset" element={<PasswordReset />} />
-              <Route path="/unauthorized" element={<Unauthorized />} />
-              
-              {/* Protected Routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              <Route 
-                path="/admin" 
-                element={
-                  <ProtectedRoute>
-                    <Admin />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Fallback route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-          <Toaster />
-          <Sonner />
-        </TooltipProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/benefits" element={<Benefits />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/technology" element={<Technology />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/protocols" element={<Protocols />} />
+            <Route path="/protocols/:id" element={<ProtocolDetail />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/password-reset" element={<PasswordReset />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            
+            {/* Protected Routes */}
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Fallback route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster />
+        <Sonner />
       </AuthProvider>
-    </QueryClientProvider>
-  </StrictMode>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;
