@@ -10,17 +10,20 @@ export type UserProfile = {
 };
 
 export type Protocol = {
-  protocol_id: string;
+  id: string;
   title: string;
-  description: string;
-  created_by: string; // Foreign Key to UserProfiles.user_id
-  status: 'draft' | 'verified' | 'archived';
-  project_id?: string;
-  name?: string;
-  research_type?: string;
-  version?: string;
-  is_ai_generated?: boolean;
-  parameters?: Record<string, any>;
+  summary: string;
+  detailed_steps?: Record<string, any>;
+  tags?: string[];
+  estimated_duration_minutes?: number | null;
+  estimated_cost?: number | null;
+  success_rate?: number | null;
+  equipment_ids?: string[] | null;
+  verified: boolean;
+  hash?: string | null;
+  average_rating?: number;
+  rating_count?: number;
+  created_by?: string | null;
   created_at: string;
   updated_at: string;
 };
