@@ -7,6 +7,8 @@ export {
   authApi,
   projectApi,
   protocolApi,
+  experimentApi,
+  analyticsApi,
   iotApi,
   digitalTwinApi,
   blockchainApi,

@@ -7,12 +7,16 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Users, Shield, BarChart3 } from 'lucide-react';
+import { Plus, Users, Shield, BarChart3, TrendingUp, Beaker } from 'lucide-react';
 import { StatsOverview } from '@/components/dashboard/StatsOverview';
-import { DashboardTabs } from '@/components/dashboard/DashboardTabs';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { ExperimentTrendsChart } from '@/components/dashboard/ExperimentTrendsChart';
+import { ProtocolUsageChart } from '@/components/dashboard/ProtocolUsageChart';
+import { SuccessDistributionChart } from '@/components/dashboard/SuccessDistributionChart';
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
 import { LoadingState } from '@/components/dashboard/LoadingState';
 import { NotificationsButton } from '@/components/dashboard/NotificationsButton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Dashboard = () => {
   const { user, isAuthenticated, loading } = useAuth();
@@ -124,15 +128,48 @@ const Dashboard = () => {
         {/* Stats Overview */}
         <StatsOverview />
         
-        {/* Main content */}
-        <div className="grid gap-4 md:gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {/* Left column */}
-          <div className="md:col-span-2 lg:col-span-3">
-            <DashboardTabs />
+        {/* Quick Actions */}
+        <div className="flex gap-2 mb-6">
+          <Button onClick={() => navigate('/protocols')} variant="outline" className="gap-2">
+            <TrendingUp className="h-4 w-4" />
+            Browse Protocols
+          </Button>
+          <Button onClick={() => navigate('/experiments')} variant="outline" className="gap-2">
+            <Beaker className="h-4 w-4" />
+            View Experiments
+          </Button>
+        </div>
+
+        {/* Analytics Tabs */}
+        <Tabs defaultValue="overview" className="mb-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="trends">Trends</TabsTrigger>
+            <TabsTrigger value="usage">Usage</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <ExperimentTrendsChart />
+              <SuccessDistributionChart />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="trends" className="space-y-6">
+            <ExperimentTrendsChart />
+          </TabsContent>
+
+          <TabsContent value="usage" className="space-y-6">
+            <ProtocolUsageChart />
+          </TabsContent>
+        </Tabs>
+        
+        {/* Activity Feed */}
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="md:col-span-2">
+            <ActivityFeed />
           </div>
-          
-          {/* Right column */}
-          <div className="md:col-span-1">
+          <div>
             <DashboardSidebar />
           </div>
         </div>

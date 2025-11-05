@@ -4,6 +4,7 @@ export { authApi } from './auth';
 export { projectApi } from './projects';
 export { protocolApi } from './protocols';
 export { experimentApi } from './experiments';
+export { analyticsApi } from './analytics';
 export { iotApi } from './iot';
 export { digitalTwinApi } from './digital-twins';
 export { blockchainApi } from './blockchain';
