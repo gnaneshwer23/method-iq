@@ -30,47 +30,51 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-1 overflow-hidden">
-        <section className="relative overflow-x-hidden">
-          {/* Enhanced background effects */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_40%,rgba(96,165,250,0.2),transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_60%,rgba(139,92,246,0.2),transparent_50%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:24px_24px]" />
+      <main className="flex-1">
+        {/* Hero Section - Clean and focused */}
+        <section className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
           <HeroSection />
         </section>
         
+        {/* Intro Section - Better spacing */}
         <IntroSection />
         
-        <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#60A5FA]/15 via-[#8B5CF6]/10 to-transparent pointer-events-none" />
+        {/* Features Section - Clean background */}
+        <section className="py-20 bg-secondary/30">
           <FeaturesSection />
         </section>
         
-        <section className="relative bg-gradient-to-b from-white to-secondary/30">
+        {/* Benefits Section - Simplified */}
+        <section className="py-20">
           <BenefitsSection />
         </section>
         
-        <section className="relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-[#60A5FA]/15 via-[#8B5CF6]/10 to-transparent pointer-events-none" />
+        {/* How It Works Section - Better spacing */}
+        <section className="py-20 bg-secondary/20">
           <HowItWorksSection />
         </section>
 
         {/* Featured Protocols Section */}
-        <FeaturedProtocols />
+        <section className="py-20">
+          <FeaturedProtocols />
+        </section>
 
         {/* Call To Action Section */}
-        <CallToAction visible={ctaVisible} />
+        {ctaVisible && (
+          <section className="py-20">
+            <CallToAction visible={ctaVisible} />
+          </section>
+        )}
       </main>
       
       <Footer />
       
-      {/* Enhanced animated glow effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#60A5FA]/25 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#8B5CF6]/25 rounded-full blur-[120px] animate-pulse [animation-delay:1.5s]" />
-        <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-[#EC4899]/15 rounded-full blur-[100px] animate-pulse [animation-delay:2.5s]" />
+      {/* Subtle background accent - single minimal effect */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-40">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]" />
       </div>
     </div>
   )
