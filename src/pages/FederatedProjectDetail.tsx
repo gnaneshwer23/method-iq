@@ -8,16 +8,23 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Brain, Users, TrendingUp, Lock, Upload, Download } from "lucide-react";
 import { useFederatedProject, useFederatedLearning } from "@/hooks/useFederatedLearning";
 import { useAuth } from "@/contexts/AuthContext";
+import { AggregateModelButton } from "@/components/federated/AggregateModelButton";
+import { useRoleAccess } from "@/hooks/useRoleAccess";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useRoleAccess();
   const { joinProject } = useFederatedLearning();
-  const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading } = useFederatedProject(id!);
+  const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading, aggregatedModels } = useFederatedProject(id!);
 
   const isParticipant = participants?.some(p => p.user_id === user?.id);
+  const isProjectOwner = project?.created_by === user?.id;
   const progress = project ? (project.current_round / project.total_rounds) * 100 : 0;
+  
+  // Count updates for current round
+  const currentRoundUpdates = modelUpdates?.filter(u => u.round_number === project?.current_round) || [];
 
   const statusColors = {
     recruiting: "bg-blue-500/10 text-blue-500 border-blue-500/20",
@@ -80,17 +87,39 @@ const FederatedProjectDetail = () => {
         {/* Progress */}
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="text-lg">Training Progress</CardTitle>
-            <CardDescription>
-              Round {project.current_round} of {project.total_rounds}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Progress value={progress} className="h-2" />
-            <div className="flex justify-between text-sm text-muted-foreground mt-2">
-              <span>{project.current_round} rounds completed</span>
-              <span>{project.total_rounds - project.current_round} remaining</span>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg">Training Progress</CardTitle>
+                <CardDescription>
+                  Round {project.current_round} of {project.total_rounds}
+                </CardDescription>
+              </div>
+              {(isProjectOwner || isAdmin) && project.status === 'training' && currentRoundUpdates.length > 0 && (
+                <AggregateModelButton 
+                  projectId={project.id} 
+                  roundNumber={project.current_round + 1}
+                  disabled={currentRoundUpdates.length < project.min_participants}
+                />
+              )}
             </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Progress value={progress} className="h-2" />
+              <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                <span>{project.current_round} rounds completed</span>
+                <span>{project.total_rounds - project.current_round} remaining</span>
+              </div>
+            </div>
+            
+            {project.status === 'training' && (
+              <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg text-sm">
+                <span className="text-muted-foreground">Current round updates:</span>
+                <Badge variant={currentRoundUpdates.length >= project.min_participants ? "default" : "secondary"}>
+                  {currentRoundUpdates.length} / {project.min_participants} minimum
+                </Badge>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -174,6 +203,9 @@ const FederatedProjectDetail = () => {
             </TabsTrigger>
             <TabsTrigger value="updates">
               Model Updates ({modelUpdates?.length || 0})
+            </TabsTrigger>
+            <TabsTrigger value="aggregated">
+              Aggregated Models ({aggregatedModels?.length || 0})
             </TabsTrigger>
             {isParticipant && <TabsTrigger value="contribute">Contribute</TabsTrigger>}
           </TabsList>
@@ -266,6 +298,77 @@ const FederatedProjectDetail = () => {
                   </div>
                 ) : (
                   <p className="text-center text-muted-foreground py-8">No model updates yet</p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="aggregated" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Aggregated Models</CardTitle>
+                <CardDescription>
+                  AI-weighted global models produced from participant updates
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {aggregatedModels && aggregatedModels.length > 0 ? (
+                  <div className="space-y-4">
+                    {aggregatedModels.map((model: any) => (
+                      <div key={model.id} className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Badge>Round {model.round_number}</Badge>
+                            <Badge variant="outline">{model.participating_clients} participants</Badge>
+                          </div>
+                          <span className="text-sm text-muted-foreground">
+                            {new Date(model.created_at).toLocaleString()}
+                          </span>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-3">
+                          <div>
+                            <span className="text-muted-foreground">Global Accuracy:</span>
+                            <p className="font-medium text-lg">{model.global_accuracy?.toFixed(4) || 'N/A'}</p>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Global Loss:</span>
+                            <p className="font-medium text-lg">{model.global_loss?.toFixed(4) || 'N/A'}</p>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Total Samples:</span>
+                            <p className="font-medium text-lg">{model.aggregation_metadata?.total_samples || 'N/A'}</p>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Method:</span>
+                            <p className="font-medium">{model.aggregation_metadata?.aggregation_method || 'N/A'}</p>
+                          </div>
+                        </div>
+
+                        {model.aggregation_metadata?.weights && (
+                          <div className="mt-3 p-3 bg-secondary/30 rounded">
+                            <p className="text-sm text-muted-foreground mb-2">Quality Weights (AI-assigned):</p>
+                            <div className="flex gap-2 flex-wrap">
+                              {model.aggregation_metadata.weights.map((weight: number, idx: number) => (
+                                <Badge key={idx} variant="secondary">
+                                  Participant {idx + 1}: {(weight * 100).toFixed(1)}%
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="flex justify-end mt-3">
+                          <Button variant="outline" size="sm">
+                            <Download className="h-4 w-4 mr-2" />
+                            Download Model
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-muted-foreground py-8">No aggregated models yet</p>
                 )}
               </CardContent>
             </Card>

@@ -62,3 +62,6 @@ verify_jwt = true
 
 [functions.run-simulation]
 verify_jwt = true
+
+[functions.aggregate-federated-model]
+verify_jwt = true
