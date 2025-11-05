@@ -292,6 +292,8 @@ export type Database = {
           last_contribution_at: string | null
           local_data_size: number | null
           performance_metrics: Json | null
+          privacy_budget_remaining: number | null
+          privacy_budget_used: number | null
           project_id: string
           quality_score: number | null
           reputation_history: Json | null
@@ -312,6 +314,8 @@ export type Database = {
           last_contribution_at?: string | null
           local_data_size?: number | null
           performance_metrics?: Json | null
+          privacy_budget_remaining?: number | null
+          privacy_budget_used?: number | null
           project_id: string
           quality_score?: number | null
           reputation_history?: Json | null
@@ -332,6 +336,8 @@ export type Database = {
           last_contribution_at?: string | null
           local_data_size?: number | null
           performance_metrics?: Json | null
+          privacy_budget_remaining?: number | null
+          privacy_budget_used?: number | null
           project_id?: string
           quality_score?: number | null
           reputation_history?: Json | null
@@ -408,6 +414,8 @@ export type Database = {
       federated_model_updates: {
         Row: {
           accuracy: number | null
+          delta_used: number | null
+          epsilon_used: number | null
           id: string
           loss: number | null
           model_weights_hash: string
@@ -421,6 +429,8 @@ export type Database = {
         }
         Insert: {
           accuracy?: number | null
+          delta_used?: number | null
+          epsilon_used?: number | null
           id?: string
           loss?: number | null
           model_weights_hash: string
@@ -434,6 +444,8 @@ export type Database = {
         }
         Update: {
           accuracy?: number | null
+          delta_used?: number | null
+          epsilon_used?: number | null
           id?: string
           loss?: number | null
           model_weights_hash?: string

@@ -3,9 +3,11 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, Loader2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Upload, Loader2, Shield, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { usePrivacyBudget, validatePrivacyBudget } from "@/hooks/usePrivacyBudget";
 
 interface SubmitModelUpdateDialogProps {
   projectId: string;
@@ -26,7 +28,10 @@ export const SubmitModelUpdateDialog = ({
   const [accuracy, setAccuracy] = useState("");
   const [loss, setLoss] = useState("");
   const [trainingSamples, setTrainingSamples] = useState("");
+  const [epsilon, setEpsilon] = useState("0.1");
+  const [delta, setDelta] = useState("0.00001");
   const { toast } = useToast();
+  const privacyBudget = usePrivacyBudget(projectId);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -72,6 +77,8 @@ export const SubmitModelUpdateDialog = ({
     const accuracyNum = parseFloat(accuracy);
     const lossNum = parseFloat(loss);
     const samplesNum = parseInt(trainingSamples);
+    const epsilonNum = parseFloat(epsilon);
+    const deltaNum = parseFloat(delta);
 
     if (isNaN(accuracyNum) || accuracyNum < 0 || accuracyNum > 1) {
       toast({
@@ -95,6 +102,30 @@ export const SubmitModelUpdateDialog = ({
       toast({
         title: "Invalid Training Samples",
         description: "Training samples must be a positive integer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (isNaN(epsilonNum) || epsilonNum <= 0) {
+      toast({
+        title: "Invalid Epsilon",
+        description: "Epsilon must be greater than 0",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Validate privacy budget
+    const budgetValidation = validatePrivacyBudget(
+      privacyBudget.remainingBudget || 0,
+      epsilonNum
+    );
+
+    if (!budgetValidation.valid) {
+      toast({
+        title: "Privacy Budget Exceeded",
+        description: budgetValidation.message,
         variant: "destructive"
       });
       return;
@@ -130,10 +161,27 @@ export const SubmitModelUpdateDialog = ({
           model_weights_hash: hash,
           accuracy: accuracyNum,
           loss: lossNum,
-          training_samples: samplesNum
+          training_samples: samplesNum,
+          epsilon_used: epsilonNum,
+          delta_used: deltaNum,
+          privacy_metrics: {
+            epsilon: epsilonNum,
+            delta: deltaNum,
+            mechanism: 'gaussian'
+          }
         });
 
       if (insertError) throw insertError;
+
+      // Update participant's privacy budget
+      const { error: budgetError } = await supabase
+        .from('federated_learning_participants')
+        .update({
+          privacy_budget_used: (privacyBudget.usedBudget || 0) + epsilonNum
+        })
+        .eq('id', participantId);
+
+      if (budgetError) throw budgetError;
 
       toast({
         title: "Model Update Submitted",
@@ -145,6 +193,8 @@ export const SubmitModelUpdateDialog = ({
       setAccuracy("");
       setLoss("");
       setTrainingSamples("");
+      setEpsilon("0.1");
+      setDelta("0.00001");
       onSuccess?.();
     } catch (error) {
       console.error("Error submitting model update:", error);
@@ -161,9 +211,12 @@ export const SubmitModelUpdateDialog = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button 
+          className="w-full" 
+          disabled={!privacyBudget.canSubmit}
+        >
           <Upload className="mr-2 h-4 w-4" />
-          Submit Model Update
+          {privacyBudget.canSubmit ? 'Submit Model Update' : 'Budget Exhausted'}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
@@ -173,6 +226,28 @@ export const SubmitModelUpdateDialog = ({
             Upload your trained model weights and training metrics for this round.
           </DialogDescription>
         </DialogHeader>
+
+        {/* Privacy Budget Warning */}
+        {privacyBudget.warningLevel === 'critical' && (
+          <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Critical Privacy Budget</AlertTitle>
+            <AlertDescription>
+              Only {privacyBudget.remainingBudget?.toFixed(4)} ε remaining. This may be your last submission.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {privacyBudget.warningLevel === 'warning' && (
+          <Alert>
+            <Shield className="h-4 w-4" />
+            <AlertTitle>Privacy Budget Warning</AlertTitle>
+            <AlertDescription>
+              {privacyBudget.remainingBudget?.toFixed(4)} ε remaining. Plan your submissions carefully.
+            </AlertDescription>
+          </Alert>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="model-file">Model Weights File</Label>
@@ -233,6 +308,68 @@ export const SubmitModelUpdateDialog = ({
               required
               disabled={uploading}
             />
+          </div>
+
+          <div className="border-t pt-4 space-y-4">
+            <div className="flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" />
+              <Label className="text-base font-semibold">Privacy Parameters</Label>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="epsilon">Epsilon (ε)</Label>
+                <Input
+                  id="epsilon"
+                  type="number"
+                  step="0.001"
+                  min="0.001"
+                  max={privacyBudget.remainingBudget || 1.0}
+                  value={epsilon}
+                  onChange={(e) => setEpsilon(e.target.value)}
+                  placeholder="e.g., 0.1"
+                  required
+                  disabled={uploading}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Max: {privacyBudget.remainingBudget?.toFixed(4) || '0'}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="delta">Delta (δ)</Label>
+                <Input
+                  id="delta"
+                  type="number"
+                  step="0.00001"
+                  min="0.00001"
+                  max="0.01"
+                  value={delta}
+                  onChange={(e) => setDelta(e.target.value)}
+                  placeholder="e.g., 0.00001"
+                  required
+                  disabled={uploading}
+                />
+              </div>
+            </div>
+
+            <div className="bg-muted/50 p-3 rounded-lg space-y-1">
+              <p className="text-xs font-semibold">Privacy Budget Status</p>
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Used:</span>
+                <span>{privacyBudget.usedBudget?.toFixed(4) || '0'} ε</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Remaining:</span>
+                <span className="font-medium">{privacyBudget.remainingBudget?.toFixed(4) || '0'} ε</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">After this submission:</span>
+                <span className="font-medium">
+                  {((privacyBudget.remainingBudget || 0) - parseFloat(epsilon || '0')).toFixed(4)} ε
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-end gap-2">

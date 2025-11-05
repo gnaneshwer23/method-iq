@@ -19,10 +19,12 @@ import { MyReputationCard } from "@/components/federated/MyReputationCard";
 import { SubmitModelUpdateDialog } from "@/components/federated/SubmitModelUpdateDialog";
 import { TrainingInstructions } from "@/components/federated/TrainingInstructions";
 import { NotificationsDropdown } from "@/components/federated/NotificationsDropdown";
+import { PrivacyBudgetTracker } from "@/components/federated/PrivacyBudgetTracker";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNotifications } from "@/hooks/useNotifications";
+import { usePrivacyBudget } from "@/hooks/usePrivacyBudget";
 
 const FederatedProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,6 +35,7 @@ const FederatedProjectDetail = () => {
   const { project, projectLoading, participants, participantsLoading, modelUpdates, updatesLoading, aggregatedModels } = useFederatedProject(id!);
   const { toast } = useToast();
   const { createNotification } = useNotifications();
+  const privacyBudget = usePrivacyBudget(id!);
   
   const [monitoringEnabled, setMonitoringEnabled] = useState(true);
   const [minAccuracyThreshold, setMinAccuracyThreshold] = useState(0.5);
@@ -678,44 +681,59 @@ const FederatedProjectDetail = () => {
 
           {isParticipant && (
             <TabsContent value="contribute" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Submit Model Update</CardTitle>
-                  <CardDescription>
-                    Upload your locally trained model weights for round {project.current_round || 1}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {project.status !== 'training' ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>Training has not started yet. Wait for the project owner to start training.</p>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
-                        <h4 className="font-semibold text-sm">Training Guidelines</h4>
-                        <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                          <li>Train your model locally using your private data</li>
-                          <li>Export model weights in .pkl, .h5, .pt, or .onnx format</li>
-                          <li>File size limit: 100MB</li>
-                          <li>Report accurate training metrics (accuracy, loss, samples)</li>
-                        </ul>
-                      </div>
-                      
-                      <SubmitModelUpdateDialog
-                        projectId={project.id}
-                        participantId={myParticipation?.id || ''}
-                        currentRound={project.current_round || 1}
-                        onSuccess={() => {
-                          // Refresh data after submission
-                          window.location.reload();
-                        }}
-                      />
-                    </>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Submit Model Update</CardTitle>
+                      <CardDescription>
+                        Upload your locally trained model weights for round {project.current_round || 1}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {project.status !== 'training' ? (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>Training has not started yet. Wait for the project owner to start training.</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+                            <h4 className="font-semibold text-sm">Training Guidelines</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                              <li>Train your model locally using your private data</li>
+                              <li>Export model weights in .pkl, .h5, .pt, or .onnx format</li>
+                              <li>File size limit: 100MB</li>
+                              <li>Report accurate training metrics (accuracy, loss, samples)</li>
+                              <li>Set appropriate privacy parameters (epsilon, delta)</li>
+                            </ul>
+                          </div>
+                          
+                          <SubmitModelUpdateDialog
+                            projectId={project.id}
+                            participantId={myParticipation?.id || ''}
+                            currentRound={project.current_round || 1}
+                            onSuccess={() => {
+                              // Refresh data after submission
+                              window.location.reload();
+                            }}
+                          />
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div>
+                  {!privacyBudget.isLoading && (
+                    <PrivacyBudgetTracker
+                      totalBudget={privacyBudget.totalBudget || 1.0}
+                      usedBudget={privacyBudget.usedBudget || 0}
+                      remainingBudget={privacyBudget.remainingBudget || 0}
+                    />
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </TabsContent>
           )}
           
