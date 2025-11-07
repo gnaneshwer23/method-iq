@@ -1,7 +1,10 @@
 import { Card } from "@/components/ui/card";
 import { Star, Users, Award, Shield } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { cn } from "@/lib/utils";
 
 export function TrustSection() {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
   const stats = [
     { icon: Users, value: "5,000+", label: "Active Researchers" },
     { icon: Award, value: "10,000+", label: "Validated Protocols" },
@@ -31,8 +34,11 @@ export function TrustSection() {
   ];
 
   return (
-    <section className="py-20 bg-secondary/30">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-20 bg-secondary/30">
+      <div className={cn(
+        "container mx-auto px-4 transition-all duration-1000",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}>
         {/* Stats */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, idx) => (

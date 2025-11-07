@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Brain, Microscope, Network, Cpu, Lock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { cn } from "@/lib/utils";
 
 interface Feature {
   id: string;
@@ -76,10 +78,14 @@ const features: Feature[] = [
 
 export function FeatureTabs() {
   const [activeTab, setActiveTab] = useState("protocols");
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   return (
-    <section className="py-20 bg-secondary/30">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-20 bg-secondary/30">
+      <div className={cn(
+        "container mx-auto px-4 transition-all duration-1000",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}>
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Powerful Features for Modern Research</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

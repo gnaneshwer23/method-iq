@@ -1,18 +1,19 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface CallToActionProps {
   visible: boolean;
 }
 
 export function CallToAction({ visible }: CallToActionProps) {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.3 });
   return (
-    <div className={cn(
+    <div ref={ref} className={cn(
       "mt-20 text-center relative transition-all duration-1000 transform",
-      visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      visible && isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
     )}>
       <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 rounded-lg opacity-30" />
       <div className="relative px-6 py-12 backdrop-blur-sm rounded-lg border border-primary/10">

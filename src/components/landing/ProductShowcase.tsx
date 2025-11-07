@@ -2,9 +2,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { useState } from "react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { cn } from "@/lib/utils";
 
 export function ProductShowcase() {
   const [activeDevice, setActiveDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
 
   const devices = [
     { id: "desktop" as const, icon: Monitor, label: "Desktop" },
@@ -13,8 +16,11 @@ export function ProductShowcase() {
   ];
 
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-20">
+      <div className={cn(
+        "container mx-auto px-4 transition-all duration-1000",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}>
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-4">
             Responsive Design
