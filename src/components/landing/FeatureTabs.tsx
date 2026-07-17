@@ -58,7 +58,7 @@ const features: Feature[] = [
     image: "experiments"
   },
   {
-    id: "collaboration",
+    id: "federated-learning",
     label: "Collaboration",
     icon: Network,
     title: "Federated Learning Network",

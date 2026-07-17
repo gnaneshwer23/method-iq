@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
-import { Star, Users, Award, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Star, Users, Award, Shield, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
 
@@ -73,6 +75,18 @@ export function TrustSection() {
               </div>
             </Card>
           ))}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 justify-center mt-12">
+          <Button asChild size="lg">
+            <Link to="/register">
+              Join the Community
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="outline">
+            <Link to="/blog">Read Case Studies</Link>
+          </Button>
         </div>
       </div>
     </section>
