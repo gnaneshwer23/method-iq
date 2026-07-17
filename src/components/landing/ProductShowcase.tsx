@@ -4,6 +4,7 @@ import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
+import dashboardImg from "@/assets/product-dashboard.jpg";
 
 export function ProductShowcase() {
   const [activeDevice, setActiveDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
@@ -74,44 +75,15 @@ export function ProductShowcase() {
               </div>
 
               {/* Content Preview */}
-              <div className="bg-gradient-to-br from-primary/5 via-background to-primary/5 p-6 h-full">
-                <div className="space-y-4">
-                  {/* Header */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/10" />
-                    <div className="flex-1 space-y-2">
-                      <div className="h-4 bg-muted rounded w-1/3" />
-                      <div className="h-3 bg-muted/50 rounded w-1/2" />
-                    </div>
-                  </div>
-
-                  {/* Cards Grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-4">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="aspect-square bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg p-3 space-y-2"
-                      >
-                        <div className="h-3 bg-muted/50 rounded w-2/3" />
-                        <div className="h-8 bg-muted/30 rounded" />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Chart Preview */}
-                  <div className="bg-gradient-to-r from-primary/10 to-transparent rounded-lg p-4 space-y-2">
-                    <div className="h-3 bg-muted/50 rounded w-1/4" />
-                    <div className="flex items-end gap-2 h-20">
-                      {[60, 80, 55, 90, 70, 85].map((height, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 bg-primary/30 rounded-t"
-                          style={{ height: `${height}%` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              <div className="h-full">
+                <img
+                  src={dashboardImg}
+                  alt="MethodIQ product dashboard"
+                  loading="lazy"
+                  width={1600}
+                  height={1000}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </Card>
