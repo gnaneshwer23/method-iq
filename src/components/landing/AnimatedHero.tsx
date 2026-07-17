@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, Sparkles, Zap, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import heroImage from "@/assets/hero-research.jpg";
 
 export function AnimatedHero() {
   const [activeFeature, setActiveFeature] = useState(0);
