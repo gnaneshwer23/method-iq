@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, Sparkles, Zap, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import heroImage from "@/assets/hero-research.jpg";
 
 export function AnimatedHero() {
   const [activeFeature, setActiveFeature] = useState(0);
@@ -23,7 +24,15 @@ export function AnimatedHero() {
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/5 to-background">
+      <div className="absolute inset-0">
+        <img
+          src={heroImage}
+          alt="AI research neural network visualization"
+          width={1600}
+          height={1000}
+          className="w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/70 to-background" />
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
       </div>
 

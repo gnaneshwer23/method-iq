@@ -6,6 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
+import protocolsImg from "@/assets/feature-protocols.jpg";
+import experimentsImg from "@/assets/feature-experiments.jpg";
+import federatedImg from "@/assets/feature-federated.jpg";
+import twinsImg from "@/assets/feature-twins.jpg";
+
+const featureImages: Record<string, string> = {
+  protocols: protocolsImg,
+  experiments: experimentsImg,
+  federated: federatedImg,
+  twins: twinsImg,
+};
 
 interface Feature {
   id: string;
@@ -141,9 +152,16 @@ export function FeatureTabs() {
                   </Button>
                 </div>
 
-                <Card className="p-8 bg-gradient-to-br from-primary/5 to-transparent border-primary/10">
-                  <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                    <feature.icon className="w-24 h-24 text-primary/20" />
+                <Card className="p-2 bg-gradient-to-br from-primary/5 to-transparent border-primary/10 overflow-hidden">
+                  <div className="aspect-video rounded-lg overflow-hidden">
+                    <img
+                      src={featureImages[feature.image]}
+                      alt={feature.title}
+                      loading="lazy"
+                      width={1200}
+                      height={800}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </Card>
               </div>
