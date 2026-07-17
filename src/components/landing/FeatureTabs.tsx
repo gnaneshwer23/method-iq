@@ -152,15 +152,17 @@ export function FeatureTabs() {
                   </Button>
                 </div>
 
-                <Card className="p-2 bg-gradient-to-br from-primary/5 to-transparent border-primary/10 overflow-hidden">
-                  <div className="aspect-video rounded-lg overflow-hidden">
+                <Card className="p-2 sm:p-3 bg-gradient-to-br from-primary/5 to-transparent border-primary/10 overflow-hidden">
+                  <div className="aspect-video w-full rounded-lg overflow-hidden">
                     <img
                       src={featureImages[feature.image]}
                       alt={feature.title}
                       loading="lazy"
+                      decoding="async"
                       width={1200}
                       height={800}
-                      className="w-full h-full object-cover"
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
                 </Card>
