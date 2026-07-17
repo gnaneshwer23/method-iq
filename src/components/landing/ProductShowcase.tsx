@@ -52,37 +52,39 @@ export function ProductShowcase() {
 
         {/* Showcase Area */}
         <div className="relative max-w-6xl mx-auto">
-          <Card className="p-8 bg-gradient-to-br from-secondary/50 to-transparent animate-fade-in">
+          <Card className="p-3 sm:p-6 md:p-8 bg-gradient-to-br from-secondary/50 to-transparent animate-fade-in">
             <div
-              className={`mx-auto bg-background rounded-lg shadow-2xl overflow-hidden transition-all duration-500 ${
+              className={`mx-auto bg-background rounded-lg shadow-2xl overflow-hidden transition-all duration-500 w-full ${
                 activeDevice === "desktop"
                   ? "max-w-full aspect-[16/10]"
                   : activeDevice === "tablet"
                   ? "max-w-2xl aspect-[4/3]"
-                  : "max-w-sm aspect-[9/16]"
+                  : "max-w-[16rem] sm:max-w-xs aspect-[9/16]"
               }`}
             >
               {/* Mock Browser/Device Chrome */}
               <div className="bg-secondary p-2 flex items-center gap-2 border-b">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500/80" />
                 </div>
-                <div className="flex-1 bg-muted rounded px-3 py-1 text-xs text-muted-foreground">
+                <div className="flex-1 bg-muted rounded px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-muted-foreground truncate">
                   app.methodiq.com
                 </div>
               </div>
 
               {/* Content Preview */}
-              <div className="h-full">
+              <div className="w-full h-[calc(100%-2.25rem)]">
                 <img
                   src={dashboardImg}
                   alt="MethodIQ product dashboard"
                   loading="lazy"
+                  decoding="async"
                   width={1600}
                   height={1000}
-                  className="w-full h-full object-cover"
+                  sizes="(min-width: 1024px) 72rem, 100vw"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
             </div>
